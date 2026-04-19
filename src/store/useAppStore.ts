@@ -10,6 +10,7 @@ import { uid } from '../lib/utils/id';
 interface AppState {
   schemaVersion: number;
   familyName: string | null;
+  weekStartDay: 0 | 1;
   dishes: Dish[];
   dayModifiers: DayModifier[];
   plans: Plan[];
@@ -17,6 +18,7 @@ interface AppState {
   tagDefinitions: TagDefinition[];
 
   setFamilyName: (name: string) => void;
+  setWeekStartDay: (day: 0 | 1) => void;
   upsertDish: (dish: Dish) => void;
   deleteDish: (id: string) => void;
 
@@ -49,6 +51,7 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       schemaVersion: SCHEMA_VERSION,
       familyName: null,
+      weekStartDay: 1,
       dishes: [],
       dayModifiers: [],
       plans: [],
@@ -56,6 +59,7 @@ export const useAppStore = create<AppState>()(
       tagDefinitions: [],
 
       setFamilyName: (name) => set({ familyName: name.trim() || null }),
+      setWeekStartDay: (day) => set({ weekStartDay: day }),
 
       upsertDish: (dish) =>
         set((s) => {

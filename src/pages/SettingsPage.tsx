@@ -21,6 +21,8 @@ export function SettingsPage() {
   })));
   const familyName = useAppStore((s) => s.familyName);
   const setFamilyName = useAppStore((s) => s.setFamilyName);
+  const weekStartDay = useAppStore((s) => s.weekStartDay);
+  const setWeekStartDay = useAppStore((s) => s.setWeekStartDay);
   const replaceAll = useAppStore((s) => s.replaceAll);
   const reset = useAppStore((s) => s.reset);
 
@@ -92,6 +94,17 @@ export function SettingsPage() {
               Zapisz
             </button>
           </div>
+        </label>
+        <label>
+          Pierwszy dzień tygodnia
+          <select
+            value={weekStartDay}
+            onChange={(e) => setWeekStartDay(Number(e.target.value) as 0 | 1)}
+            style={{ width: 'fit-content' }}
+          >
+            <option value={1}>Poniedziałek</option>
+            <option value={0}>Niedziela</option>
+          </select>
         </label>
       </div>
 
