@@ -25,10 +25,9 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
       {dishes.map((d) => (
         <div key={d.id} className="dish-row">
           <div>
-            <div style={{ fontFamily: 'var(--font-display)', color: 'var(--color-red-dark)', fontSize: '1.15rem' }}>
+            <div style={{ fontWeight: 600, color: 'var(--color-red-dark)', fontSize: '1.05rem' }}>
               {d.name}
             </div>
-            {d.notes && <div className="muted">{d.notes}</div>}
             {d.tags.length > 0 && (
               <div className="row" style={{ marginTop: 4 }}>
                 {d.tags.map((t) => (
