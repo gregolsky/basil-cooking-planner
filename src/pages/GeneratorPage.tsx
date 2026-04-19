@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { toISODate, addDays, daysBetween, listDates } from '../lib/utils/date';
+import { toISODate, addDays, daysBetween, listDates, formatShortPl, weekdayShortPl } from '../lib/utils/date';
 import { buildDayContexts } from '../lib/days/capacity';
 import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
@@ -21,6 +21,8 @@ export function GeneratorPage() {
   const navigate = useNavigate();
   const dishes = useAppStore((s) => s.dishes);
   const dayModifiers = useAppStore((s) => s.dayModifiers);
+  const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
+  const clearDayModifier = useAppStore((s) => s.clearDayModifier);
   const addPlan = useAppStore((s) => s.addPlan);
 
   const [start, setStart] = useState(defaultStart);
@@ -121,6 +123,38 @@ export function GeneratorPage() {
           Zakres: {rangeDays > 0 ? `${rangeDays} dni` : 'nieprawidłowy'}.
           Plany mogą się nakładać zakresami — to nie jest błąd.
         </div>
+
+        {rangeDays > 0 && (
+          <div>
+            <div style={{ fontWeight: 600, marginBottom: 6 }}>Dyżury w zakresie</div>
+            <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
+              {listDates(start, end).map((date) => {
+                const mod = dayModifiers.find((m) => m.date === date);
+                const active = !!mod?.wifeDuty;
+                return (
+                  <button
+                    key={date}
+                    className={active ? '' : 'ghost'}
+                    style={{ padding: '4px 10px', fontSize: 13 }}
+                    onClick={() => {
+                      if (active) {
+                        const rest = { ...mod, wifeDuty: false };
+                        const hasOther = rest.skip || rest.requiresTags?.length || rest.difficultyCap !== undefined || rest.note;
+                        if (hasOther) upsertDayModifier({ ...mod!, wifeDuty: false });
+                        else clearDayModifier(date);
+                      } else {
+                        upsertDayModifier({ ...(mod ?? { date }), wifeDuty: true });
+                      }
+                    }}
+                  >
+                    {weekdayShortPl(date)} {formatShortPl(date)}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="muted" style={{ marginTop: 4, fontSize: 12 }}>Zaznaczone dni = dyżur (zmniejsza limit trudności)</div>
+          </div>
+        )}
 
         {error && <div className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{error}</div>}
 
