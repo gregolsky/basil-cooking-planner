@@ -280,30 +280,22 @@ label {
   position: relative;
 }
 .nav-brand {
-  font-family: var(--font-display);
-  font-size: 2.1rem;
-  color: var(--color-chalk);
-  text-decoration: none;
-  text-shadow: var(--shadow-chalk);
-  letter-spacing: 1px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 8px;
-  border: 2px solid rgba(245,240,228,0.35);
+  padding: 2px 4px;
   border-radius: 6px;
+  transition: opacity 150ms;
 }
-.nav-brand:hover { text-decoration: none; background: rgba(255,255,255,0.06); }
+.nav-brand:hover { text-decoration: none; opacity: 0.85; }
 
-.nav-tagline {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.8rem;
-  color: rgba(245,240,228,0.55);
-  margin-left: -6px;
-  align-self: flex-end;
-  padding-bottom: 6px;
+.nav-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  border-radius: 6px;
+  mix-blend-mode: multiply;
 }
+
 .nav-greeting {
   font-family: var(--font-ui);
   font-size: 0.85rem;
