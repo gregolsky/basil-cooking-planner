@@ -1,0 +1,48 @@
+import { NavLink } from 'react-router-dom';
+import { useAppStore } from '../store/useAppStore';
+
+const links = [
+  { to: '/', label: '🍴 Kalendarz', end: true },
+  { to: '/new-plan', label: '✨ Nowy plan' },
+  { to: '/plans', label: '📚 Plany' },
+  { to: '/dishes', label: '🥘 Dania' },
+  { to: '/settings', label: '⚙️ Dane' },
+];
+
+function greeting(familyName: string): string {
+  const hour = new Date().getHours();
+  if (hour < 5)  return `Dobranoc, ${familyName}!`;
+  if (hour < 12) return `Dzień dobry, ${familyName}!`;
+  if (hour < 18) return `Cześć, ${familyName}!`;
+  return `Dobry wieczór, ${familyName}!`;
+}
+
+export function NavBar() {
+  const familyName = useAppStore((s) => s.familyName);
+
+  return (
+    <nav className="nav">
+      <div className="nav-inner">
+        <NavLink to="/" className="nav-brand">
+          🌿 Basil
+        </NavLink>
+        <span className="nav-tagline">family cooking planner</span>
+        {familyName && (
+          <span className="nav-greeting">{greeting(familyName)}</span>
+        )}
+        <div className="row" style={{ marginLeft: 'auto' }}>
+          {links.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.end}
+              className={({ isActive }) => (isActive ? 'active' : '')}
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
