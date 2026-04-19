@@ -15,7 +15,7 @@ export function WelcomeModal() {
       <div className="modal welcome-modal">
         <div className="welcome-hero-strip" />
         <div className="welcome-body">
-          <img src="/cooking-plan/basil-logo.png" alt="Basil" style={{ height: 72, width: 'auto' }} />
+          <img src="/basil-cooking-planner/basil-logo.png" alt="Basil" style={{ height: 72, width: 'auto' }} />
           <p className="welcome-question">Jak nazywa się Twoja rodzina?</p>
           <input
             type="text"

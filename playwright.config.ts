@@ -8,7 +8,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['list']],
   use: {
-    baseURL: 'http://localhost:4173/cooking-plan/',
+    baseURL: 'http://localhost:4173/basil-cooking-planner/',
     trace: 'retain-on-failure',
   },
   projects: [
@@ -19,7 +19,7 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run build && npx vite preview --host 127.0.0.1 --port 4173 --strictPort',
-    url: 'http://localhost:4173/cooking-plan/',
+    url: 'http://localhost:4173/basil-cooking-planner/',
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
   },

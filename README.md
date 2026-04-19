@@ -2,7 +2,7 @@
 
 A Polish-language PWA for planning weekly family dinners. Generates meal schedules using a genetic algorithm, respects cooking constraints (nanny days, duty shifts, leftovers), and lets you pin/override any day manually.
 
-**Live app:** https://gregolsky.github.io/cooking-plan/
+**Live app:** https://gregolsky.github.io/basil-cooking-planner/
 
 ## Features
 
@@ -28,7 +28,7 @@ A Polish-language PWA for planning weekly family dinners. Generates meal schedul
 
 ```bash
 npm install
-npm run dev        # dev server at http://localhost:5173/cooking-plan/
+npm run dev        # dev server at http://localhost:5173/basil-cooking-planner/
 npm test           # Vitest unit tests
 npm run test:e2e   # Playwright e2e tests (needs app running)
 npm run build      # production build → dist/
