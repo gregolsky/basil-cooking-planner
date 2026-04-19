@@ -23,11 +23,12 @@ const EMPTY: Dish = {
 
 export function DishForm({ initial, onSubmit, onCancel }: Props) {
   const tagDefs = useAppStore((s) => s.tagDefinitions);
-  const [form, setForm] = useState<Dish>(() => initial ?? { ...EMPTY });
+  const [form, setForm] = useState<Dish>(() => initial ? { ...initial, tags: [...initial.tags] } : { ...EMPTY });
 
   useEffect(() => {
-    if (initial) setForm(initial);
-  }, [initial]);
+    if (initial) setForm({ ...initial, tags: [...initial.tags] });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initial?.id]);
 
   const update = <K extends keyof Dish>(k: K, v: Dish[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
