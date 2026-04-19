@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { parseDishCsv, DISH_CSV_SAMPLE } from '../lib/csv/dishImport';
+import { download } from '../lib/share/webShare';
 import type { Dish } from '../types/dish';
 
 export function DishCsvImport() {
@@ -36,13 +37,8 @@ export function DishCsvImport() {
 
   const cancel = () => { setPreview(null); setWarnings([]); };
 
-  const copySample = async () => {
-    try {
-      await navigator.clipboard.writeText(DISH_CSV_SAMPLE);
-      setStatus('Przykład skopiowany do schowka.');
-    } catch {
-      setStatus(DISH_CSV_SAMPLE);
-    }
+  const downloadSample = () => {
+    download(new Blob([DISH_CSV_SAMPLE], { type: 'text/csv;charset=utf-8' }), 'dania-przyklad.csv');
   };
 
   return (
@@ -65,7 +61,7 @@ export function DishCsvImport() {
             e.target.value = '';
           }}
         />
-        <button className="ghost" onClick={copySample}>Kopiuj przykład</button>
+        <button className="ghost" onClick={downloadSample}>Pobierz przykład CSV</button>
       </div>
 
       <details>
