@@ -1,73 +1,39 @@
-# React + TypeScript + Vite
+# Basil — family cooking planner
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Polish-language PWA for planning weekly family dinners. Generates meal schedules using a genetic algorithm, respects cooking constraints (nanny days, duty shifts, leftovers), and lets you pin/override any day manually.
 
-Currently, two official plugins are available:
+**Live app:** https://gregolsky.github.io/cooking-plan/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Genetic algorithm meal planner with configurable constraints
+- Dish library with meat type, difficulty, cook role, and kids rating
+- Multi-day leftover support
+- Manual overrides (pin, swap, skip) that survive regeneration
+- Violations audit panel (hard/soft constraint breaches)
+- Export: CSV, PDF (with Lobster font), JSON backup
+- Import / share via link (pako-compressed URL) or Web Share API
+- PWA — installable, works offline
+- Hosted on GitHub Pages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the ESLint configuration
+- Vite + React 19 + TypeScript
+- Zustand (state), Zod (schema validation), React Router (hash routing)
+- Web Worker + Comlink (GA runs off main thread)
+- jsPDF + jspdf-autotable (PDF export)
+- vite-plugin-pwa (service worker, manifest)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Development
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev        # dev server at http://localhost:5173/cooking-plan/
+npm test           # Vitest unit tests
+npm run test:e2e   # Playwright e2e tests (needs app running)
+npm run build      # production build → dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Deploy
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Pushes to `main` trigger the GitHub Actions workflow which builds and deploys to GitHub Pages automatically.
