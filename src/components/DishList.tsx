@@ -1,5 +1,13 @@
-import type { Dish } from '../types/dish';
+import type { Dish, MeatType } from '../types/dish';
 import { MEAT_LABELS } from '../types/dish';
+
+const MEAT_EMOJI: Record<MeatType, string> = {
+  beef: '🐄',
+  pork: '🐷',
+  poultry: '🐔',
+  fish: '🐟',
+  none: '🥦',
+};
 import { useAppStore } from '../store/useAppStore';
 import { useMemo } from 'react';
 
@@ -36,7 +44,7 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
               </div>
             )}
           </div>
-          <span className="badge soft">{MEAT_LABELS[d.meat]}</span>
+          <span className="badge soft">{MEAT_EMOJI[d.meat]} {MEAT_LABELS[d.meat]}</span>
           <span className="badge">trudność {d.difficulty}</span>
           <span className="badge green">preferencja {d.preference}/5</span>
           <span className="badge soft">{d.servesDays > 1 ? `${d.servesDays} dni` : '1 dzień'}</span>
