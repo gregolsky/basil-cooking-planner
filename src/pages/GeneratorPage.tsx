@@ -125,35 +125,53 @@ export function GeneratorPage() {
         </div>
 
         {rangeDays > 0 && (
-          <div>
-            <div style={{ fontWeight: 600, marginBottom: 6 }}>Dyżury w zakresie</div>
-            <div className="row" style={{ flexWrap: 'wrap', gap: 6 }}>
-              {listDates(start, end).map((date) => {
-                const mod = dayModifiers.find((m) => m.date === date);
-                const active = !!mod?.wifeDuty;
-                return (
-                  <button
-                    key={date}
-                    className={active ? '' : 'ghost'}
-                    style={{ padding: '4px 10px', fontSize: 13 }}
-                    onClick={() => {
-                      if (active) {
-                        const rest = { ...mod, wifeDuty: false };
-                        const hasOther = rest.skip || rest.requiresTags?.length || rest.difficultyCap !== undefined || rest.note;
-                        if (hasOther) upsertDayModifier({ ...mod!, wifeDuty: false });
-                        else clearDayModifier(date);
-                      } else {
-                        upsertDayModifier({ ...(mod ?? { date }), wifeDuty: true });
-                      }
-                    }}
-                  >
-                    {weekdayShortPl(date)} {formatShortPl(date)}
-                  </button>
-                );
-              })}
+          <details>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Modyfikatory dni (dyżury, limity trudności)</summary>
+            <div style={{ marginTop: 10, overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Dzień</th>
+                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Dyżur</th>
+                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Limit trudności</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {listDates(start, end).map((date) => {
+                    const mod = dayModifiers.find((m) => m.date === date);
+                    const duty = !!mod?.wifeDuty;
+                    const cap = mod?.difficultyCap;
+
+                    const save = (patch: Partial<typeof mod>) => {
+                      const next = { ...(mod ?? { date }), ...patch };
+                      const isEmpty = !next.wifeDuty && next.difficultyCap === undefined && !next.skip && !next.requiresTags?.length && !next.note;
+                      if (isEmpty) clearDayModifier(date);
+                      else upsertDayModifier(next as typeof mod & { date: string });
+                    };
+
+                    return (
+                      <tr key={date} style={{ borderBottom: '1px solid #ede3d3' }}>
+                        <td style={{ padding: '4px 8px' }}>{weekdayShortPl(date)} {formatShortPl(date)}</td>
+                        <td style={{ textAlign: 'center', padding: '4px 8px' }}>
+                          <input type="checkbox" checked={duty} onChange={(e) => save({ wifeDuty: e.target.checked || undefined })} />
+                        </td>
+                        <td style={{ textAlign: 'center', padding: '4px 8px' }}>
+                          <select
+                            value={cap ?? ''}
+                            style={{ fontSize: 13 }}
+                            onChange={(e) => save({ difficultyCap: e.target.value ? Number(e.target.value) : undefined })}
+                          >
+                            <option value="">auto</option>
+                            {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
+                          </select>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
-            <div className="muted" style={{ marginTop: 4, fontSize: 12 }}>Zaznaczone dni = dyżur (zmniejsza limit trudności)</div>
-          </div>
+          </details>
         )}
 
         {error && <div className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{error}</div>}

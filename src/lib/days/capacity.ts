@@ -11,8 +11,8 @@ export interface DayContext {
   note?: string;
 }
 
-const WEEKDAY_BASE = 2;
-const WEEKEND_BASE = 4;
+const WEEKDAY_BASE = 3;
+const WEEKEND_BASE = 5;
 
 export function computeDayContext(
   date: string,
