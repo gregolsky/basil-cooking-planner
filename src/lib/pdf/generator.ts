@@ -46,13 +46,12 @@ export async function planToPdfBlob(plan: Plan, dishMap: Map<string, Dish>): Pro
       formatPl(m.date),
       weekdayPl(m.date),
       dish?.name ?? '(nie gotujemy)',
-      m.isLeftover ? 'resztki' : dish ? dish.tags.join(', ') : '',
       m.locked ? '📌' : '',
     ];
   });
 
   autoTable(doc, {
-    head: [['Data', 'Dzień', 'Danie', 'Etykiety', '']],
+    head: [['Data', 'Dzień', 'Danie', '']],
     body,
     startY: 46,
     theme: 'grid',

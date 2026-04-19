@@ -126,24 +126,22 @@ export function GeneratorPage() {
 
         {rangeDays > 0 && (
           <details>
-            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Modyfikatory dni (dyżury, limity trudności)</summary>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Limity trudności dni</summary>
             <div style={{ marginTop: 10, overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
                   <tr>
                     <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Dzień</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Dyżur</th>
                     <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Limit trudności</th>
                   </tr>
                 </thead>
                 <tbody>
                   {listDates(start, end).map((date) => {
                     const mod = dayModifiers.find((m) => m.date === date);
-                    const duty = !!mod?.wifeDuty;
                     const cap = mod?.difficultyCap;
 
-                    const save = (patch: Partial<typeof mod>) => {
-                      const next = { ...(mod ?? { date }), ...patch };
+                    const save = (newCap: number | undefined) => {
+                      const next = { ...(mod ?? { date }), difficultyCap: newCap };
                       const isEmpty = !next.wifeDuty && next.difficultyCap === undefined && !next.skip && !next.requiresTags?.length && !next.note;
                       if (isEmpty) clearDayModifier(date);
                       else upsertDayModifier(next as typeof mod & { date: string });
@@ -153,13 +151,10 @@ export function GeneratorPage() {
                       <tr key={date} style={{ borderBottom: '1px solid #ede3d3' }}>
                         <td style={{ padding: '4px 8px' }}>{weekdayShortPl(date)} {formatShortPl(date)}</td>
                         <td style={{ textAlign: 'center', padding: '4px 8px' }}>
-                          <input type="checkbox" checked={duty} onChange={(e) => save({ wifeDuty: e.target.checked || undefined })} />
-                        </td>
-                        <td style={{ textAlign: 'center', padding: '4px 8px' }}>
                           <select
                             value={cap ?? ''}
                             style={{ fontSize: 13 }}
-                            onChange={(e) => save({ difficultyCap: e.target.value ? Number(e.target.value) : undefined })}
+                            onChange={(e) => save(e.target.value ? Number(e.target.value) : undefined)}
                           >
                             <option value="">auto</option>
                             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
