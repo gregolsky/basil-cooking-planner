@@ -1,0 +1,2 @@
+- remove 'Dzień kalendarza może wymagać konkretnej etykiety'
+- claude --resume "family-cooking-planner-setup" to fix the untag bug
