@@ -9,10 +9,10 @@ const BASE = import.meta.env.BASE_URL ?? '/';
 export async function planToPdfBlob(plan: Plan, dishMap: Map<string, Dish>): Promise<Blob> {
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
-  const noto = await fetchFont(`${BASE}fonts/NotoSans-Regular.ttf`);
-  if (noto) {
-    doc.addFileToVFS('NotoSans-Regular.ttf', noto);
-    doc.addFont('NotoSans-Regular.ttf', 'NotoSans', 'normal');
+  const dejaVu = await fetchFont(`${BASE}fonts/DejaVuSans.ttf`);
+  if (dejaVu) {
+    doc.addFileToVFS('DejaVuSans.ttf', dejaVu);
+    doc.addFont('DejaVuSans.ttf', 'DejaVuSans', 'normal');
   }
 
   const lobster = await fetchFont(`${BASE}fonts/Lobster-Regular.ttf`);
@@ -21,7 +21,7 @@ export async function planToPdfBlob(plan: Plan, dishMap: Map<string, Dish>): Pro
     doc.addFont('Lobster-Regular.ttf', 'Lobster', 'normal');
   }
 
-  const bodyFont = noto ? 'NotoSans' : 'helvetica';
+  const bodyFont = dejaVu ? 'DejaVuSans' : 'helvetica';
 
   doc.setFillColor(255, 255, 255);
   doc.rect(0, 0, 210, 297, 'F');
