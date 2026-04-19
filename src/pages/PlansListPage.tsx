@@ -15,6 +15,7 @@ export function PlansListPage() {
   const plans = useAppStore((s) => s.plans);
   const dishes = useAppStore((s) => s.dishes);
   const dayModifiers = useAppStore((s) => s.dayModifiers);
+  const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
   const deletePlan = useAppStore((s) => s.deletePlan);
   const duplicatePlan = useAppStore((s) => s.duplicatePlan);
   const updatePlan = useAppStore((s) => s.updatePlan);
@@ -39,6 +40,7 @@ export function PlansListPage() {
       dishes,
       days,
       lockedMeals: locked,
+      cumulativeLimits,
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);

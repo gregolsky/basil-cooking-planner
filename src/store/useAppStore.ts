@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Dish } from '../types/dish';
-import type { DayModifier } from '../types/day';
+import type { DayModifier, CumulativeLimit } from '../types/day';
 import type { Plan, PlannedMeal } from '../types/plan';
 import type { TagDefinition } from '../types/tag';
 import { SCHEMA_VERSION } from '../lib/storage/schema';
@@ -16,6 +16,7 @@ interface AppState {
   plans: Plan[];
   activePlanId: string | null;
   tagDefinitions: TagDefinition[];
+  cumulativeLimits: CumulativeLimit[];
 
   setFamilyName: (name: string) => void;
   setWeekStartDay: (day: 0 | 1) => void;
@@ -27,6 +28,9 @@ interface AppState {
 
   upsertDayModifier: (mod: DayModifier) => void;
   clearDayModifier: (date: string) => void;
+
+  upsertCumulativeLimit: (limit: CumulativeLimit) => void;
+  deleteCumulativeLimit: (id: string) => void;
 
   addPlan: (plan: Plan) => void;
   updatePlan: (id: string, updater: (p: Plan) => Plan) => void;
@@ -44,6 +48,7 @@ interface AppState {
     plans: Plan[];
     activePlanId: string | null;
     tagDefinitions: TagDefinition[];
+    cumulativeLimits?: CumulativeLimit[];
   }) => void;
   reset: () => void;
 }
@@ -59,6 +64,7 @@ export const useAppStore = create<AppState>()(
       plans: [],
       activePlanId: null,
       tagDefinitions: [],
+      cumulativeLimits: [],
 
       setFamilyName: (name) => set({ familyName: name.trim() || null }),
       setWeekStartDay: (day) => set({ weekStartDay: day }),
@@ -105,6 +111,18 @@ export const useAppStore = create<AppState>()(
 
       clearDayModifier: (date) =>
         set((s) => ({ dayModifiers: s.dayModifiers.filter((m) => m.date !== date) })),
+
+      upsertCumulativeLimit: (limit) =>
+        set((s) => {
+          const idx = s.cumulativeLimits.findIndex((l) => l.id === limit.id);
+          if (idx === -1) return { cumulativeLimits: [...s.cumulativeLimits, limit] };
+          const next = s.cumulativeLimits.slice();
+          next[idx] = limit;
+          return { cumulativeLimits: next };
+        }),
+
+      deleteCumulativeLimit: (id) =>
+        set((s) => ({ cumulativeLimits: s.cumulativeLimits.filter((l) => l.id !== id) })),
 
       addPlan: (plan) =>
         set((s) => ({ plans: [...s.plans, plan], activePlanId: plan.id })),
@@ -155,6 +173,7 @@ export const useAppStore = create<AppState>()(
           plans: data.plans,
           activePlanId: data.activePlanId,
           tagDefinitions: data.tagDefinitions,
+          cumulativeLimits: data.cumulativeLimits ?? [],
         }),
 
       reset: () =>
@@ -165,6 +184,7 @@ export const useAppStore = create<AppState>()(
           plans: [],
           activePlanId: null,
           tagDefinitions: [],
+          cumulativeLimits: [],
         }),
     }),
     {

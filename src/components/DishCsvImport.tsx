@@ -1,11 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
-import { parseDishCsv, DISH_CSV_SAMPLE } from '../lib/csv/dishImport';
+import { parseDishCsv, exportDishesToCsv, DISH_CSV_SAMPLE } from '../lib/csv/dishImport';
 import { download } from '../lib/share/webShare';
 import type { Dish } from '../types/dish';
 
 export function DishCsvImport() {
   const tagDefs = useAppStore((s) => s.tagDefinitions);
+  const dishes = useAppStore((s) => s.dishes);
   const upsertDish = useAppStore((s) => s.upsertDish);
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -18,6 +19,17 @@ export function DishCsvImport() {
     for (const t of tagDefs) m.set(t.name.toLowerCase(), t.id);
     return m;
   }, [tagDefs]);
+
+  const tagIdToName = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const t of tagDefs) m.set(t.id, t.name);
+    return m;
+  }, [tagDefs]);
+
+  const exportCsv = () => {
+    const blob = exportDishesToCsv(dishes, tagIdToName);
+    download(blob, `dania-${new Date().toISOString().slice(0, 10)}.csv`);
+  };
 
   const handleFile = async (file: File) => {
     setStatus(null);
@@ -61,6 +73,9 @@ export function DishCsvImport() {
             e.target.value = '';
           }}
         />
+        <button className="ghost" onClick={exportCsv} disabled={dishes.length === 0}>
+          Eksportuj bibliotekę CSV
+        </button>
         <button className="ghost" onClick={downloadSample}>Pobierz przykład CSV</button>
       </div>
 

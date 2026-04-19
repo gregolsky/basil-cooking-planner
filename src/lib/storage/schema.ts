@@ -28,6 +28,13 @@ export const dishSchema = z.object({
   notes: z.string().optional(),
 });
 
+export const cumulativeLimitSchema = z.object({
+  id: z.string(),
+  startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  maxTotal: z.number().int().positive(),
+});
+
 export const dayModifierSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   wifeDuty: z.boolean().optional(),
@@ -72,6 +79,7 @@ export const appDataSchema = z.object({
   plans: z.array(planSchema),
   activePlanId: z.string().nullable(),
   tagDefinitions: z.array(tagDefinitionSchema).default([]),
+  cumulativeLimits: z.array(cumulativeLimitSchema).default([]),
 });
 
 export type AppData = z.infer<typeof appDataSchema>;

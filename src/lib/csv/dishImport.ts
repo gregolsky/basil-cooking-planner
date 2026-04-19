@@ -1,4 +1,5 @@
 import type { Dish, MeatType } from '../../types/dish';
+import { MEAT_LABELS } from '../../types/dish';
 import { uid } from '../utils/id';
 
 export interface DishImportResult {
@@ -152,6 +153,17 @@ export function parseDishCsv(text: string, tagNameToId?: Map<string, string>): D
   }
 
   return { dishes, warnings };
+}
+
+export function exportDishesToCsv(dishes: Dish[], tagMap: Map<string, string>): Blob {
+  const BOM = '\uFEFF';
+  const header = 'name;meat;difficulty;preference;servesDays;tags';
+  const rows = dishes.map((d) => {
+    const tagNames = d.tags.map((id) => tagMap.get(id) ?? id).join('|');
+    const name = d.name.includes(';') ? `"${d.name.replace(/"/g, '""')}"` : d.name;
+    return `${name};${MEAT_LABELS[d.meat]};${d.difficulty};${d.preference};${d.servesDays};${tagNames}`;
+  });
+  return new Blob([BOM + header + '\n' + rows.join('\n')], { type: 'text/csv;charset=utf-8' });
 }
 
 export const DISH_CSV_SAMPLE =

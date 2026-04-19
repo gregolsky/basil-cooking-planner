@@ -1,6 +1,7 @@
 import type { Dish } from '../../types/dish';
 import type { PlannedMeal } from '../../types/plan';
 import type { DayContext } from '../days/capacity';
+import type { CumulativeLimit } from '../../types/day';
 import type { Chromosome, GAConfig, GAProgress, DecodedPlan } from './types';
 import { DEFAULT_GA_CONFIG } from './types';
 import { mulberry32 } from './rng';
@@ -15,6 +16,7 @@ export interface RunGAInput {
   days: DayContext[];
   lockedMeals: PlannedMeal[];
   config?: Partial<GAConfig>;
+  cumulativeLimits?: CumulativeLimit[];
 }
 
 export interface RunGAOptions {
@@ -33,7 +35,7 @@ export function runGA(input: RunGAInput, options: RunGAOptions = {}): DecodedPla
 
   const scorer = (chromo: Chromosome): ScoredChromosome => {
     const meals = decode(chromo, { days: input.days, dishMap, lockedMeals: lockedMap });
-    const { score } = evaluate({ meals, days: input.days, dishMap });
+    const { score } = evaluate({ meals, days: input.days, dishMap, cumulativeLimits: input.cumulativeLimits });
     return { chromo, fitness: score };
   };
 
@@ -80,6 +82,6 @@ export function runGA(input: RunGAInput, options: RunGAOptions = {}): DecodedPla
   }
 
   const meals = decode(best.chromo, { days: input.days, dishMap, lockedMeals: lockedMap });
-  const { score, violations } = evaluate({ meals, days: input.days, dishMap });
+  const { score, violations } = evaluate({ meals, days: input.days, dishMap, cumulativeLimits: input.cumulativeLimits });
   return { meals, fitness: score, violations };
 }

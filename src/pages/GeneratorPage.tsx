@@ -7,6 +7,7 @@ import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
 import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
+import type { CumulativeLimit } from '../types/day';
 import { runGAInWorker } from '../lib/ga/runner';
 
 function defaultStart(): string {
@@ -23,6 +24,9 @@ export function GeneratorPage() {
   const dayModifiers = useAppStore((s) => s.dayModifiers);
   const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
   const clearDayModifier = useAppStore((s) => s.clearDayModifier);
+  const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
+  const upsertCumulativeLimit = useAppStore((s) => s.upsertCumulativeLimit);
+  const deleteCumulativeLimit = useAppStore((s) => s.deleteCumulativeLimit);
   const addPlan = useAppStore((s) => s.addPlan);
 
   const [start, setStart] = useState(defaultStart);
@@ -32,6 +36,9 @@ export function GeneratorPage() {
   const [progress, setProgress] = useState({ generation: 0, bestFitness: 0, totalGenerations: 0 });
   const [abortFn, setAbortFn] = useState<(() => void) | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [newLimitStart, setNewLimitStart] = useState('');
+  const [newLimitEnd, setNewLimitEnd] = useState('');
+  const [newLimitMax, setNewLimitMax] = useState<number | ''>('');
 
   const rangeDays = useMemo(() => {
     if (!start || !end) return 0;
@@ -63,6 +70,7 @@ export function GeneratorPage() {
       dishes,
       days,
       lockedMeals: [],
+      cumulativeLimits,
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);
@@ -165,6 +173,76 @@ export function GeneratorPage() {
                   })}
                 </tbody>
               </table>
+            </div>
+          </details>
+        )}
+
+        {rangeDays > 0 && (
+          <details>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Sumaryczne limity trudności</summary>
+            <div style={{ marginTop: 10 }} className="stack">
+              {cumulativeLimits.length === 0 && (
+                <div className="muted" style={{ fontSize: 13 }}>Brak limitów — dodaj poniżej.</div>
+              )}
+              {cumulativeLimits.map((lim) => (
+                <div key={lim.id} className="row" style={{ fontSize: 13, alignItems: 'center' }}>
+                  <span style={{ flexGrow: 1 }}>
+                    {formatShortPl(lim.startDate)} – {formatShortPl(lim.endDate)}: maks. suma <strong>{lim.maxTotal}</strong>
+                  </span>
+                  <button
+                    className="small danger"
+                    onClick={() => deleteCumulativeLimit(lim.id)}
+                  >
+                    Usuń
+                  </button>
+                </div>
+              ))}
+              <div style={{ borderTop: '1px dashed #c7b79d', paddingTop: 8 }} className="stack">
+                <div style={{ fontWeight: 600, fontSize: 13 }}>Dodaj nowy limit</div>
+                <div className="row" style={{ flexWrap: 'wrap', gap: 8, alignItems: 'flex-end' }}>
+                  <label style={{ fontSize: 13 }}>
+                    Od
+                    <DateSelect
+                      value={newLimitStart || start}
+                      onChange={setNewLimitStart}
+                    />
+                  </label>
+                  <label style={{ fontSize: 13 }}>
+                    Do
+                    <DateSelect
+                      value={newLimitEnd || end}
+                      onChange={setNewLimitEnd}
+                    />
+                  </label>
+                  <label style={{ fontSize: 13 }}>
+                    Maks. suma trudności
+                    <input
+                      type="number"
+                      min={1}
+                      max={99}
+                      value={newLimitMax}
+                      onChange={(e) => setNewLimitMax(e.target.value ? Number(e.target.value) : '')}
+                      style={{ width: 70, fontSize: 13 }}
+                    />
+                  </label>
+                  <button
+                    style={{ fontSize: 13 }}
+                    disabled={!newLimitMax || Number(newLimitMax) < 1}
+                    onClick={() => {
+                      const lim: CumulativeLimit = {
+                        id: uid(),
+                        startDate: newLimitStart || start,
+                        endDate: newLimitEnd || end,
+                        maxTotal: Number(newLimitMax),
+                      };
+                      upsertCumulativeLimit(lim);
+                      setNewLimitMax('');
+                    }}
+                  >
+                    Dodaj
+                  </button>
+                </div>
+              </div>
             </div>
           </details>
         )}

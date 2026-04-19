@@ -2,6 +2,7 @@ import type { Dish, MeatType } from '../../types/dish';
 import { MEAT_LABELS } from '../../types/dish';
 import type { PlannedMeal, Violation } from '../../types/plan';
 import type { DayContext } from '../days/capacity';
+import type { CumulativeLimit } from '../../types/day';
 import type { TagDefinition } from '../../types/tag';
 import { formatShortPl, weekdayShortPl, fromISODate, daysBetween } from '../utils/date';
 
@@ -15,6 +16,7 @@ export interface FitnessWeights {
   dishRepeatPenalty: number;
   meatDiversityReward: number;
   slowWeekdayPenalty: number;
+  cumulativeLimitPenalty: number;
 }
 
 export const DEFAULT_WEIGHTS: FitnessWeights = {
@@ -27,6 +29,7 @@ export const DEFAULT_WEIGHTS: FitnessWeights = {
   dishRepeatPenalty: 40,
   meatDiversityReward: 20,
   slowWeekdayPenalty: 20,
+  cumulativeLimitPenalty: 600,
 };
 
 export interface EvaluateArgs {
@@ -34,6 +37,7 @@ export interface EvaluateArgs {
   days: DayContext[];
   dishMap: Map<string, Dish>;
   tagDefs?: TagDefinition[];
+  cumulativeLimits?: CumulativeLimit[];
   weights?: Partial<FitnessWeights>;
 }
 
@@ -54,7 +58,7 @@ function isoWeek(iso: string): string {
   return `${monday.getFullYear()}-${monday.getMonth()}-${monday.getDate()}`;
 }
 
-export function evaluate({ meals, days, dishMap, tagDefs = [], weights }: EvaluateArgs): EvaluateResult {
+export function evaluate({ meals, days, dishMap, tagDefs = [], cumulativeLimits = [], weights }: EvaluateArgs): EvaluateResult {
   const w = { ...DEFAULT_WEIGHTS, ...weights };
   const violations: Violation[] = [];
   let score = 0;
@@ -171,6 +175,28 @@ export function evaluate({ meals, days, dishMap, tagDefs = [], weights }: Evalua
           message: `Etykieta „${def.name}” użyta ${count}× w tygodniu (limit: ${def.maxPerWeek})`,
         });
       }
+    }
+  }
+
+  for (const limit of cumulativeLimits) {
+    let totalDifficulty = 0;
+    for (let i = 0; i < meals.length; i++) {
+      const meal = meals[i];
+      const day = days[i];
+      if (meal.isLeftover || !meal.dishId) continue;
+      if (day.date < limit.startDate || day.date > limit.endDate) continue;
+      const dish = dishMap.get(meal.dishId);
+      if (dish) totalDifficulty += dish.difficulty;
+    }
+    if (totalDifficulty > limit.maxTotal) {
+      const excess = totalDifficulty - limit.maxTotal;
+      score -= w.cumulativeLimitPenalty * excess;
+      violations.push({
+        date: limit.startDate,
+        severity: 'hard',
+        kind: 'cumulative_limit',
+        message: `Sumaryczna trudność ${totalDifficulty} w dniach ${formatShortPl(limit.startDate)}–${formatShortPl(limit.endDate)} przekracza limit (${limit.maxTotal})`,
+      });
     }
   }
 

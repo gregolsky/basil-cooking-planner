@@ -20,6 +20,7 @@ export function SettingsPage() {
     plans: s.plans,
     activePlanId: s.activePlanId,
     tagDefinitions: s.tagDefinitions,
+    cumulativeLimits: s.cumulativeLimits,
   })));
   const familyName = useAppStore((s) => s.familyName);
   const setFamilyName = useAppStore((s) => s.setFamilyName);
@@ -60,6 +61,7 @@ export function SettingsPage() {
         plans: data.plans,
         activePlanId: data.activePlanId,
         tagDefinitions: data.tagDefinitions ?? [],
+        cumulativeLimits: data.cumulativeLimits ?? [],
       });
       setMessage(`Zaimportowano: ${data.dishes.length} dań, ${data.plans.length} planów.`);
     } catch (e) {

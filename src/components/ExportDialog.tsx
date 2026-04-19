@@ -30,6 +30,7 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
     plans: s.plans,
     activePlanId: s.activePlanId,
     tagDefinitions: s.tagDefinitions,
+    cumulativeLimits: s.cumulativeLimits,
   })));
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);

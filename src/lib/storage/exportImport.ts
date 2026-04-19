@@ -10,6 +10,7 @@ export function buildAppData(state: {
   plans: AppData['plans'];
   activePlanId: string | null;
   tagDefinitions: AppData['tagDefinitions'];
+  cumulativeLimits: AppData['cumulativeLimits'];
 }): AppData {
   return {
     schemaVersion: SCHEMA_VERSION,
@@ -20,6 +21,7 @@ export function buildAppData(state: {
     plans: state.plans,
     activePlanId: state.activePlanId,
     tagDefinitions: state.tagDefinitions,
+    cumulativeLimits: state.cumulativeLimits,
   };
 }
 
