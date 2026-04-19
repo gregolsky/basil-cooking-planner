@@ -2,8 +2,8 @@ import { NavLink } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 
 const links = [
-  { to: '/plans', label: '📚 Plany', end: true },
   { to: '/new-plan', label: '✨ Nowy plan' },
+  { to: '/plans', label: '📚 Plany', end: true },
   { to: '/dishes', label: '🥘 Dania' },
   { to: '/settings', label: '⚙️ Dane' },
 ];
