@@ -4,12 +4,12 @@ import type { DayContext } from '../../src/lib/days/capacity';
 export const TAG_NANNY = 'nanny';
 
 export const dishes: Dish[] = [
-  { id: 'kotlet', name: 'Kotlet schabowy', meat: 'pork', difficulty: 3, prepTimeMin: 45, preference: 5, tags: [], servesDays: 1 },
-  { id: 'rosol',  name: 'Rosół', meat: 'poultry', difficulty: 2, prepTimeMin: 90, preference: 4, tags: [TAG_NANNY], servesDays: 2 },
-  { id: 'ryba',   name: 'Ryba z pieca', meat: 'fish', difficulty: 2, prepTimeMin: 30, preference: 3, tags: [TAG_NANNY], servesDays: 1 },
-  { id: 'pasta',  name: 'Makaron z sosem', meat: 'none', difficulty: 1, prepTimeMin: 20, preference: 5, tags: [TAG_NANNY], servesDays: 1 },
-  { id: 'gulasz', name: 'Gulasz wołowy', meat: 'beef', difficulty: 4, prepTimeMin: 120, preference: 3, tags: [], servesDays: 2 },
-  { id: 'kurczak', name: 'Pieczony kurczak', meat: 'poultry', difficulty: 3, prepTimeMin: 60, preference: 5, tags: [], servesDays: 1 },
+  { id: 'kotlet', name: 'Kotlet schabowy', meat: 'pork', difficulty: 3, preference: 5, tags: [], servesDays: 1 },
+  { id: 'rosol',  name: 'Rosół', meat: 'poultry', difficulty: 2, preference: 4, tags: [TAG_NANNY], servesDays: 2 },
+  { id: 'ryba',   name: 'Ryba z pieca', meat: 'fish', difficulty: 2, preference: 3, tags: [TAG_NANNY], servesDays: 1 },
+  { id: 'pasta',  name: 'Makaron z sosem', meat: 'none', difficulty: 1, preference: 5, tags: [TAG_NANNY], servesDays: 1 },
+  { id: 'gulasz', name: 'Gulasz wołowy', meat: 'beef', difficulty: 4, preference: 3, tags: [], servesDays: 2 },
+  { id: 'kurczak', name: 'Pieczony kurczak', meat: 'poultry', difficulty: 3, preference: 5, tags: [], servesDays: 1 },
 ];
 
 export function simpleDays(startISO: string, count: number): DayContext[] {
