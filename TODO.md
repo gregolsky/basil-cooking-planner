@@ -1,2 +1,3 @@
 - remove 'Dzień kalendarza może wymagać konkretnej etykiety'
 - claude --resume "family-cooking-planner-setup" to fix the untag bug
+- add day of week display for the selected dates on the generation view
