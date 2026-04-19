@@ -21,7 +21,7 @@ export const dishSchema = z.object({
   name: z.string().min(1),
   meat: meatSchema,
   difficulty: difficultySchema,
-  prepTimeMin: z.number().int().nonnegative(),
+  prepTimeMin: z.number().int().nonnegative().optional(),
   preference: ratingSchema,
   tags: z.array(z.string()).default([]),
   servesDays: servesDaysSchema,

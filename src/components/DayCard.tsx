@@ -52,7 +52,7 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
       </div>
       {dish && !meal.isLeftover && (
         <div className="muted" style={{ fontSize: 12 }}>
-          trudność {dish.difficulty} · {dish.prepTimeMin} min · preferencja {dish.preference}/5
+          trudność {dish.difficulty} · preferencja {dish.preference}/5
         </div>
       )}
     </button>

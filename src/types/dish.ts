@@ -13,9 +13,7 @@ export interface Dish {
   name: string;
   meat: MeatType;
   difficulty: 1 | 2 | 3 | 4 | 5;
-  prepTimeMin: number;
   preference: 1 | 2 | 3 | 4 | 5;
   tags: string[];
   servesDays: 1 | 2 | 3;
-  notes?: string;
 }

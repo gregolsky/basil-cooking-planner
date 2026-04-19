@@ -16,11 +16,9 @@ const EMPTY: Dish = {
   name: '',
   meat: 'none',
   difficulty: 2,
-  prepTimeMin: 30,
   preference: 3,
   tags: [],
   servesDays: 1,
-  notes: '',
 };
 
 export function DishForm({ initial, onSubmit, onCancel }: Props) {
@@ -73,16 +71,6 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
 
       <div className="dish-form-grid">
         <label>
-          Czas przygotowania (min)
-          <input
-            type="number"
-            min={0}
-            value={form.prepTimeMin}
-            onChange={(e) => update('prepTimeMin', Math.max(0, Number(e.target.value)))}
-          />
-        </label>
-
-        <label>
           Preferencja (1-5)
           <select value={form.preference} onChange={(e) => update('preference', Number(e.target.value) as Dish['preference'])}>
             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
@@ -107,11 +95,6 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
           onChange={(tags) => update('tags', tags)}
           emptyHint="Brak etykiet. Zdefiniuj je w Dane → Etykiety."
         />
-      </label>
-
-      <label>
-        Notatki (opcjonalne)
-        <textarea value={form.notes ?? ''} onChange={(e) => update('notes', e.target.value)} />
       </label>
 
       <div className="row">

@@ -81,11 +81,9 @@ export function DishCsvImport() {
               <tr><td><code>name</code></td><td>nazwa</td><td>tekst (wymagane)</td></tr>
               <tr><td><code>meat</code></td><td>mięso</td><td>wołowina / wieprzowina / drób / ryba / bezmięsne</td></tr>
               <tr><td><code>difficulty</code></td><td>trudność</td><td>1–5</td></tr>
-              <tr><td><code>prepTimeMin</code></td><td>czas / minuty</td><td>liczba minut</td></tr>
               <tr><td><code>preference</code></td><td>preferencja</td><td>1–5 (jak bardzo lubi rodzina)</td></tr>
               <tr><td><code>servesDays</code></td><td>starcza</td><td>1–3 (ile dni zje rodzina)</td></tr>
               <tr><td><code>tags</code></td><td>etykiety</td><td>nazwy rozdzielone <code>|</code> lub <code>,</code></td></tr>
-              <tr><td><code>notes</code></td><td>notatki</td><td>tekst</td></tr>
             </tbody>
           </table>
           <div className="muted">Przykład:</div>

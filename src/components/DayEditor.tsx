@@ -174,7 +174,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
                 style={{ justifyContent: 'flex-start', textAlign: 'left' }}
                 onClick={() => pinDish(d)}
               >
-                <strong>{d.name}</strong> · {MEAT_LABELS[d.meat]} · trudność {d.difficulty} · {d.prepTimeMin} min
+                <strong>{d.name}</strong> · {MEAT_LABELS[d.meat]} · trudność {d.difficulty}
               </button>
             ))}
           </div>

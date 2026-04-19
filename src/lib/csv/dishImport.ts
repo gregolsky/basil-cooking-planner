@@ -38,11 +38,6 @@ const HEADER_ALIASES: Record<string, string> = {
   difficulty: 'difficulty',
   trudnosc: 'difficulty',
   trudność: 'difficulty',
-  prep: 'prepTimeMin',
-  preptime: 'prepTimeMin',
-  preptimemin: 'prepTimeMin',
-  czas: 'prepTimeMin',
-  minuty: 'prepTimeMin',
   preference: 'preference',
   preferencja: 'preference',
   kidsrating: 'preference',
@@ -51,8 +46,6 @@ const HEADER_ALIASES: Record<string, string> = {
   starcza: 'servesDays',
   tags: 'tags',
   etykiety: 'tags',
-  notes: 'notes',
-  notatki: 'notes',
 };
 
 function detectDelimiter(line: string): string {
@@ -132,7 +125,6 @@ export function parseDishCsv(text: string, tagNameToId?: Map<string, string>): D
     const difficulty = clamp1to5(Number(get('difficulty')) || 2);
     const preference = clamp1to5(Number(get('preference')) || 3);
     const servesDays = clampServes(Number(get('servesDays')) || 1);
-    const prepTimeMin = Math.max(0, Math.round(Number(get('prepTimeMin')) || 30));
 
     const tagsRaw = get('tags');
     const tagNames = tagsRaw
@@ -153,11 +145,9 @@ export function parseDishCsv(text: string, tagNameToId?: Map<string, string>): D
       name: name.trim(),
       meat,
       difficulty,
-      prepTimeMin,
       preference,
       tags,
       servesDays,
-      notes: get('notes') || undefined,
     });
   }
 
@@ -165,10 +155,10 @@ export function parseDishCsv(text: string, tagNameToId?: Map<string, string>): D
 }
 
 export const DISH_CSV_SAMPLE =
-  `name;meat;difficulty;prepTimeMin;preference;servesDays;tags;notes
-Kotlet schabowy;wieprzowina;3;45;5;1;;klasyka rodzinna
-Rosół;drób;2;90;4;2;niania;gotuje się sam
-Ryba z pieca;ryba;2;30;3;1;niania;z cytryną
-Makaron z sosem;bezmięsne;1;20;5;1;niania|szybkie;
-Gulasz wołowy;wołowina;4;120;3;2;;dużo warzyw
-Pizza zamawiana;bezmięsne;1;0;5;1;zamawiane;raz na 2 tygodnie`;
+  `name;meat;difficulty;preference;servesDays;tags
+Kotlet schabowy;wieprzowina;3;5;1;
+Rosół;drób;2;4;2;niania
+Ryba z pieca;ryba;2;3;1;niania
+Makaron z sosem;bezmięsne;1;5;1;niania
+Gulasz wołowy;wołowina;4;3;2;
+Pizza zamawiana;bezmięsne;1;5;1;zamawiane`;
