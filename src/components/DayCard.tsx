@@ -53,7 +53,7 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
         {day.skip
           ? <span className="muted">(nie gotujemy)</span>
           : dish
-            ? <>{MEAT_EMOJI[dish.meat]} {dish.name}</>
+            ? <>{dish.name} {MEAT_EMOJI[dish.meat]}</>
             : <span className="muted">—</span>}
       </div>
       {meal.isLeftover && <div><span className="badge soft">resztki</span></div>}
