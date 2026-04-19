@@ -3,6 +3,8 @@ import { appDataSchema, SCHEMA_VERSION } from './schema';
 import type { AppData } from './schema';
 
 export function buildAppData(state: {
+  familyName: string | null;
+  weekStartDay: 0 | 1;
   dishes: AppData['dishes'];
   dayModifiers: AppData['dayModifiers'];
   plans: AppData['plans'];
@@ -11,6 +13,8 @@ export function buildAppData(state: {
 }): AppData {
   return {
     schemaVersion: SCHEMA_VERSION,
+    familyName: state.familyName,
+    weekStartDay: state.weekStartDay,
     dishes: state.dishes,
     dayModifiers: state.dayModifiers,
     plans: state.plans,

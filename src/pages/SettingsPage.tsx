@@ -13,6 +13,8 @@ import { download, copyToClipboard } from '../lib/share/webShare';
 
 export function SettingsPage() {
   const appState = useAppStore(useShallow((s) => ({
+    familyName: s.familyName,
+    weekStartDay: s.weekStartDay,
     dishes: s.dishes,
     dayModifiers: s.dayModifiers,
     plans: s.plans,
@@ -51,6 +53,8 @@ export function SettingsPage() {
       const data = await parseJson(file);
       if (!confirm('Import nadpisze wszystkie dane lokalne. Kontynuować?')) return;
       replaceAll({
+        familyName: data.familyName,
+        weekStartDay: data.weekStartDay,
         dishes: data.dishes,
         dayModifiers: data.dayModifiers,
         plans: data.plans,

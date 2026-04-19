@@ -65,6 +65,8 @@ export const planSchema = z.object({
 
 export const appDataSchema = z.object({
   schemaVersion: z.literal(SCHEMA_VERSION),
+  familyName: z.string().nullable().optional(),
+  weekStartDay: z.union([z.literal(0), z.literal(1)]).optional(),
   dishes: z.array(dishSchema),
   dayModifiers: z.array(dayModifierSchema),
   plans: z.array(planSchema),

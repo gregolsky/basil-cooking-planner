@@ -23,6 +23,8 @@ interface Props {
 
 export function ExportDialog({ plan, dishMap, onClose }: Props) {
   const appState = useAppStore(useShallow((s) => ({
+    familyName: s.familyName,
+    weekStartDay: s.weekStartDay,
     dishes: s.dishes,
     dayModifiers: s.dayModifiers,
     plans: s.plans,

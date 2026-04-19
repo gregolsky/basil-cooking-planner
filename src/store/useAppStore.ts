@@ -37,6 +37,8 @@ interface AppState {
   replaceMeal: (planId: string, date: string, meal: PlannedMeal) => void;
 
   replaceAll: (data: {
+    familyName?: string | null;
+    weekStartDay?: 0 | 1;
     dishes: Dish[];
     dayModifiers: DayModifier[];
     plans: Plan[];
@@ -146,6 +148,8 @@ export const useAppStore = create<AppState>()(
 
       replaceAll: (data) =>
         set({
+          ...(data.familyName !== undefined ? { familyName: data.familyName } : {}),
+          ...(data.weekStartDay !== undefined ? { weekStartDay: data.weekStartDay } : {}),
           dishes: data.dishes,
           dayModifiers: data.dayModifiers,
           plans: data.plans,
