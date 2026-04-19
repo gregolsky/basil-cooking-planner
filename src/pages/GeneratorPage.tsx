@@ -5,6 +5,7 @@ import { toISODate, addDays, daysBetween, listDates } from '../lib/utils/date';
 import { buildDayContexts } from '../lib/days/capacity';
 import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
+import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
 import { runGAInWorker } from '../lib/ga/runner';
 
@@ -106,14 +107,14 @@ export function GeneratorPage() {
             onChange={(e) => setName(e.target.value)}
           />
         </label>
-        <div className="row">
-          <label className="grow">
+        <div className="row" style={{ flexWrap: 'wrap', gap: 12 }}>
+          <label>
             Data początkowa
-            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+            <DateSelect value={start} onChange={setStart} />
           </label>
-          <label className="grow">
+          <label>
             Data końcowa
-            <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
+            <DateSelect value={end} onChange={setEnd} />
           </label>
         </div>
         <div className="muted">
