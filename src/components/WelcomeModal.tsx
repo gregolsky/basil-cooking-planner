@@ -18,7 +18,7 @@ export function WelcomeModal() {
           <div style={{ fontSize: '3rem', lineHeight: 1 }}>🌿</div>
           <h1 style={{ fontSize: '2.8rem', margin: 0 }}>Basil</h1>
           <p style={{ fontFamily: 'var(--font-body)', fontStyle: 'italic', color: 'var(--color-ink-soft)', margin: 0 }}>
-            Family Cooking Planner
+            planowanie posiłków dla rodziny
           </p>
 
           <hr style={{ width: '100%', border: 'none', borderTop: '2px dashed var(--color-parchment)', margin: '8px 0' }} />

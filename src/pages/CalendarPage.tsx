@@ -17,7 +17,7 @@ export function CalendarPage() {
         <div className="hero-banner">
           <div className="hero-overlay">
             <h1 className="hero-title">🌿 Basil</h1>
-            <p className="hero-sub">family cooking planner</p>
+            <p className="hero-sub">planowanie posiłków dla rodziny</p>
             <Link to="/new-plan">
               <button style={{ fontSize: '1.05rem', padding: '11px 24px' }}>✨ Wygeneruj pierwszy plan</button>
             </Link>

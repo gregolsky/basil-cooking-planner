@@ -26,7 +26,7 @@ export function NavBar() {
         <NavLink to="/" className="nav-brand">
           🌿 Basil
         </NavLink>
-        <span className="nav-tagline">family cooking planner</span>
+        <span className="nav-tagline">planowanie posiłków</span>
         {familyName && (
           <span className="nav-greeting">{greeting(familyName)}</span>
         )}
