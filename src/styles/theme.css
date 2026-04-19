@@ -348,7 +348,7 @@ label {
   transform: translateY(-3px) rotate(0.5deg);
   box-shadow: var(--shadow-lift);
 }
-.day-card.weekend { border-color: var(--color-gold); }
+.day-card.weekend { border-color: var(--color-gold); background: #fffbf0; }
 .day-card.weekend::before { border-color: rgba(201,149,10,0.4); }
 .day-card.skip   { opacity: 0.5; }
 .day-card.locked { border-color: var(--color-green); border-width: 2px; }

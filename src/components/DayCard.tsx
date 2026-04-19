@@ -1,8 +1,16 @@
 import type { PlannedMeal } from '../types/plan';
-import type { Dish } from '../types/dish';
+import type { Dish, MeatType } from '../types/dish';
 import type { DayContext } from '../lib/days/capacity';
 import type { TagDefinition } from '../types/tag';
 import { formatShortPl, weekdayShortPl, isWeekend } from '../lib/utils/date';
+
+const MEAT_EMOJI: Record<MeatType, string> = {
+  beef: '🐄',
+  pork: '🐷',
+  poultry: '🐔',
+  fish: '🐟',
+  none: '🥦',
+};
 
 interface Props {
   meal: PlannedMeal;
@@ -29,15 +37,13 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
       onClick={onClick}
       style={{ textAlign: 'left', cursor: 'pointer' }}
     >
-      <div className="row" style={{ justifyContent: 'space-between' }}>
+      <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
           <div className="day-weekday">{weekdayShortPl(day.date)}</div>
           <div className="day-date">{formatShortPl(day.date)}</div>
         </div>
         <div className="day-meta">
           {meal.locked && <span className="badge">📌</span>}
-          {meal.isLeftover && <span className="badge soft">resztki</span>}
-          {day.wifeDuty && <span className="badge">dyżur</span>}
           {day.requiresTags.map((t) => (
             <span key={t} className="badge gold">{tagMap.get(t)?.name ?? t}</span>
           ))}
@@ -47,14 +53,13 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
         {day.skip
           ? <span className="muted">(nie gotujemy)</span>
           : dish
-            ? dish.name
+            ? <>{MEAT_EMOJI[dish.meat]} {dish.name}</>
             : <span className="muted">—</span>}
       </div>
-      {dish && !meal.isLeftover && (
-        <div className="muted" style={{ fontSize: 12 }}>
-          trudność {dish.difficulty} · preferencja {dish.preference}/5
-        </div>
-      )}
+      {meal.isLeftover && <div><span className="badge soft">resztki</span></div>}
+      <div className="muted" style={{ fontSize: 11, marginTop: 2 }}>
+        limit: {day.difficultyCap}
+      </div>
     </button>
   );
 }
