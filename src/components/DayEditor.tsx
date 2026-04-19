@@ -20,7 +20,6 @@ export function DayEditor({ planId, date, onClose }: Props) {
   const replaceMeal = useAppStore((s) => s.replaceMeal);
   const updatePlan = useAppStore((s) => s.updatePlan);
   const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
-  const clearDayModifier = useAppStore((s) => s.clearDayModifier);
 
   const meal = plan?.meals.find((m) => m.date === date);
   const modifier = dayModifiers.find((m) => m.date === date);
@@ -63,32 +62,13 @@ export function DayEditor({ planId, date, onClose }: Props) {
     reevaluate();
   };
 
-  const markSkip = () => {
-    replaceMeal(planId, date, { date, dishId: null, isLeftover: false, locked: true });
-    upsertDayModifier({ ...(modifier ?? { date }), date, skip: true });
-    reevaluate();
-  };
-
-  const setWifeDuty = (on: boolean) => {
-    upsertDayModifier({ ...(modifier ?? { date }), date, wifeDuty: on });
-    reevaluate();
-  };
-
-  const setRequiresTags = (tags: string[]) => {
-    upsertDayModifier({ ...(modifier ?? { date }), date, requiresTags: tags });
-    reevaluate();
-  };
-
   const setSkip = (on: boolean) => {
-    upsertDayModifier({ ...(modifier ?? { date }), date, skip: on });
-    if (on) markSkip();
-    else {
-      reevaluate();
+    if (on) {
+      replaceMeal(planId, date, { date, dishId: null, isLeftover: false, locked: true });
+      upsertDayModifier({ ...(modifier ?? { date }), date, skip: true });
+    } else {
+      upsertDayModifier({ ...(modifier ?? { date }), date, skip: false });
     }
-  };
-
-  const clearModifier = () => {
-    clearDayModifier(date);
     reevaluate();
   };
 
@@ -120,28 +100,6 @@ export function DayEditor({ planId, date, onClose }: Props) {
               Nie gotujemy
             </label>
           </div>
-
-          <hr style={{ width: '100%', border: 'none', borderTop: '1px dashed #c7b79d' }} />
-
-          <h3 style={{ margin: 0 }}>Kontekst dnia</h3>
-          <label className="row" style={{ gap: 6 }}>
-            <input
-              type="checkbox"
-              checked={modifier?.wifeDuty ?? false}
-              onChange={(e) => setWifeDuty(e.target.checked)}
-            />
-            Dyżur żony (wpływa na trudność dziś i dzień przed)
-          </label>
-          <div>
-            <div className="muted" style={{ fontSize: 13, marginBottom: 4 }}>Wymagane etykiety dnia:</div>
-            <TagPicker
-              tagDefs={tagDefs}
-              selected={modifier?.requiresTags ?? []}
-              onChange={setRequiresTags}
-              emptyHint="Brak etykiet — zdefiniuj w Dane → Etykiety."
-            />
-          </div>
-          {modifier && <button className="ghost small" onClick={clearModifier}>Wyzeruj modyfikatory dnia</button>}
 
           <hr style={{ width: '100%', border: 'none', borderTop: '1px dashed #c7b79d' }} />
 
