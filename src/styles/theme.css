@@ -133,6 +133,33 @@ button.small {
 }
 button.small.ghost { box-shadow: 0 2px 0 var(--color-green); }
 
+button.tag-active {
+  background: var(--color-green);
+  border-color: var(--color-green-mid);
+  color: #fff;
+  box-shadow: 0 2px 0 var(--color-green-mid);
+  padding: 4px 10px;
+  font-size: 13px;
+}
+button.tag-active:hover:not(:disabled) {
+  background: var(--color-green-mid);
+  box-shadow: 0 3px 0 var(--color-green-mid);
+}
+button.tag-inactive {
+  background: var(--color-paper);
+  color: var(--color-ink-soft);
+  border-color: #c0a882;
+  box-shadow: 0 2px 0 #c0a882;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+button.tag-inactive:hover:not(:disabled) {
+  background: var(--color-green-soft);
+  border-color: var(--color-green);
+  color: var(--color-green);
+  box-shadow: 0 2px 0 var(--color-green);
+}
+
 /* ── Cards (menu paper) ───────────────────────────────── */
 .card {
   background: var(--color-paper);

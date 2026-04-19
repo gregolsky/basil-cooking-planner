@@ -23,9 +23,8 @@ export function TagPicker({ tagDefs, selected, onChange, emptyHint }: Props) {
           <button
             key={t.id}
             type="button"
-            className={active ? '' : 'ghost'}
+            className={active ? 'tag-active' : 'tag-inactive'}
             onClick={() => toggle(t.id)}
-            style={{ padding: '4px 10px', fontSize: 13 }}
           >
             {active ? `✓ ${t.name} ×` : t.name}
           </button>
