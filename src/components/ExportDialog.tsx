@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Plan } from '../types/plan';
 import type { Dish } from '../types/dish';
 import { useAppStore } from '../store/useAppStore';
+import { useShallow } from 'zustand/react/shallow';
 import { planToCsv } from '../lib/csv/exporter';
 import { planToPdfBlob } from '../lib/pdf/generator';
 import { buildAppData, exportJson, encodeLink, makeShareUrl } from '../lib/storage/exportImport';
@@ -21,13 +22,13 @@ interface Props {
 }
 
 export function ExportDialog({ plan, dishMap, onClose }: Props) {
-  const appState = useAppStore((s) => ({
+  const appState = useAppStore(useShallow((s) => ({
     dishes: s.dishes,
     dayModifiers: s.dayModifiers,
     plans: s.plans,
     activePlanId: s.activePlanId,
     tagDefinitions: s.tagDefinitions,
-  }));
+  })));
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 

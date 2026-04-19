@@ -282,18 +282,14 @@ label {
 .nav-brand {
   display: flex;
   align-items: center;
-  padding: 2px 4px;
-  border-radius: 6px;
   transition: opacity 150ms;
 }
 .nav-brand:hover { text-decoration: none; opacity: 0.85; }
 
 .nav-logo {
-  height: 40px;
+  height: 60px;
   width: auto;
   display: block;
-  border-radius: 6px;
-  mix-blend-mode: multiply;
 }
 
 .nav-greeting {
@@ -307,7 +303,7 @@ label {
   white-space: nowrap;
 }
 
-.nav a {
+.nav a:not(.nav-brand) {
   font-family: var(--font-ui);
   font-weight: 600;
   font-size: 14px;
@@ -319,8 +315,8 @@ label {
   transition: background 150ms, color 150ms, border-color 150ms;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
 }
-.nav a:hover { color: var(--color-chalk); border-color: rgba(245,240,228,0.35); background: rgba(255,255,255,0.08); text-decoration: none; }
-.nav a.active {
+.nav a:not(.nav-brand):hover { color: var(--color-chalk); border-color: rgba(245,240,228,0.35); background: rgba(255,255,255,0.08); text-decoration: none; }
+.nav a:not(.nav-brand).active {
   background: rgba(192,57,43,0.85);
   color: #fff;
   border-color: rgba(255,255,255,0.3);

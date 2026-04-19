@@ -24,7 +24,7 @@ export function NavBar() {
     <nav className="nav">
       <div className="nav-inner">
         <NavLink to="/" className="nav-brand">
-          <img src="/cooking-plan/basil-logo.png" alt="Basil" className="nav-logo" />
+          <img src="/cooking-plan/basil-logo-chalk.png" alt="Basil" className="nav-logo" />
         </NavLink>
         {familyName && (
           <span className="nav-greeting">{greeting(familyName)}</span>

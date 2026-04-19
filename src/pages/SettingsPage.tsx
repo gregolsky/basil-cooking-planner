@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
+import { useShallow } from 'zustand/react/shallow';
 import { TagManager } from '../components/TagManager';
 import {
   buildAppData,
@@ -11,13 +12,13 @@ import {
 import { download, copyToClipboard } from '../lib/share/webShare';
 
 export function SettingsPage() {
-  const appState = useAppStore((s) => ({
+  const appState = useAppStore(useShallow((s) => ({
     dishes: s.dishes,
     dayModifiers: s.dayModifiers,
     plans: s.plans,
     activePlanId: s.activePlanId,
     tagDefinitions: s.tagDefinitions,
-  }));
+  })));
   const familyName = useAppStore((s) => s.familyName);
   const setFamilyName = useAppStore((s) => s.setFamilyName);
   const replaceAll = useAppStore((s) => s.replaceAll);
