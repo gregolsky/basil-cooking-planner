@@ -620,3 +620,43 @@ pre.format-sample {
   .hero-banner { height: 220px; }
   .hero-title { font-size: 2rem; }
 }
+
+/* ── Print ────────────────────────────────────────────── */
+@media print {
+  @page { size: A4; margin: 12mm; }
+
+  .nav,
+  .page-header button,
+  .no-print,
+  .violations-panel,
+  .modal-backdrop,
+  .hero-banner {
+    display: none !important;
+  }
+
+  body { background: #fff; }
+
+  .page { padding: 0; max-width: none; }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .day-card {
+    box-shadow: none;
+    break-inside: avoid;
+    font-size: 11px;
+    padding: 4px 6px;
+    color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .day-card:hover { box-shadow: none; transform: none; }
+}

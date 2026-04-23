@@ -120,11 +120,17 @@ export function GeneratorPage() {
         <div className="row" style={{ flexWrap: 'wrap', gap: 12 }}>
           <label>
             Data początkowa
-            <DateSelect value={start} onChange={setStart} />
+            <div className="row" style={{ gap: 6, alignItems: 'center' }}>
+              <DateSelect value={start} onChange={setStart} />
+              <span className="muted" style={{ fontSize: 13 }}>{weekdayShortPl(start)}</span>
+            </div>
           </label>
           <label>
             Data końcowa
-            <DateSelect value={end} onChange={setEnd} />
+            <div className="row" style={{ gap: 6, alignItems: 'center' }}>
+              <DateSelect value={end} onChange={setEnd} />
+              <span className="muted" style={{ fontSize: 13 }}>{weekdayShortPl(end)}</span>
+            </div>
           </label>
         </div>
         <div className="muted">

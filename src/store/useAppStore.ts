@@ -5,6 +5,7 @@ import type { DayModifier, CumulativeLimit } from '../types/day';
 import type { Plan, PlannedMeal } from '../types/plan';
 import type { TagDefinition } from '../types/tag';
 import { SCHEMA_VERSION } from '../lib/storage/schema';
+import { normalizeDishTags } from '../lib/storage/normalize';
 import { uid } from '../lib/utils/id';
 
 interface AppState {
@@ -168,7 +169,7 @@ export const useAppStore = create<AppState>()(
         set({
           ...(data.familyName !== undefined ? { familyName: data.familyName } : {}),
           ...(data.weekStartDay !== undefined ? { weekStartDay: data.weekStartDay } : {}),
-          dishes: data.dishes,
+          dishes: normalizeDishTags(data.dishes, data.tagDefinitions),
           dayModifiers: data.dayModifiers,
           plans: data.plans,
           activePlanId: data.activePlanId,
@@ -190,6 +191,11 @@ export const useAppStore = create<AppState>()(
     {
       name: 'family-cooking-planner',
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        if (!state) return;
+        const normalized = normalizeDishTags(state.dishes, state.tagDefinitions);
+        if (normalized !== state.dishes) state.dishes = normalized;
+      },
     },
   ),
 );

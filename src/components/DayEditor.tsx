@@ -77,7 +77,11 @@ export function DayEditor({ planId, date, onClose }: Props) {
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>{formatPl(date)} — {weekdayPl(date)}</h2>
+        <div className="row" style={{ alignItems: 'center' }}>
+          <h2 style={{ margin: 0 }}>{formatPl(date)} — {weekdayPl(date)}</h2>
+          <div className="spacer" />
+          <button className="ghost small" aria-label="Zamknij" onClick={onClose}>×</button>
+        </div>
 
         <div className="stack">
           <div>
@@ -139,7 +143,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
 
           <div className="row">
             <div className="spacer" />
-            <button onClick={onClose}>Gotowe</button>
+            <button onClick={onClose}>Zamknij</button>
           </div>
         </div>
       </div>

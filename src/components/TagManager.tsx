@@ -30,8 +30,7 @@ export function TagManager() {
     <div className="card stack">
       <h2>Etykiety</h2>
       <div className="muted" style={{ fontSize: 13 }}>
-        Etykiety opisują dania (np. „niania może", „zamawiane", „wege"). Dzień kalendarza może wymagać konkretnej
-        etykiety. Limity: max razy w tygodniu (np. niania 2×) lub minimalna przerwa w dniach
+        Etykiety opisują dania (np. „niania może", „zamawiane", „wege"). Limity: max razy w tygodniu (np. niania 2×) lub minimalna przerwa w dniach
         (np. „zamawiane" co najmniej co 14 dni).
       </div>
 

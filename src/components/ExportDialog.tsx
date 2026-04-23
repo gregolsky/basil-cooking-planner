@@ -4,7 +4,6 @@ import type { Dish } from '../types/dish';
 import { useAppStore } from '../store/useAppStore';
 import { useShallow } from 'zustand/react/shallow';
 import { planToCsv } from '../lib/csv/exporter';
-import { planToPdfBlob } from '../lib/pdf/generator';
 import { buildAppData, exportJson, encodeLink, makeShareUrl } from '../lib/storage/exportImport';
 import {
   download,
@@ -32,7 +31,7 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
     tagDefinitions: s.tagDefinitions,
     cumulativeLimits: s.cumulativeLimits,
   })));
-  const [busy, setBusy] = useState(false);
+  const [busy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
   const fileStem = `jadlospis-${plan.startDate}-${plan.endDate}`;
@@ -42,14 +41,13 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
     download(new Blob([csv], { type: 'text/csv;charset=utf-8' }), `${fileStem}.csv`);
   };
 
-  const doPdf = async () => {
-    setBusy(true);
-    try {
-      const blob = await planToPdfBlob(plan, dishMap);
-      download(blob, `${fileStem}.pdf`);
-    } finally {
-      setBusy(false);
-    }
+  const doPrint = () => {
+    const prev = document.title;
+    document.title = fileStem;
+    window.print();
+    const restore = () => { document.title = prev; window.removeEventListener('afterprint', restore); };
+    window.addEventListener('afterprint', restore);
+    onClose();
   };
 
   const doJson = () => {
@@ -93,7 +91,7 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
 
           <div className="row">
             <button onClick={doCsv} disabled={busy}>CSV</button>
-            <button onClick={doPdf} disabled={busy}>PDF (z Lobsterem)</button>
+            <button onClick={doPrint} disabled={busy}>Drukuj / Zapisz PDF</button>
             <button onClick={doJson} disabled={busy}>Pełne dane (JSON)</button>
           </div>
 

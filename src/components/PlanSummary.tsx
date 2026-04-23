@@ -33,7 +33,7 @@ export function PlanSummary({ plan, dishMap }: Props) {
             <span className="badge">fitness {Math.round(plan.fitness)}</span>
           </div>
         </div>
-        <button onClick={() => setExportOpen(true)}>Eksport / udostępnij</button>
+        <button className="no-print" onClick={() => setExportOpen(true)}>Eksport / udostępnij</button>
       </div>
       {exportOpen && (
         <ExportDialog plan={plan} dishMap={dishMap} onClose={() => setExportOpen(false)} />
