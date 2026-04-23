@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
-import { formatPl, daysBetween } from '../lib/utils/date';
+import { formatPl, formatShortPl, daysBetween } from '../lib/utils/date';
 import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
@@ -86,8 +86,8 @@ export function PlansListPage() {
           const hard = p.violations.filter((v) => v.severity === 'hard').length;
 
           return (
-            <div key={p.id} className="card stack">
-              <div className="row">
+            <div key={p.id} className={`card stack${isExpanded ? '' : ' no-print'}`}>
+              <div className="row no-print">
                 <div className="grow">
                   <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-red-dark)' }}>
                     {p.name ?? `Plan ${formatPl(p.startDate)}`}
@@ -96,7 +96,7 @@ export function PlansListPage() {
                 </div>
                 {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{hard} naruszeń</span>}
               </div>
-              <div className="row">
+              <div className="row no-print">
                 <button
                   className={isExpanded ? '' : 'ghost'}
                   onClick={() => setExpandedId(isExpanded ? null : p.id)}
@@ -124,6 +124,10 @@ export function PlansListPage() {
 
               {isExpanded && (
                 <div className="stack">
+                  <div className="print-header">
+                    <div className="print-title">{p.name ?? `Plan ${formatShortPl(p.startDate)}`}</div>
+                    <div className="print-dates">{formatPl(p.startDate)} – {formatPl(p.endDate)}</div>
+                  </div>
                   <PlanSummary plan={p} dishMap={dishMap} />
                   <Calendar plan={p} />
                   <ViolationsPanel plan={p} />

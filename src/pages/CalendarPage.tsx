@@ -4,7 +4,6 @@ import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
 import { Link } from 'react-router-dom';
-import { formatPl } from '../lib/utils/date';
 
 export function CalendarPage() {
   const activePlanId = useAppStore((s) => s.activePlanId);
@@ -35,10 +34,6 @@ export function CalendarPage() {
 
   return (
     <div className="page">
-      <div className="print-header">
-        <div className="print-title">{plan.name ?? 'Jadłospis'}</div>
-        <div className="print-dates">{formatPl(plan.startDate)} – {formatPl(plan.endDate)}</div>
-      </div>
       <div className="page-header">
         <h1>🕯️ {plan.name ?? 'Jadłospis'}</h1>
         <Link to="/new-plan">

@@ -640,6 +640,24 @@ pre.format-sample {
 
   .page { padding: 0; max-width: none; }
 
+  /* ── Strip card chrome ── */
+  .card {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+
+  .menu-card {
+    border: none;
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .menu-card::before,
+  .menu-card::after { content: none; display: none; }
+
   /* ── Print title block ── */
   .print-header {
     display: block;
@@ -669,7 +687,7 @@ pre.format-sample {
   /* ── Calendar grid ── */
   .calendar-grid {
     grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
+    gap: 4px;
   }
 
   /* ── Day cards ── */
@@ -682,7 +700,9 @@ pre.format-sample {
     box-shadow: none;
     break-inside: avoid;
     cursor: default;
-    padding: 4px 2px;
+    min-height: 0;
+    gap: 2px;
+    padding: 3px 5px;
     color-adjust: exact;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -708,7 +728,7 @@ pre.format-sample {
     font-family: Georgia, 'Times New Roman', serif;
     font-size: 9pt;
     color: #222;
-    margin-top: 3px;
+    margin-top: 2px;
     line-height: 1.3;
   }
 }
