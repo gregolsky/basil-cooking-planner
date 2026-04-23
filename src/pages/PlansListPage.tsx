@@ -110,6 +110,9 @@ export function PlansListPage() {
                 >
                   ↺ Regeneruj
                 </button>
+                <Link to={`/extend-plan/${p.id}`}>
+                  <button className="small ghost" disabled={regenId !== null}>➕ Przedłuż</button>
+                </Link>
                 <button className="small ghost" onClick={() => { duplicatePlan(p.id); }}>Duplikuj</button>
                 <button
                   className="small danger"
