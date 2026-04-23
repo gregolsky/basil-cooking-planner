@@ -21,7 +21,7 @@ export function PlanSummary({ plan, dishMap }: Props) {
   );
 
   return (
-    <div className="card" style={{ marginBottom: 20 }}>
+    <div className="card no-print" style={{ marginBottom: 20 }}>
       <div className="row">
         <div className="grow">
           <div className="muted">

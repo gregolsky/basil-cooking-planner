@@ -42,7 +42,7 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
           <div className="day-weekday">{weekdayShortPl(day.date)}</div>
           <div className="day-date">{formatShortPl(day.date)}</div>
         </div>
-        <div className="day-meta">
+        <div className="day-meta no-print">
           {meal.locked && <span className="badge">📌</span>}
           {day.requiresTags.map((t) => (
             <span key={t} className="badge gold">{tagMap.get(t)?.name ?? t}</span>
@@ -56,7 +56,7 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
             ? <>{dish.name} {MEAT_EMOJI[dish.meat]}</>
             : <span className="muted">—</span>}
       </div>
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <div className="no-print" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
         {meal.isLeftover && <div><span className="badge soft">resztki</span></div>}
         <div className="muted" style={{ fontSize: 11 }}>limit: {day.difficultyCap}</div>
       </div>
