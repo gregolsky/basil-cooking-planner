@@ -737,44 +737,45 @@ pre.format-sample {
 /* ═══════════════════════════════════════════════════════
    PRL THEME — bar mleczny / stołówka
    Sampled from prl-hero.png:
-     walls   #6B7B68  sage/olive green
-     wood    #4A3018  dark brown paneling
-     linen   #EAE2C8  yellowed tablecloth
-     amber   #A87828  tea / warm fluorescent
-     barszcz #A02828  beetroot red accent
+     walls   #6A7868  cold grey-sage (very desaturated)
+     table   #9098A0  cool grey linen
+     wood    #3A2808  near-black brown paneling
+     ceiling #C0B898  dim fluorescent warm-white
+     tea     #6A5010  dark amber
+     barszcz #7A2818  deep muted rust-red
    ═══════════════════════════════════════════════════════ */
 
 html[data-theme="prl"] {
-  --color-red:        #A02828;   /* barszcz beetroot — primary */
-  --color-red-dark:   #6A1010;
-  --color-red-soft:   #E4C8C0;
-  --color-green:      #5A6B42;   /* stołówka wall olive */
-  --color-green-mid:  #6A7B50;
-  --color-green-soft: #C0CC9E;
-  --color-cream:      #E4DCC4;   /* aged linen tablecloth */
-  --color-paper:      #EDE8D0;   /* yellowed page */
-  --color-parchment:  #CEC89E;
-  --color-chalk:      #E8E3D5;
-  --color-ink:        #1A1A10;
-  --color-ink-soft:   #524838;
-  --color-gold:       #A87828;   /* tea glass amber / patina */
-  --color-gold-soft:  #DDD0A0;
+  --color-red:        #7A3020;   /* deep muted barszcz rust */
+  --color-red-dark:   #401408;
+  --color-red-soft:   #C0A098;
+  --color-green:      #485638;   /* cold grey-olive wall */
+  --color-green-mid:  #586848;
+  --color-green-soft: #9AAA88;
+  --color-cream:      #C8C4B0;   /* cool grey linen (table cloth) */
+  --color-paper:      #D0CCB8;   /* institutional off-white */
+  --color-parchment:  #B0AC9C;
+  --color-chalk:      #CCCAB8;
+  --color-ink:        #181810;
+  --color-ink-soft:   #484038;
+  --color-gold:       #786018;   /* dark dim amber (tea glass) */
+  --color-gold-soft:  #B8AA80;
 
   --font-display: 'Oswald', 'Arial Narrow', sans-serif;
   --font-body:    'Roboto Condensed', 'Arial Narrow', sans-serif;
   --font-ui:      'Roboto', 'Arial', sans-serif;
 
-  --shadow-paper: 0 1px 4px rgba(20, 16, 8, 0.14), 0 1px 2px rgba(20, 16, 8, 0.10);
-  --shadow-lift:  0 4px 14px rgba(20, 16, 8, 0.22), 0 2px 4px rgba(20, 16, 8, 0.12);
-  --radius: 3px;
+  --shadow-paper: 0 1px 3px rgba(10, 10, 8, 0.18), 0 1px 2px rgba(10, 10, 8, 0.12);
+  --shadow-lift:  0 3px 10px rgba(10, 10, 8, 0.26), 0 1px 3px rgba(10, 10, 8, 0.14);
+  --radius: 2px;
 
-  /* Horizontal register-book lines instead of gingham */
+  /* Very faint horizontal rule — institutional register paper */
   --gingham: repeating-linear-gradient(
     0deg,
-    rgba(74, 58, 28, 0.05) 0,
-    rgba(74, 58, 28, 0.05) 1px,
+    rgba(60, 58, 50, 0.06) 0,
+    rgba(60, 58, 50, 0.06) 1px,
     transparent 1px,
-    transparent 24px
+    transparent 22px
   );
 }
 
@@ -788,11 +789,17 @@ html[data-theme="prl"] h3 {
   letter-spacing: 0.05em;
 }
 
-/* ── Explicit background re-declaration (forces re-resolve on body) ── */
+/* ── Explicit background (hardcoded to avoid var() inheritance issues) ── */
 html[data-theme="prl"],
 html[data-theme="prl"] body {
-  background-color: var(--color-cream);
-  background-image: var(--gingham);
+  background-color: #C8C4B0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(60, 58, 50, 0.06) 0,
+    rgba(60, 58, 50, 0.06) 1px,
+    transparent 1px,
+    transparent 22px
+  );
 }
 
 /* ── Nav: swap to prl-hero ── */
@@ -800,7 +807,7 @@ html[data-theme="prl"] .nav {
   background:
     linear-gradient(rgba(18, 14, 6, 0.80), rgba(18, 14, 6, 0.80)),
     url('/basil-cooking-planner/prl-hero.png') center 40% / cover no-repeat;
-  border-bottom: 4px solid var(--color-gold);
+  border-bottom: 4px solid #786018;
 }
 
 /* ── Hero banner: swap image ── */
@@ -815,37 +822,55 @@ html[data-theme="prl"] .welcome-hero-strip {
   background-position: center 40%;
 }
 
-/* ── Buttons: flatter, uppercase stamp feel ── */
+/* ── Cards ── */
+html[data-theme="prl"] .card {
+  background: #D0CCB8;
+  border-color: #A8A494;
+}
+
+/* ── Buttons: hardcoded muted rust, flat stamp feel ── */
 html[data-theme="prl"] button {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 13px;
   font-weight: 700;
-  background: var(--color-red);
-  border-color: var(--color-red-dark);
-  box-shadow: 0 2px 0 var(--color-red-dark), 0 3px 8px rgba(0,0,0,0.14);
-  border-radius: var(--radius);
+  background: #7A3020;
+  border-color: #401408;
+  color: #E8E0D0;
+  box-shadow: 0 2px 0 #401408, 0 3px 6px rgba(0,0,0,0.20);
+  border-radius: 2px;
 }
 html[data-theme="prl"] button:hover:not(:disabled) {
-  box-shadow: 0 3px 0 var(--color-red-dark), 0 6px 12px rgba(0,0,0,0.20);
+  filter: brightness(1.12);
+  box-shadow: 0 3px 0 #401408, 0 5px 10px rgba(0,0,0,0.26);
 }
 html[data-theme="prl"] button:active:not(:disabled) {
-  box-shadow: 0 1px 0 var(--color-red-dark);
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #401408;
 }
 html[data-theme="prl"] button.ghost {
-  background: var(--color-paper);
-  color: var(--color-green);
-  border-color: var(--color-green);
-  box-shadow: 0 2px 0 var(--color-green), 0 3px 6px rgba(0,0,0,0.10);
+  background: #D0CCB8;
+  color: #485638;
+  border-color: #485638;
+  box-shadow: 0 2px 0 #485638, 0 3px 5px rgba(0,0,0,0.10);
 }
 html[data-theme="prl"] button.ghost:hover:not(:disabled) {
-  box-shadow: 0 3px 0 var(--color-green), 0 6px 10px rgba(0,0,0,0.16);
+  background: #9AAA88;
+  box-shadow: 0 3px 0 #485638, 0 5px 8px rgba(0,0,0,0.15);
 }
 html[data-theme="prl"] button.small {
-  box-shadow: 0 1px 0 var(--color-red-dark);
+  box-shadow: 0 1px 0 #401408;
 }
 html[data-theme="prl"] button.small.ghost {
-  box-shadow: 0 1px 0 var(--color-green);
+  box-shadow: 0 1px 0 #485638;
+}
+html[data-theme="prl"] button.danger {
+  background: #5A1A10;
+  border-color: #380A06;
+  box-shadow: 0 2px 0 #380A06;
+}
+html[data-theme="prl"] button:disabled {
+  opacity: 0.45;
 }
 
 /* ── Remove ornamental decorations ── */
@@ -855,7 +880,36 @@ html[data-theme="prl"] .violations-panel::before  { display: none; }
 html[data-theme="prl"] .page::after               { display: none; }
 
 /* ── Day cards ── */
-html[data-theme="prl"] .day-card     { border-radius: var(--radius); }
-html[data-theme="prl"] .day-weekday  { color: var(--color-green-mid); }
-html[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
-html[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; font-style: normal; font-weight: 700; }
+html[data-theme="prl"] .day-card     { background: #D0CCB8; border-color: #A8A494; border-radius: 2px; }
+html[data-theme="prl"] .day-card.weekend { background: #C8C4A8; border-color: #786018; }
+html[data-theme="prl"] .day-weekday  { color: #586848; }
+html[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #7A3020; }
+html[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; font-style: normal; font-weight: 700; color: #181810; }
+
+/* ── Input fields ── */
+html[data-theme="prl"] input[type="text"],
+html[data-theme="prl"] input[type="number"],
+html[data-theme="prl"] input[type="date"],
+html[data-theme="prl"] select,
+html[data-theme="prl"] textarea {
+  background: #D0CCB8;
+  border-color: #909080;
+  color: #181810;
+}
+html[data-theme="prl"] input:focus,
+html[data-theme="prl"] select:focus,
+html[data-theme="prl"] textarea:focus {
+  border-color: #485638;
+  box-shadow: 0 0 0 3px rgba(72, 86, 56, 0.20);
+}
+
+/* ── Badges ── */
+html[data-theme="prl"] .badge        { background: #C0A098; color: #401408; border-color: rgba(64,20,8,0.3); }
+html[data-theme="prl"] .badge.soft   { background: #9AAA88; color: #2A3820; border-color: rgba(42,56,32,0.25); }
+html[data-theme="prl"] .badge.gold   { background: #B8AA80; color: #3A2C08; border-color: #786018; }
+html[data-theme="prl"] .badge.green  { background: #9AAA88; color: #2A3820; border-color: rgba(42,56,32,0.25); }
+
+/* ── Page header underline ── */
+html[data-theme="prl"] .page-header::after {
+  background: linear-gradient(90deg, #7A3020 0%, #786018 40%, transparent 100%);
+}
