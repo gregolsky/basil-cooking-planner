@@ -3,6 +3,7 @@
    ═══════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto+Condensed:wght@400;700&family=Roboto:wght@400;700&display=swap');
 
 :root {
   /* Trattoria palette — sampled from hero.png */
@@ -732,3 +733,117 @@ pre.format-sample {
     line-height: 1.3;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   PRL THEME — bar mleczny / stołówka
+   Sampled from prl-hero.png:
+     walls   #6B7B68  sage/olive green
+     wood    #4A3018  dark brown paneling
+     linen   #EAE2C8  yellowed tablecloth
+     amber   #A87828  tea / warm fluorescent
+     barszcz #A02828  beetroot red accent
+   ═══════════════════════════════════════════════════════ */
+
+[data-theme="prl"] {
+  --color-red:        #A02828;   /* barszcz beetroot — primary */
+  --color-red-dark:   #6A1010;
+  --color-red-soft:   #E4C8C0;
+  --color-green:      #5A6B42;   /* stołówka wall olive */
+  --color-green-mid:  #6A7B50;
+  --color-green-soft: #C0CC9E;
+  --color-cream:      #E4DCC4;   /* aged linen tablecloth */
+  --color-paper:      #EDE8D0;   /* yellowed page */
+  --color-parchment:  #CEC89E;
+  --color-chalk:      #E8E3D5;
+  --color-ink:        #1A1A10;
+  --color-ink-soft:   #524838;
+  --color-gold:       #A87828;   /* tea glass amber / patina */
+  --color-gold-soft:  #DDD0A0;
+
+  --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-body:    'Roboto Condensed', 'Arial Narrow', sans-serif;
+  --font-ui:      'Roboto', 'Arial', sans-serif;
+
+  --shadow-paper: 0 1px 4px rgba(20, 16, 8, 0.14), 0 1px 2px rgba(20, 16, 8, 0.10);
+  --shadow-lift:  0 4px 14px rgba(20, 16, 8, 0.22), 0 2px 4px rgba(20, 16, 8, 0.12);
+  --radius: 3px;
+
+  /* Horizontal register-book lines instead of gingham */
+  --gingham: repeating-linear-gradient(
+    0deg,
+    rgba(74, 58, 28, 0.05) 0,
+    rgba(74, 58, 28, 0.05) 1px,
+    transparent 1px,
+    transparent 24px
+  );
+}
+
+/* ── Headings: condensed, uppercase, poster treatment ── */
+[data-theme="prl"] h1,
+[data-theme="prl"] h2,
+[data-theme="prl"] h3 {
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Nav: swap to prl-hero ── */
+[data-theme="prl"] .nav {
+  background:
+    linear-gradient(rgba(18, 14, 6, 0.80), rgba(18, 14, 6, 0.80)),
+    url('/basil-cooking-planner/prl-hero.png') center 40% / cover no-repeat;
+  border-bottom: 4px solid var(--color-gold);
+}
+
+/* ── Hero banner: swap image ── */
+[data-theme="prl"] .hero-banner {
+  background-image: url('/basil-cooking-planner/prl-hero.png');
+  background-position: center 25%;
+}
+
+/* ── Welcome modal strip ── */
+[data-theme="prl"] .welcome-hero-strip {
+  background-image: url('/basil-cooking-planner/prl-hero.png');
+  background-position: center 40%;
+}
+
+/* ── Buttons: flatter, uppercase stamp feel ── */
+[data-theme="prl"] button {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 2px 0 var(--color-red-dark), 0 3px 8px rgba(0,0,0,0.14);
+  border-radius: var(--radius);
+}
+[data-theme="prl"] button:hover:not(:disabled) {
+  box-shadow: 0 3px 0 var(--color-red-dark), 0 6px 12px rgba(0,0,0,0.20);
+}
+[data-theme="prl"] button:active:not(:disabled) {
+  box-shadow: 0 1px 0 var(--color-red-dark);
+}
+[data-theme="prl"] button.ghost {
+  box-shadow: 0 2px 0 var(--color-green), 0 3px 6px rgba(0,0,0,0.10);
+}
+[data-theme="prl"] button.ghost:hover:not(:disabled) {
+  box-shadow: 0 3px 0 var(--color-green), 0 6px 10px rgba(0,0,0,0.16);
+}
+[data-theme="prl"] button.small {
+  box-shadow: 0 1px 0 var(--color-red-dark);
+}
+[data-theme="prl"] button.small.ghost {
+  box-shadow: 0 1px 0 var(--color-green);
+}
+
+/* ── Remove ornamental decorations ── */
+[data-theme="prl"] .menu-card::after          { display: none; }
+[data-theme="prl"] .vine-border               { display: none; }
+[data-theme="prl"] .violations-panel::before  { display: none; }
+[data-theme="prl"] .page::after               { display: none; }
+
+/* ── Day cards ── */
+[data-theme="prl"] .day-card     { border-radius: var(--radius); }
+[data-theme="prl"] .day-weekday  { color: var(--color-green-mid); }
+[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
+[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; font-style: normal; font-weight: 700; }

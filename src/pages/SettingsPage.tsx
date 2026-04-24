@@ -28,6 +28,8 @@ export function SettingsPage() {
   const setFamilyName = useAppStore((s) => s.setFamilyName);
   const locale = useAppStore((s) => s.locale);
   const setLocale = useAppStore((s) => s.setLocale);
+  const theme = useAppStore((s) => s.theme);
+  const setTheme = useAppStore((s) => s.setTheme);
   const weekStartDay = useAppStore((s) => s.weekStartDay);
   const setWeekStartDay = useAppStore((s) => s.setWeekStartDay);
   const replaceAll = useAppStore((s) => s.replaceAll);
@@ -125,6 +127,17 @@ export function SettingsPage() {
           >
             <option value="pl">Polski</option>
             <option value="en">English</option>
+          </select>
+        </label>
+        <label>
+          {t('settings.theme')}
+          <select
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as 'trattoria' | 'prl')}
+            style={{ width: 'fit-content' }}
+          >
+            <option value="trattoria">{t('settings.themeTrattoria')}</option>
+            <option value="prl">{t('settings.themePrl')}</option>
           </select>
         </label>
       </div>

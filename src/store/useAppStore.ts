@@ -13,6 +13,7 @@ interface AppState {
   schemaVersion: number;
   familyName: string | null;
   locale: 'pl' | 'en';
+  theme: 'trattoria' | 'prl';
   weekStartDay: 0 | 1;
   dishes: Dish[];
   dayModifiers: DayModifier[];
@@ -23,6 +24,7 @@ interface AppState {
 
   setFamilyName: (name: string) => void;
   setLocale: (locale: 'pl' | 'en') => void;
+  setTheme: (theme: 'trattoria' | 'prl') => void;
   setWeekStartDay: (day: 0 | 1) => void;
   upsertDish: (dish: Dish) => void;
   deleteDish: (id: string) => void;
@@ -63,6 +65,7 @@ export const useAppStore = create<AppState>()(
       schemaVersion: SCHEMA_VERSION,
       familyName: null,
       locale: 'pl',
+      theme: 'trattoria',
       weekStartDay: 1,
       dishes: [],
       dayModifiers: [],
@@ -73,6 +76,11 @@ export const useAppStore = create<AppState>()(
 
       setFamilyName: (name) => set({ familyName: name.trim() || null }),
       setLocale: (locale) => { i18n.changeLanguage(locale); set({ locale }); },
+      setTheme: (theme) => {
+        if (theme === 'prl') document.documentElement.dataset.theme = 'prl';
+        else delete document.documentElement.dataset.theme;
+        set({ theme });
+      },
       setWeekStartDay: (day) => set({ weekStartDay: day }),
 
       upsertDish: (dish) =>
@@ -201,6 +209,8 @@ export const useAppStore = create<AppState>()(
         const normalized = normalizeDishTags(state.dishes, state.tagDefinitions);
         if (normalized !== state.dishes) state.dishes = normalized;
         if (state.locale) i18n.changeLanguage(state.locale);
+        if (state.theme === 'prl') document.documentElement.dataset.theme = 'prl';
+        else delete document.documentElement.dataset.theme;
       },
     },
   ),
