@@ -27,7 +27,7 @@ export function PlanSummary({ plan, dishMap }: Props) {
       <div className="row">
         <div className="grow">
           <div className="muted">
-            {formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {plan.meals.length} {t('plans.days', { count: plan.meals.length })}
+            {formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {t('plans.days', { count: plan.meals.length })}
           </div>
           <div className="row" style={{ marginTop: 6 }}>
             <span className="badge soft">{t('summary.uniqueDishes', { count: uniqueDishes.size })}</span>

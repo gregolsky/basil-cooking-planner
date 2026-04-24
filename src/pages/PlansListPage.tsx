@@ -94,9 +94,9 @@ export function PlansListPage() {
                   <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-red-dark)' }}>
                     {p.name ?? t('plans.planFallbackName', { date: formatDateLocale(p.startDate, i18n.language) })}
                   </div>
-                  <div className="muted">{formatDateLocale(p.startDate, i18n.language)} – {formatDateLocale(p.endDate, i18n.language)} · {days} {t('plans.days', { count: days })}</div>
+                  <div className="muted">{formatDateLocale(p.startDate, i18n.language)} – {formatDateLocale(p.endDate, i18n.language)} · {t('plans.days', { count: days })}</div>
                 </div>
-                {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{hard} {t('plans.violations', { count: hard })}</span>}
+                {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span>}
               </div>
               <div className="row no-print">
                 <button

@@ -143,7 +143,7 @@ export function ExtendPlanPage() {
         <div className="muted">
           {t('extend.source')}: <strong>{sourcePlan.name ?? t('plans.planFallbackName', { date: formatDateLocale(sourcePlan.startDate, i18n.language) })}</strong>
           {' '}· {formatDateLocale(sourcePlan.startDate, i18n.language)} – {formatDateLocale(sourcePlan.endDate, i18n.language)}
-          {' '}· {planLength} {t('plans.days', { count: planLength })}
+          {' '}· {t('plans.days', { count: planLength })}
         </div>
 
         <label>
