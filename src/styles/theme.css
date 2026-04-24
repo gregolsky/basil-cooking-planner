@@ -909,6 +909,11 @@ html[data-theme="prl"] .badge.soft   { background: #9AAA88; color: #2A3820; bord
 html[data-theme="prl"] .badge.gold   { background: #B8AA80; color: #3A2C08; border-color: #786018; }
 html[data-theme="prl"] .badge.green  { background: #9AAA88; color: #2A3820; border-color: rgba(42,56,32,0.25); }
 
+/* ── Active nav link ── */
+html[data-theme="prl"] .nav a:not(.nav-brand).active {
+  background: rgba(122, 48, 32, 0.85);
+}
+
 /* ── Page header underline ── */
 html[data-theme="prl"] .page-header::after {
   background: linear-gradient(90deg, #7A3020 0%, #786018 40%, transparent 100%);
