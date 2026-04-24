@@ -1,8 +1,9 @@
 import type { Plan } from '../types/plan';
 import type { Dish } from '../types/dish';
-import { formatPl } from '../lib/utils/date';
+import { formatDateLocale } from '../lib/utils/date';
 import { ExportDialog } from './ExportDialog';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   plan: Plan;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function PlanSummary({ plan, dishMap }: Props) {
+  const { t, i18n } = useTranslation();
   const [exportOpen, setExportOpen] = useState(false);
   const uniqueDishes = new Set(
     plan.meals.filter((m) => !m.isLeftover && m.dishId).map((m) => m.dishId!),
@@ -25,15 +27,15 @@ export function PlanSummary({ plan, dishMap }: Props) {
       <div className="row">
         <div className="grow">
           <div className="muted">
-            {formatPl(plan.startDate)} – {formatPl(plan.endDate)} · {plan.meals.length} dni
+            {formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {plan.meals.length} {t('plans.days', { count: plan.meals.length })}
           </div>
           <div className="row" style={{ marginTop: 6 }}>
-            <span className="badge soft">{uniqueDishes.size} różnych dań</span>
-            <span className="badge soft">{meats.size} rodzajów mięsa</span>
-            <span className="badge">fitness {Math.round(plan.fitness)}</span>
+            <span className="badge soft">{t('summary.uniqueDishes', { count: uniqueDishes.size })}</span>
+            <span className="badge soft">{t('summary.meatTypes', { count: meats.size })}</span>
+            <span className="badge">{t('summary.fitness', { score: Math.round(plan.fitness) })}</span>
           </div>
         </div>
-        <button className="no-print" onClick={() => setExportOpen(true)}>Eksport / udostępnij</button>
+        <button className="no-print" onClick={() => setExportOpen(true)}>{t('summary.exportShare')}</button>
       </div>
       {exportOpen && (
         <ExportDialog plan={plan} dishMap={dishMap} onClose={() => setExportOpen(false)} />

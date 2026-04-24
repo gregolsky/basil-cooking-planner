@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "comlink": "^4.4.2",
+    "i18next": "^26.0.7",
+    "i18next-browser-languagedetector": "^8.2.1",
     "pako": "^2.1.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "react-i18next": "^17.0.4",
     "react-router-dom": "^7.14.1",
     "zod": "^4.3.6",
     "zustand": "^5.0.12"

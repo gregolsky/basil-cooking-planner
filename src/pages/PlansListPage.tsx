@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
-import { formatPl, formatShortPl, daysBetween } from '../lib/utils/date';
+import { formatDateLocale, daysBetween } from '../lib/utils/date';
 import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
@@ -12,6 +13,7 @@ import { runGAInWorker } from '../lib/ga/runner';
 import type { Plan, PlannedMeal } from '../types/plan';
 
 export function PlansListPage() {
+  const { t, i18n } = useTranslation();
   const plans = useAppStore((s) => s.plans);
   const dishes = useAppStore((s) => s.dishes);
   const dayModifiers = useAppStore((s) => s.dayModifiers);
@@ -69,13 +71,13 @@ export function PlansListPage() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>📚 Plany</h1>
-        <Link to="/new-plan"><button>+ Nowy plan</button></Link>
+        <h1>{t('plans.title')}</h1>
+        <Link to="/new-plan"><button>{t('plans.newPlan')}</button></Link>
       </div>
 
       {sorted.length === 0 && (
         <div className="card empty-state">
-          Brak planów. <Link to="/new-plan">Wygeneruj pierwszy plan</Link>.
+          {t('plans.empty')} <Link to="/new-plan">{t('plans.emptyAction')}</Link>.
         </div>
       )}
 
@@ -90,43 +92,43 @@ export function PlansListPage() {
               <div className="row no-print">
                 <div className="grow">
                   <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-red-dark)' }}>
-                    {p.name ?? `Plan ${formatPl(p.startDate)}`}
+                    {p.name ?? t('plans.planFallbackName', { date: formatDateLocale(p.startDate, i18n.language) })}
                   </div>
-                  <div className="muted">{formatPl(p.startDate)} – {formatPl(p.endDate)} · {days} dni</div>
+                  <div className="muted">{formatDateLocale(p.startDate, i18n.language)} – {formatDateLocale(p.endDate, i18n.language)} · {days} {t('plans.days', { count: days })}</div>
                 </div>
-                {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{hard} naruszeń</span>}
+                {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{hard} {t('plans.violations', { count: hard })}</span>}
               </div>
               <div className="row no-print">
                 <button
                   className={isExpanded ? '' : 'ghost'}
                   onClick={() => setExpandedId(isExpanded ? null : p.id)}
                 >
-                  {isExpanded ? '▲ Schowaj' : '📅 Kalendarz'}
+                  {isExpanded ? t('plans.hideCalendar') : t('plans.showCalendar')}
                 </button>
                 <button
                   className="ghost"
                   disabled={regenId !== null}
                   onClick={() => handleRegen(p)}
                 >
-                  ↺ Regeneruj
+                  {t('plans.regenerate')}
                 </button>
                 <Link to={`/extend-plan/${p.id}`}>
-                  <button className="small ghost" disabled={regenId !== null}>➕ Przedłuż</button>
+                  <button className="small ghost" disabled={regenId !== null}>{t('plans.extend')}</button>
                 </Link>
-                <button className="small ghost" onClick={() => { duplicatePlan(p.id); }}>Duplikuj</button>
+                <button className="small ghost" onClick={() => { duplicatePlan(p.id); }}>{t('plans.duplicate')}</button>
                 <button
                   className="small danger"
-                  onClick={() => { if (confirm('Usunąć plan?')) deletePlan(p.id); }}
+                  onClick={() => { if (confirm(t('plans.confirmDelete'))) deletePlan(p.id); }}
                 >
-                  Usuń
+                  {t('plans.delete')}
                 </button>
               </div>
 
               {isExpanded && (
                 <div className="stack">
                   <div className="print-header">
-                    <div className="print-title">{p.name ?? `Plan ${formatShortPl(p.startDate)}`}</div>
-                    <div className="print-dates">{formatPl(p.startDate)} – {formatPl(p.endDate)}</div>
+                    <div className="print-title">{p.name ?? t('plans.planFallbackName', { date: formatDateLocale(p.startDate, i18n.language) })}</div>
+                    <div className="print-dates">{formatDateLocale(p.startDate, i18n.language)} – {formatDateLocale(p.endDate, i18n.language)}</div>
                   </div>
                   <PlanSummary plan={p} dishMap={dishMap} />
                   <Calendar plan={p} />

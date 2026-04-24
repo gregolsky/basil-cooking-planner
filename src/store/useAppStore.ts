@@ -7,10 +7,12 @@ import type { TagDefinition } from '../types/tag';
 import { SCHEMA_VERSION } from '../lib/storage/schema';
 import { normalizeDishTags } from '../lib/storage/normalize';
 import { uid } from '../lib/utils/id';
+import i18n from '../i18n/index';
 
 interface AppState {
   schemaVersion: number;
   familyName: string | null;
+  locale: 'pl' | 'en';
   weekStartDay: 0 | 1;
   dishes: Dish[];
   dayModifiers: DayModifier[];
@@ -20,6 +22,7 @@ interface AppState {
   cumulativeLimits: CumulativeLimit[];
 
   setFamilyName: (name: string) => void;
+  setLocale: (locale: 'pl' | 'en') => void;
   setWeekStartDay: (day: 0 | 1) => void;
   upsertDish: (dish: Dish) => void;
   deleteDish: (id: string) => void;
@@ -59,6 +62,7 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       schemaVersion: SCHEMA_VERSION,
       familyName: null,
+      locale: 'pl',
       weekStartDay: 1,
       dishes: [],
       dayModifiers: [],
@@ -68,6 +72,7 @@ export const useAppStore = create<AppState>()(
       cumulativeLimits: [],
 
       setFamilyName: (name) => set({ familyName: name.trim() || null }),
+      setLocale: (locale) => { i18n.changeLanguage(locale); set({ locale }); },
       setWeekStartDay: (day) => set({ weekStartDay: day }),
 
       upsertDish: (dish) =>
@@ -147,7 +152,7 @@ export const useAppStore = create<AppState>()(
         const copy: Plan = {
           ...plan,
           id: uid(),
-          name: (plan.name ?? 'Plan') + ' (kopia)',
+          name: (plan.name ?? 'Plan') + ' ' + i18n.t('plans.copySuffix'),
           createdAt: new Date().toISOString(),
           meals: plan.meals.map((m) => ({ ...m })),
           violations: plan.violations.map((v) => ({ ...v })),
@@ -195,6 +200,7 @@ export const useAppStore = create<AppState>()(
         if (!state) return;
         const normalized = normalizeDishTags(state.dishes, state.tagDefinitions);
         if (normalized !== state.dishes) state.dishes = normalized;
+        if (state.locale) i18n.changeLanguage(state.locale);
       },
     },
   ),

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { DishForm } from '../components/DishForm';
 import { DishList } from '../components/DishList';
@@ -6,6 +7,7 @@ import { DishCsvImport } from '../components/DishCsvImport';
 import type { Dish } from '../types/dish';
 
 export function DishesPage() {
+  const { t } = useTranslation();
   const dishes = useAppStore((s) => s.dishes);
   const upsertDish = useAppStore((s) => s.upsertDish);
   const deleteDish = useAppStore((s) => s.deleteDish);
@@ -33,19 +35,19 @@ export function DishesPage() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('Usunąć danie z biblioteki?')) deleteDish(id);
+    if (confirm(t('dishes.confirmDelete'))) deleteDish(id);
   };
 
   return (
     <div className="page stack" style={{ gap: 18 }}>
       <div className="page-header">
-        <h1>🥘 Biblioteka dań</h1>
-        {!showForm && <button onClick={startAdd}>+ Dodaj danie</button>}
+        <h1>{t('dishes.title')}</h1>
+        {!showForm && <button onClick={startAdd}>{t('dishes.add')}</button>}
       </div>
 
       {showForm && (
         <div className="card">
-          <h2>{editing ? '✏️ Edytuj danie' : '✨ Nowe danie'}</h2>
+          <h2>{editing ? t('dishes.editTitle') : t('dishes.newTitle')}</h2>
           <DishForm
             initial={editing ?? undefined}
             onSubmit={handleSubmit}

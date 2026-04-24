@@ -1,23 +1,25 @@
 import { NavLink } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 
-const links = [
-  { to: '/new-plan', label: '✨ Nowy plan' },
-  { to: '/plans', label: '📚 Plany', end: true },
-  { to: '/dishes', label: '🥘 Dania' },
-  { to: '/settings', label: '⚙️ Dane' },
-];
-
-function greeting(familyName: string): string {
-  const hour = new Date().getHours();
-  if (hour < 5)  return `Dobranoc, ${familyName}!`;
-  if (hour < 12) return `Dzień dobry, ${familyName}!`;
-  if (hour < 18) return `Cześć, ${familyName}!`;
-  return `Dobry wieczór, ${familyName}!`;
-}
-
 export function NavBar() {
+  const { t } = useTranslation();
   const familyName = useAppStore((s) => s.familyName);
+
+  const links = [
+    { to: '/new-plan', label: t('nav.newPlan') },
+    { to: '/plans', label: t('nav.plans'), end: true },
+    { to: '/dishes', label: t('nav.dishes') },
+    { to: '/settings', label: t('nav.settings') },
+  ];
+
+  function greeting(name: string): string {
+    const hour = new Date().getHours();
+    if (hour < 5)  return t('nav.greeting.night', { name });
+    if (hour < 12) return t('nav.greeting.morning', { name });
+    if (hour < 18) return t('nav.greeting.day', { name });
+    return t('nav.greeting.evening', { name });
+  }
 
   return (
     <nav className="nav">

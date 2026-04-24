@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import {
   toISODate,
   addDays,
   daysBetween,
   listDates,
-  formatPl,
-  formatShortPl,
-  weekdayShortPl,
+  formatDateLocale,
+  formatShortDateLocale,
+  weekdayShortLocale,
 } from '../lib/utils/date';
 import { buildDayContexts } from '../lib/days/capacity';
 import { uid } from '../lib/utils/id';
@@ -19,6 +20,7 @@ import type { CumulativeLimit } from '../types/day';
 import { runGAInWorker } from '../lib/ga/runner';
 
 export function ExtendPlanPage() {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
@@ -64,9 +66,9 @@ export function ExtendPlanPage() {
   if (!sourcePlan) {
     return (
       <div className="page">
-        <div className="page-header"><h1>➕ Przedłuż plan</h1></div>
+        <div className="page-header"><h1>{t('extend.title')}</h1></div>
         <div className="card empty-state">
-          Nie znaleziono planu. <Link to="/plans">Wróć do listy planów</Link>.
+          {t('extend.notFound')} <Link to="/plans">{t('extend.backToPlans')}</Link>.
         </div>
       </div>
     );
@@ -74,11 +76,11 @@ export function ExtendPlanPage() {
 
   const handleGenerate = async () => {
     if (dishes.length === 0) {
-      setError('Dodaj dania w bibliotece, zanim wygenerujesz plan.');
+      setError(t('generator.errorNoDishes'));
       return;
     }
     if (newDays <= 0) {
-      setError('Data końcowa musi być co najmniej 1 dzień po końcu źródłowego planu.');
+      setError(t('extend.invalidRange'));
       return;
     }
     setError(null);
@@ -104,7 +106,7 @@ export function ExtendPlanPage() {
 
     try {
       const result = await promise;
-      const defaultName = `${sourcePlan.name ?? 'Plan'} (kontynuacja)`;
+      const defaultName = `${sourcePlan.name ?? 'Plan'} ${t('extend.continuationSuffix')}`;
       const plan: Plan = {
         id: uid(),
         name: name.trim() || defaultName,
@@ -136,16 +138,16 @@ export function ExtendPlanPage() {
 
   return (
     <div className="page">
-      <div className="page-header"><h1>➕ Przedłuż plan</h1></div>
+      <div className="page-header"><h1>{t('extend.title')}</h1></div>
       <div className="card stack">
         <div className="muted">
-          Źródło: <strong>{sourcePlan.name ?? `Plan ${formatPl(sourcePlan.startDate)}`}</strong>
-          {' '}· {formatPl(sourcePlan.startDate)} – {formatPl(sourcePlan.endDate)}
-          {' '}· {planLength} dni
+          {t('extend.source')}: <strong>{sourcePlan.name ?? t('plans.planFallbackName', { date: formatDateLocale(sourcePlan.startDate, i18n.language) })}</strong>
+          {' '}· {formatDateLocale(sourcePlan.startDate, i18n.language)} – {formatDateLocale(sourcePlan.endDate, i18n.language)}
+          {' '}· {planLength} {t('plans.days', { count: planLength })}
         </div>
 
         <label>
-          Liczba dni do przeniesienia
+          {t('extend.carryDays')}
           <input
             type="number"
             min={1}
@@ -158,51 +160,51 @@ export function ExtendPlanPage() {
             style={{ width: 80 }}
           />
           <span className="muted" style={{ fontSize: 13, marginLeft: 8 }}>
-            (ostatnie {carryDays} {carryDays === 1 ? 'dzień' : 'dni'} zostaną zablokowane)
+            {t(carryDays === 1 ? 'extend.carryHint_one' : 'extend.carryHint_other', { count: carryDays })}
           </span>
         </label>
 
         <div className="row" style={{ flexWrap: 'wrap', gap: 12 }}>
           <label>
-            Data początkowa (wyznaczona)
+            {t('extend.derivedStart')}
             <div className="muted" style={{ padding: '6px 0', fontWeight: 600 }}>
-              {start ? `${weekdayShortPl(start)} ${formatShortPl(start)}` : '—'}
+              {start ? `${weekdayShortLocale(start, i18n.language)} ${formatShortDateLocale(start, i18n.language)}` : '—'}
             </div>
           </label>
           <label>
-            Data końcowa
+            {t('generator.endDate')}
             <div className="row" style={{ gap: 6, alignItems: 'center' }}>
               <DateSelect value={end} onChange={setEnd} />
-              <span className="muted" style={{ fontSize: 13 }}>{end ? weekdayShortPl(end) : ''}</span>
+              <span className="muted" style={{ fontSize: 13 }}>{end ? weekdayShortLocale(end, i18n.language) : ''}</span>
             </div>
           </label>
         </div>
 
         <div className="muted">
           {rangeDays > 0
-            ? `Zakres: ${rangeDays} dni (${carryDays} przeniesione + ${newDays > 0 ? newDays : 0} nowych).`
-            : 'Nieprawidłowy zakres.'}
+            ? t('extend.rangeInfo', { total: rangeDays, carry: carryDays, new: newDays > 0 ? newDays : 0 })
+            : t('generator.rangeInvalid')}
         </div>
 
         <label>
-          Nazwa planu (opcjonalnie)
+          {t('generator.planName')}
           <input
             type="text"
             value={name}
-            placeholder={`${sourcePlan.name ?? 'Plan'} (kontynuacja)`}
+            placeholder={`${sourcePlan.name ?? 'Plan'} ${t('extend.continuationSuffix')}`}
             onChange={(e) => setName(e.target.value)}
           />
         </label>
 
         {rangeDays > 0 && (
           <details>
-            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Limity trudności dni</summary>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>{t('generator.difficultyLimits')}</summary>
             <div style={{ marginTop: 10, overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
                   <tr>
-                    <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Dzień</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Limit trudności</th>
+                    <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colDay')}</th>
+                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colCap')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -219,14 +221,14 @@ export function ExtendPlanPage() {
 
                     return (
                       <tr key={date} style={{ borderBottom: '1px solid #ede3d3' }}>
-                        <td style={{ padding: '4px 8px' }}>{weekdayShortPl(date)} {formatShortPl(date)}</td>
+                        <td style={{ padding: '4px 8px' }}>{weekdayShortLocale(date, i18n.language)} {formatShortDateLocale(date, i18n.language)}</td>
                         <td style={{ textAlign: 'center', padding: '4px 8px' }}>
                           <select
                             value={cap ?? ''}
                             style={{ fontSize: 13 }}
                             onChange={(e) => save(e.target.value ? Number(e.target.value) : undefined)}
                           >
-                            <option value="">auto</option>
+                            <option value="">{t('generator.capAuto')}</option>
                             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
                           </select>
                         </td>
@@ -241,32 +243,32 @@ export function ExtendPlanPage() {
 
         {rangeDays > 0 && (
           <details>
-            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Sumaryczne limity trudności</summary>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>{t('generator.cumulativeLimits')}</summary>
             <div style={{ marginTop: 10 }} className="stack">
               {cumulativeLimits.length === 0 && (
-                <div className="muted" style={{ fontSize: 13 }}>Brak limitów — dodaj poniżej.</div>
+                <div className="muted" style={{ fontSize: 13 }}>{t('generator.noLimits')}</div>
               )}
               {cumulativeLimits.map((lim) => (
                 <div key={lim.id} className="row" style={{ fontSize: 13, alignItems: 'center' }}>
                   <span style={{ flexGrow: 1 }}>
-                    {formatShortPl(lim.startDate)} – {formatShortPl(lim.endDate)}: maks. suma <strong>{lim.maxTotal}</strong>
+                    {formatShortDateLocale(lim.startDate, i18n.language)} – {formatShortDateLocale(lim.endDate, i18n.language)}: maks. suma <strong>{lim.maxTotal}</strong>
                   </span>
-                  <button className="small danger" onClick={() => deleteCumulativeLimit(lim.id)}>Usuń</button>
+                  <button className="small danger" onClick={() => deleteCumulativeLimit(lim.id)}>{t('common.delete')}</button>
                 </div>
               ))}
               <div style={{ borderTop: '1px dashed #c7b79d', paddingTop: 8 }} className="stack">
-                <div style={{ fontWeight: 600, fontSize: 13 }}>Dodaj nowy limit</div>
+                <div style={{ fontWeight: 600, fontSize: 13 }}>{t('generator.addNewLimit')}</div>
                 <div className="row" style={{ flexWrap: 'wrap', gap: 8, alignItems: 'flex-end' }}>
                   <label style={{ fontSize: 13 }}>
-                    Od
+                    {t('generator.from')}
                     <DateSelect value={newLimitStart || start} onChange={setNewLimitStart} />
                   </label>
                   <label style={{ fontSize: 13 }}>
-                    Do
+                    {t('generator.to')}
                     <DateSelect value={newLimitEnd || end} onChange={setNewLimitEnd} />
                   </label>
                   <label style={{ fontSize: 13 }}>
-                    Maks. suma trudności
+                    {t('generator.maxDiffSum')}
                     <input
                       type="number"
                       min={1}
@@ -290,7 +292,7 @@ export function ExtendPlanPage() {
                       setNewLimitMax('');
                     }}
                   >
-                    Dodaj
+                    {t('generator.addLimit')}
                   </button>
                 </div>
               </div>
@@ -305,7 +307,7 @@ export function ExtendPlanPage() {
         <div className="row">
           <div className="spacer" />
           <button onClick={handleGenerate} disabled={!canGenerate}>
-            Generuj plan
+            {t('generator.generate')}
           </button>
         </div>
       </div>

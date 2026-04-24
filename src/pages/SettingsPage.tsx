@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { useShallow } from 'zustand/react/shallow';
 import { TagManager } from '../components/TagManager';
@@ -12,6 +13,7 @@ import {
 import { download, copyToClipboard } from '../lib/share/webShare';
 
 export function SettingsPage() {
+  const { t } = useTranslation();
   const appState = useAppStore(useShallow((s) => ({
     familyName: s.familyName,
     weekStartDay: s.weekStartDay,
@@ -24,6 +26,8 @@ export function SettingsPage() {
   })));
   const familyName = useAppStore((s) => s.familyName);
   const setFamilyName = useAppStore((s) => s.setFamilyName);
+  const locale = useAppStore((s) => s.locale);
+  const setLocale = useAppStore((s) => s.setLocale);
   const weekStartDay = useAppStore((s) => s.weekStartDay);
   const setWeekStartDay = useAppStore((s) => s.setWeekStartDay);
   const replaceAll = useAppStore((s) => s.replaceAll);
@@ -45,14 +49,14 @@ export function SettingsPage() {
     const encoded = encodeLink(data);
     const url = makeShareUrl(encoded);
     const copied = await copyToClipboard(url);
-    setMessage(copied ? 'Link skopiowany do schowka.' : url);
+    setMessage(copied ? t('settings.linkCopied') : url);
   };
 
   const doImport = async (file: File) => {
     setError(null);
     try {
       const data = await parseJson(file);
-      if (!confirm('Import nadpisze wszystkie dane lokalne. Kontynuować?')) return;
+      if (!confirm(t('settings.confirmImport'))) return;
       replaceAll({
         familyName: data.familyName,
         weekStartDay: data.weekStartDay,
@@ -63,53 +67,64 @@ export function SettingsPage() {
         tagDefinitions: data.tagDefinitions ?? [],
         cumulativeLimits: data.cumulativeLimits ?? [],
       });
-      setMessage(`Zaimportowano: ${data.dishes.length} dań, ${data.plans.length} planów.`);
+      setMessage(t('settings.importSuccess', { dishes: data.dishes.length, plans: data.plans.length }));
     } catch (e) {
-      setError(`Nie udało się zaimportować: ${String(e)}`);
+      setError(t('settings.importError', { error: String(e) }));
     }
   };
 
   const doReset = () => {
-    if (confirm('Usunąć wszystkie dane lokalne? Tej operacji nie można cofnąć.')) {
+    if (confirm(t('settings.confirmReset'))) {
       reset();
-      setMessage('Dane wyczyszczone.');
+      setMessage(t('settings.resetDone'));
     }
   };
 
   return (
     <div className="page stack" style={{ gap: 20 }}>
-      <div className="page-header"><h1>⚙️ Dane i udostępnianie</h1></div>
+      <div className="page-header"><h1>{t('settings.title')}</h1></div>
 
       <div className="card stack">
-        <h2>🌿 Rodzina</h2>
+        <h2>{t('settings.familySection')}</h2>
         <label>
-          Nazwa rodziny
+          {t('settings.familyName')}
           <div className="row">
             <input
               type="text"
               className="grow"
               value={familyNameDraft}
               onChange={(e) => setFamilyNameDraft(e.target.value)}
-              placeholder="np. Kowalskich"
+              placeholder={t('settings.familyNamePlaceholder')}
             />
             <button
               className="ghost"
               disabled={!familyNameDraft.trim() || familyNameDraft.trim() === familyName}
-              onClick={() => { setFamilyName(familyNameDraft); setMessage('Nazwa rodziny zapisana.'); }}
+              onClick={() => { setFamilyName(familyNameDraft); setMessage(t('settings.nameSaved')); }}
             >
-              Zapisz
+              {t('settings.saveName')}
             </button>
           </div>
         </label>
         <label>
-          Pierwszy dzień tygodnia
+          {t('settings.weekStart')}
           <select
             value={weekStartDay}
             onChange={(e) => setWeekStartDay(Number(e.target.value) as 0 | 1)}
             style={{ width: 'fit-content' }}
           >
-            <option value={1}>Poniedziałek</option>
-            <option value={0}>Niedziela</option>
+            <option value={1}>{t('settings.monday')}</option>
+            <option value={0}>{t('settings.sunday')}</option>
+          </select>
+        </label>
+        <label>
+          {t('settings.language')}
+          <select
+            value={locale}
+            onChange={(e) => setLocale(e.target.value as 'pl' | 'en')}
+            style={{ width: 'fit-content' }}
+          >
+            <option value="pl">Polski</option>
+            <option value="en">English</option>
           </select>
         </label>
       </div>
@@ -117,19 +132,19 @@ export function SettingsPage() {
       <TagManager />
 
       <div className="card stack">
-        <h2>Eksport</h2>
-        <div className="muted">Zapisz kopię wszystkich danych (biblioteka dań, etykiety, modyfikatory dni, plany).</div>
+        <h2>{t('settings.exportSection')}</h2>
+        <div className="muted">{t('settings.exportDesc')}</div>
         <div className="row">
-          <button onClick={doExport}>Pobierz JSON</button>
-          <button onClick={doShareLink} className="ghost">Skopiuj link z danymi</button>
+          <button onClick={doExport}>{t('settings.downloadJson')}</button>
+          <button onClick={doShareLink} className="ghost">{t('settings.copyLink')}</button>
         </div>
       </div>
 
       <div className="card stack">
-        <h2>Import</h2>
-        <div className="muted">Wczytaj dane z pliku JSON. Istniejące dane zostaną nadpisane.</div>
+        <h2>{t('settings.importSection')}</h2>
+        <div className="muted">{t('settings.importDesc')}</div>
         <div className="row">
-          <button onClick={() => fileInput.current?.click()}>Wybierz plik JSON…</button>
+          <button onClick={() => fileInput.current?.click()}>{t('settings.selectJson')}</button>
           <input
             ref={fileInput}
             type="file"
@@ -145,9 +160,9 @@ export function SettingsPage() {
       </div>
 
       <div className="card stack">
-        <h2>Reset</h2>
+        <h2>{t('settings.resetSection')}</h2>
         <div className="row">
-          <button onClick={doReset} className="danger">Usuń wszystkie dane lokalne</button>
+          <button onClick={doReset} className="danger">{t('settings.resetButton')}</button>
         </div>
       </div>
 

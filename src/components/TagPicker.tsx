@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { TagDefinition } from '../types/tag';
 
 interface Props {
@@ -8,8 +9,9 @@ interface Props {
 }
 
 export function TagPicker({ tagDefs, selected, onChange, emptyHint }: Props) {
+  const { t } = useTranslation();
   if (tagDefs.length === 0) {
-    return <div className="muted">{emptyHint ?? 'Brak zdefiniowanych etykiet.'}</div>;
+    return <div className="muted">{emptyHint ?? t('tags.noTags')}</div>;
   }
   const toggle = (id: string) => {
     if (selected.includes(id)) onChange(selected.filter((t) => t !== id));

@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Dish, MeatType } from '../types/dish';
-import { MEAT_LABELS } from '../types/dish';
+import { useAppStore } from '../store/useAppStore';
 
 const MEAT_EMOJI: Record<MeatType, string> = {
   beef: '🐄',
@@ -8,8 +10,6 @@ const MEAT_EMOJI: Record<MeatType, string> = {
   fish: '🐟',
   none: '🥦',
 };
-import { useAppStore } from '../store/useAppStore';
-import { useMemo } from 'react';
 
 interface Props {
   dishes: Dish[];
@@ -18,13 +18,14 @@ interface Props {
 }
 
 export function DishList({ dishes, onEdit, onDelete }: Props) {
+  const { t } = useTranslation();
   const tagDefs = useAppStore((s) => s.tagDefinitions);
-  const tagMap = useMemo(() => new Map(tagDefs.map((t) => [t.id, t])), [tagDefs]);
+  const tagMap = useMemo(() => new Map(tagDefs.map((td) => [td.id, td])), [tagDefs]);
 
   if (dishes.length === 0) {
     return (
       <div className="empty-state card">
-        Brak dań w bibliotece. Dodaj pierwsze danie, aby zacząć planowanie.
+        {t('dishlist.empty')}
       </div>
     );
   }
@@ -38,19 +39,19 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
             </div>
             {d.tags.length > 0 && (
               <div className="row" style={{ marginTop: 4 }}>
-                {d.tags.map((t) => (
-                  <span key={t} className="badge gold">{tagMap.get(t)?.name ?? t}</span>
+                {d.tags.map((tid) => (
+                  <span key={tid} className="badge gold">{tagMap.get(tid)?.name ?? tid}</span>
                 ))}
               </div>
             )}
           </div>
-          <span className="badge soft">{MEAT_EMOJI[d.meat]} {MEAT_LABELS[d.meat]}</span>
-          <span className="badge">trudność {d.difficulty}</span>
-          <span className="badge green">preferencja {d.preference}/5</span>
-          <span className="badge soft">{d.servesDays > 1 ? `${d.servesDays} dni` : '1 dzień'}</span>
+          <span className="badge soft">{MEAT_EMOJI[d.meat]} {t(`meat.${d.meat}`)}</span>
+          <span className="badge">{t('dishlist.difficulty', { n: d.difficulty })}</span>
+          <span className="badge green">{t('dishlist.preference', { n: d.preference })}</span>
+          <span className="badge soft">{t('dishlist.serves_other', { count: d.servesDays })}</span>
           <div className="row">
-            <button className="small ghost" onClick={() => onEdit(d.id)}>Edytuj</button>
-            <button className="small danger" onClick={() => onDelete(d.id)}>Usuń</button>
+            <button className="small ghost" onClick={() => onEdit(d.id)}>{t('common.edit')}</button>
+            <button className="small danger" onClick={() => onDelete(d.id)}>{t('common.delete')}</button>
           </div>
         </div>
       ))}

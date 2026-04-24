@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Plan } from '../types/plan';
 import type { Dish } from '../types/dish';
 import { useAppStore } from '../store/useAppStore';
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export function ExportDialog({ plan, dishMap, onClose }: Props) {
+  const { t } = useTranslation();
   const appState = useAppStore(useShallow((s) => ({
     familyName: s.familyName,
     weekStartDay: s.weekStartDay,
@@ -74,35 +76,35 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
       const ok = await shareLink(url, 'Jadłospis', 'Mój jadłospis — otwórz, aby zaimportować');
       if (!ok) {
         const copied = await copyToClipboard(url);
-        setStatus(copied ? 'Link skopiowany do schowka.' : 'Nie udało się udostępnić.');
+        setStatus(copied ? t('export.linkCopied') : t('export.shareFailed'));
       }
     } else {
       const copied = await copyToClipboard(url);
-      setStatus(copied ? 'Link skopiowany do schowka.' : url);
+      setStatus(copied ? t('export.linkCopied') : url);
     }
   };
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h2>Eksport i udostępnianie</h2>
+        <h2>{t('export.title')}</h2>
         <div className="stack">
-          <div className="muted">Pobierz plan lub udostępnij go komuś innemu.</div>
+          <div className="muted">{t('export.subtitle')}</div>
 
           <div className="row">
-            <button onClick={doCsv} disabled={busy}>CSV</button>
-            <button onClick={doPrint} disabled={busy}>Drukuj / Zapisz PDF</button>
-            <button onClick={doJson} disabled={busy}>Pełne dane (JSON)</button>
+            <button onClick={doCsv} disabled={busy}>{t('export.csv')}</button>
+            <button onClick={doPrint} disabled={busy}>{t('export.print')}</button>
+            <button onClick={doJson} disabled={busy}>{t('export.json')}</button>
           </div>
 
           <hr style={{ width: '100%', border: 'none', borderTop: '1px dashed #c7b79d' }} />
 
           <div className="row">
             <button onClick={doShareJson} disabled={busy}>
-              Udostępnij plik (komunikator)
+              {t('export.shareFile')}
             </button>
             <button onClick={doShareLink} disabled={busy} className="ghost">
-              Udostępnij link
+              {t('export.shareLink')}
             </button>
           </div>
 
@@ -110,7 +112,7 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
 
           <div className="row">
             <div className="spacer" />
-            <button onClick={onClose}>Zamknij</button>
+            <button onClick={onClose}>{t('common.close')}</button>
           </div>
         </div>
       </div>

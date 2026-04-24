@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import type { Dish, MeatType } from '../types/dish';
-import { MEAT_LABELS } from '../types/dish';
-import { formatPl, weekdayPl } from '../lib/utils/date';
+import { formatDateLocale, weekdayLocale } from '../lib/utils/date';
 import { evaluatePlan } from '../lib/plan/evaluate';
 import { TagPicker } from './TagPicker';
 
@@ -24,6 +24,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
   const meal = plan?.meals.find((m) => m.date === date);
   const modifier = dayModifiers.find((m) => m.date === date);
 
+  const { t, i18n } = useTranslation();
   const [query, setQuery] = useState('');
   const [meatFilter, setMeatFilter] = useState<MeatType | 'all'>('all');
   const [tagFilter, setTagFilter] = useState<string[]>([]);
@@ -78,48 +79,48 @@ export function DayEditor({ planId, date, onClose }: Props) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <div className="row" style={{ alignItems: 'center' }}>
-          <h2 style={{ margin: 0 }}>{formatPl(date)} — {weekdayPl(date)}</h2>
+          <h2 style={{ margin: 0 }}>{formatDateLocale(date, i18n.language)} — {weekdayLocale(date, i18n.language)}</h2>
           <div className="spacer" />
-          <button className="ghost small" aria-label="Zamknij" onClick={onClose}>×</button>
+          <button className="ghost small" aria-label={t('dayeditor.closeLabel')} onClick={onClose}>×</button>
         </div>
 
         <div className="stack">
           <div>
-            <strong>Aktualnie:</strong>{' '}
+            <strong>{t('dayeditor.currently')}</strong>{' '}
             {meal.isLeftover
-              ? <>resztki z {meal.sourceDate} — {currentDish?.name ?? '…'}</>
+              ? <>{t('dayeditor.leftoverFrom', { date: meal.sourceDate, dish: currentDish?.name ?? '…' })}</>
               : currentDish
-                ? <>{currentDish.name} {meal.locked && <span className="badge">📌 przypięte</span>}</>
-                : <em className="muted">brak / nie gotujemy</em>}
+                ? <>{currentDish.name} {meal.locked && <span className="badge">{t('dayeditor.pinned')}</span>}</>
+                : <em className="muted">{t('dayeditor.noDish')}</em>}
           </div>
 
           <div className="row">
-            {meal.locked && <button className="ghost small" onClick={unpin}>Odepnij</button>}
+            {meal.locked && <button className="ghost small" onClick={unpin}>{t('dayeditor.unpin')}</button>}
             <label className="row" style={{ gap: 6 }}>
               <input
                 type="checkbox"
                 checked={modifier?.skip ?? false}
                 onChange={(e) => setSkip(e.target.checked)}
               />
-              Nie gotujemy
+              {t('dayeditor.skipLabel')}
             </label>
           </div>
 
           <hr style={{ width: '100%', border: 'none', borderTop: '1px dashed #c7b79d' }} />
 
-          <h3 style={{ margin: 0 }}>Przypnij obiad</h3>
+          <h3 style={{ margin: 0 }}>{t('dayeditor.pinTitle')}</h3>
           <div className="row">
             <input
               type="text"
-              placeholder="Szukaj…"
+              placeholder={t('dayeditor.searchPlaceholder')}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="grow"
             />
             <select value={meatFilter} onChange={(e) => setMeatFilter(e.target.value as MeatType | 'all')}>
-              <option value="all">wszystkie mięsa</option>
-              {(Object.keys(MEAT_LABELS) as MeatType[]).map((m) => (
-                <option key={m} value={m}>{MEAT_LABELS[m]}</option>
+              <option value="all">{t('meat.all')}</option>
+              {(['beef', 'pork', 'poultry', 'fish', 'none'] as MeatType[]).map((m) => (
+                <option key={m} value={m}>{t(`meat.${m}`)}</option>
               ))}
             </select>
           </div>
@@ -127,7 +128,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
             <TagPicker tagDefs={tagDefs} selected={tagFilter} onChange={setTagFilter} />
           )}
           <div className="stack" style={{ maxHeight: 220, overflowY: 'auto' }}>
-            {filtered.length === 0 && <div className="muted">Brak pasujących dań.</div>}
+            {filtered.length === 0 && <div className="muted">{t('dayeditor.noMatches')}</div>}
             {filtered.map((d) => (
               <button
                 key={d.id}
@@ -136,14 +137,14 @@ export function DayEditor({ planId, date, onClose }: Props) {
                 style={{ justifyContent: 'flex-start', textAlign: 'left' }}
                 onClick={() => pinDish(d)}
               >
-                <strong>{d.name}</strong> · {MEAT_LABELS[d.meat]} · trudność {d.difficulty}
+                <strong>{d.name}</strong> · {t(`meat.${d.meat}`)} · {t('dishlist.difficulty', { n: d.difficulty })}
               </button>
             ))}
           </div>
 
           <div className="row">
             <div className="spacer" />
-            <button onClick={onClose}>Zamknij</button>
+            <button onClick={onClose}>{t('common.close')}</button>
           </div>
         </div>
       </div>

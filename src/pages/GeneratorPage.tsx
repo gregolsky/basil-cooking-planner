@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
-import { toISODate, addDays, daysBetween, listDates, formatShortPl, weekdayShortPl } from '../lib/utils/date';
+import { toISODate, addDays, daysBetween, listDates, formatShortDateLocale, weekdayShortLocale } from '../lib/utils/date';
 import { buildDayContexts } from '../lib/days/capacity';
 import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
@@ -19,6 +20,7 @@ function defaultEnd(): string {
 }
 
 export function GeneratorPage() {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const dishes = useAppStore((s) => s.dishes);
   const dayModifiers = useAppStore((s) => s.dayModifiers);
@@ -52,11 +54,11 @@ export function GeneratorPage() {
 
   const handleGenerate = async () => {
     if (dishes.length === 0) {
-      setError('Dodaj dania w bibliotece, zanim wygenerujesz plan.');
+      setError(t('generator.errorNoDishes'));
       return;
     }
     if (rangeDays <= 0) {
-      setError('Data końcowa musi być równa lub późniejsza niż początkowa.');
+      setError(t('generator.errorInvalidRange'));
       return;
     }
     setError(null);
@@ -106,47 +108,47 @@ export function GeneratorPage() {
 
   return (
     <div className="page">
-      <div className="page-header"><h1>✨ Nowy plan</h1></div>
+      <div className="page-header"><h1>{t('generator.title')}</h1></div>
       <div className="card stack">
         <label>
-          Nazwa planu (opcjonalnie)
+          {t('generator.planName')}
           <input
             type="text"
             value={name}
-            placeholder="np. Tydzień 17 kwietnia"
+            placeholder={t('generator.planNamePlaceholder')}
             onChange={(e) => setName(e.target.value)}
           />
         </label>
         <div className="row" style={{ flexWrap: 'wrap', gap: 12 }}>
           <label>
-            Data początkowa
+            {t('generator.startDate')}
             <div className="row" style={{ gap: 6, alignItems: 'center' }}>
               <DateSelect value={start} onChange={setStart} />
-              <span className="muted" style={{ fontSize: 13 }}>{weekdayShortPl(start)}</span>
+              <span className="muted" style={{ fontSize: 13 }}>{weekdayShortLocale(start, i18n.language)}</span>
             </div>
           </label>
           <label>
-            Data końcowa
+            {t('generator.endDate')}
             <div className="row" style={{ gap: 6, alignItems: 'center' }}>
               <DateSelect value={end} onChange={setEnd} />
-              <span className="muted" style={{ fontSize: 13 }}>{weekdayShortPl(end)}</span>
+              <span className="muted" style={{ fontSize: 13 }}>{weekdayShortLocale(end, i18n.language)}</span>
             </div>
           </label>
         </div>
         <div className="muted">
-          Zakres: {rangeDays > 0 ? `${rangeDays} dni` : 'nieprawidłowy'}.
-          Plany mogą się nakładać zakresami — to nie jest błąd.
+          {rangeDays > 0 ? t('generator.range', { days: rangeDays }) : t('generator.rangeInvalid')}
+          {' '}{t('generator.rangeNote')}
         </div>
 
         {rangeDays > 0 && (
           <details>
-            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Limity trudności dni</summary>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>{t('generator.difficultyLimits')}</summary>
             <div style={{ marginTop: 10, overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
                   <tr>
-                    <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Dzień</th>
-                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>Limit trudności</th>
+                    <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colDay')}</th>
+                    <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colCap')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -163,14 +165,14 @@ export function GeneratorPage() {
 
                     return (
                       <tr key={date} style={{ borderBottom: '1px solid #ede3d3' }}>
-                        <td style={{ padding: '4px 8px' }}>{weekdayShortPl(date)} {formatShortPl(date)}</td>
+                        <td style={{ padding: '4px 8px' }}>{weekdayShortLocale(date, i18n.language)} {formatShortDateLocale(date, i18n.language)}</td>
                         <td style={{ textAlign: 'center', padding: '4px 8px' }}>
                           <select
                             value={cap ?? ''}
                             style={{ fontSize: 13 }}
                             onChange={(e) => save(e.target.value ? Number(e.target.value) : undefined)}
                           >
-                            <option value="">auto</option>
+                            <option value="">{t('generator.capAuto')}</option>
                             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
                           </select>
                         </td>
@@ -185,43 +187,43 @@ export function GeneratorPage() {
 
         {rangeDays > 0 && (
           <details>
-            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>Sumaryczne limity trudności</summary>
+            <summary style={{ cursor: 'pointer', fontWeight: 600 }}>{t('generator.cumulativeLimits')}</summary>
             <div style={{ marginTop: 10 }} className="stack">
               {cumulativeLimits.length === 0 && (
-                <div className="muted" style={{ fontSize: 13 }}>Brak limitów — dodaj poniżej.</div>
+                <div className="muted" style={{ fontSize: 13 }}>{t('generator.noLimits')}</div>
               )}
               {cumulativeLimits.map((lim) => (
                 <div key={lim.id} className="row" style={{ fontSize: 13, alignItems: 'center' }}>
                   <span style={{ flexGrow: 1 }}>
-                    {formatShortPl(lim.startDate)} – {formatShortPl(lim.endDate)}: maks. suma <strong>{lim.maxTotal}</strong>
+                    {formatShortDateLocale(lim.startDate, i18n.language)} – {formatShortDateLocale(lim.endDate, i18n.language)}: maks. suma <strong>{lim.maxTotal}</strong>
                   </span>
                   <button
                     className="small danger"
                     onClick={() => deleteCumulativeLimit(lim.id)}
                   >
-                    Usuń
+                    {t('common.delete')}
                   </button>
                 </div>
               ))}
               <div style={{ borderTop: '1px dashed #c7b79d', paddingTop: 8 }} className="stack">
-                <div style={{ fontWeight: 600, fontSize: 13 }}>Dodaj nowy limit</div>
+                <div style={{ fontWeight: 600, fontSize: 13 }}>{t('generator.addNewLimit')}</div>
                 <div className="row" style={{ flexWrap: 'wrap', gap: 8, alignItems: 'flex-end' }}>
                   <label style={{ fontSize: 13 }}>
-                    Od
+                    {t('generator.from')}
                     <DateSelect
                       value={newLimitStart || start}
                       onChange={setNewLimitStart}
                     />
                   </label>
                   <label style={{ fontSize: 13 }}>
-                    Do
+                    {t('generator.to')}
                     <DateSelect
                       value={newLimitEnd || end}
                       onChange={setNewLimitEnd}
                     />
                   </label>
                   <label style={{ fontSize: 13 }}>
-                    Maks. suma trudności
+                    {t('generator.maxDiffSum')}
                     <input
                       type="number"
                       min={1}
@@ -245,7 +247,7 @@ export function GeneratorPage() {
                       setNewLimitMax('');
                     }}
                   >
-                    Dodaj
+                    {t('generator.addLimit')}
                   </button>
                 </div>
               </div>
@@ -258,7 +260,7 @@ export function GeneratorPage() {
         <div className="row">
           <div className="spacer" />
           <button onClick={handleGenerate} disabled={rangeDays <= 0 || dishes.length === 0}>
-            Generuj plan
+            {t('generator.generate')}
           </button>
         </div>
       </div>

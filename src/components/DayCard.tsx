@@ -1,8 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import type { PlannedMeal } from '../types/plan';
 import type { Dish, MeatType } from '../types/dish';
 import type { DayContext } from '../lib/days/capacity';
 import type { TagDefinition } from '../types/tag';
-import { formatShortPl, weekdayShortPl, isWeekend } from '../lib/utils/date';
+import { formatShortDateLocale, weekdayShortLocale, isWeekend } from '../lib/utils/date';
 
 const MEAT_EMOJI: Record<MeatType, string> = {
   beef: '🐄',
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
+  const { t, i18n } = useTranslation();
   const weekend = isWeekend(day.date);
   const classes = [
     'menu-card',
@@ -39,8 +41,8 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
     >
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <div className="day-weekday">{weekdayShortPl(day.date)}</div>
-          <div className="day-date">{formatShortPl(day.date)}</div>
+          <div className="day-weekday">{weekdayShortLocale(day.date, i18n.language)}</div>
+          <div className="day-date">{formatShortDateLocale(day.date, i18n.language)}</div>
         </div>
         <div className="day-meta no-print">
           {meal.locked && <span className="badge">📌</span>}
@@ -51,14 +53,14 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
       </div>
       <div className="day-dish" style={{ flexGrow: 1 }}>
         {day.skip
-          ? <span className="muted">(nie gotujemy)</span>
+          ? <span className="muted">{t('daycard.skip')}</span>
           : dish
             ? <>{dish.name} {MEAT_EMOJI[dish.meat]}</>
             : <span className="muted">—</span>}
       </div>
       <div className="no-print" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {meal.isLeftover && <div><span className="badge soft">resztki</span></div>}
-        <div className="muted" style={{ fontSize: 11 }}>limit: {day.difficultyCap}</div>
+        {meal.isLeftover && <div><span className="badge soft">{t('daycard.leftover')}</span></div>}
+        <div className="muted" style={{ fontSize: 11 }}>{t('daycard.difficultyLimit', { cap: day.difficultyCap })}</div>
       </div>
     </button>
   );

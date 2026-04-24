@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Dish, MeatType } from '../types/dish';
-import { MEAT_LABELS } from '../types/dish';
 import { useAppStore } from '../store/useAppStore';
 import { uid } from '../lib/utils/id';
 import { TagPicker } from './TagPicker';
@@ -22,6 +22,7 @@ const EMPTY: Dish = {
 };
 
 export function DishForm({ initial, onSubmit, onCancel }: Props) {
+  const { t } = useTranslation();
   const tagDefs = useAppStore((s) => s.tagDefinitions);
   const [form, setForm] = useState<Dish>(() => initial ? { ...initial, tags: [...initial.tags] } : { ...EMPTY });
 
@@ -43,7 +44,7 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
     <form onSubmit={submit} className="stack">
       <div className="dish-form-grid">
         <label>
-          Nazwa dania
+          {t('dishform.name')}
           <input
             type="text"
             value={form.name}
@@ -54,16 +55,16 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
         </label>
 
         <label>
-          Rodzaj mięsa
+          {t('dishform.meatType')}
           <select value={form.meat} onChange={(e) => update('meat', e.target.value as MeatType)}>
-            {(Object.keys(MEAT_LABELS) as MeatType[]).map((m) => (
-              <option key={m} value={m}>{MEAT_LABELS[m]}</option>
+            {(['beef', 'pork', 'poultry', 'fish', 'none'] as MeatType[]).map((m) => (
+              <option key={m} value={m}>{t(`meat.${m}`)}</option>
             ))}
           </select>
         </label>
 
         <label>
-          Trudność (1-5)
+          {t('dishform.difficulty')}
           <select value={form.difficulty} onChange={(e) => update('difficulty', Number(e.target.value) as Dish['difficulty'])}>
             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
@@ -72,36 +73,36 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
 
       <div className="dish-form-grid">
         <label>
-          Preferencja (1-5)
+          {t('dishform.preference')}
           <select value={form.preference} onChange={(e) => update('preference', Number(e.target.value) as Dish['preference'])}>
             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
         </label>
 
         <label>
-          Starcza na
+          {t('dishform.servesDays')}
           <select value={form.servesDays} onChange={(e) => update('servesDays', Number(e.target.value) as Dish['servesDays'])}>
-            <option value={1}>1 dzień</option>
-            <option value={2}>2 dni</option>
-            <option value={3}>3 dni</option>
+            <option value={1}>{t('dishform.serves_1')}</option>
+            <option value={2}>{t('dishform.serves_2')}</option>
+            <option value={3}>{t('dishform.serves_3')}</option>
           </select>
         </label>
       </div>
 
       <label>
-        Etykiety
+        {t('dishform.tags')}
         <TagPicker
           tagDefs={tagDefs}
           selected={form.tags}
           onChange={(tags) => update('tags', tags)}
-          emptyHint="Brak etykiet. Zdefiniuj je w Dane → Etykiety."
+          emptyHint={t('dishform.noTagsHint')}
         />
       </label>
 
       <div className="row">
-        <button type="button" className="ghost" onClick={onCancel}>Anuluj</button>
+        <button type="button" className="ghost" onClick={onCancel}>{t('common.cancel')}</button>
         <div className="spacer" />
-        <button type="submit">Zapisz</button>
+        <button type="submit">{t('common.save')}</button>
       </div>
     </form>
   );

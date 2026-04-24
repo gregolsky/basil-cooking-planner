@@ -1,19 +1,18 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Plan } from '../types/plan';
 import { useAppStore } from '../store/useAppStore';
 import { buildDayContexts } from '../lib/days/capacity';
-import { fromISODate } from '../lib/utils/date';
+import { fromISODate, calendarDayLabels } from '../lib/utils/date';
 import { DayCard } from './DayCard';
 import { DayEditor } from './DayEditor';
-
-const DAY_LABELS_MON = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd'];
-const DAY_LABELS_SUN = ['Nd', 'Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb'];
 
 interface Props {
   plan: Plan;
 }
 
 export function Calendar({ plan }: Props) {
+  const { i18n } = useTranslation();
   const dishes = useAppStore((s) => s.dishes);
   const dayModifiers = useAppStore((s) => s.dayModifiers);
   const tagDefs = useAppStore((s) => s.tagDefinitions);
@@ -25,7 +24,7 @@ export function Calendar({ plan }: Props) {
   const dates = plan.meals.map((m) => m.date);
   const days = useMemo(() => buildDayContexts(dates, dayModifiers), [dates, dayModifiers]);
 
-  const labels = weekStartDay === 1 ? DAY_LABELS_MON : DAY_LABELS_SUN;
+  const labels = calendarDayLabels(i18n.language, weekStartDay);
   const firstDow = fromISODate(plan.startDate).getDay(); // 0=Sun
   const padding = (firstDow - weekStartDay + 7) % 7;
 

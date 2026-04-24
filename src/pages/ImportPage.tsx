@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { decodeLink } from '../lib/storage/exportImport';
 
 export function ImportPage() {
+  const { t } = useTranslation();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const replaceAll = useAppStore((s) => s.replaceAll);
@@ -15,7 +17,7 @@ export function ImportPage() {
   useEffect(() => {
     const encoded = params.get('d');
     if (!encoded) {
-      setError('Brak danych do zaimportowania w linku.');
+      setError(t('import.noData'));
       setState('error');
       return;
     }
@@ -27,7 +29,7 @@ export function ImportPage() {
         tags: data.tagDefinitions?.length ?? 0,
       });
     } catch (e) {
-      setError(`Nie udało się odczytać linku: ${String(e)}`);
+      setError(t('import.decodeError', { error: String(e) }));
       setState('error');
     }
   }, [params]);
@@ -47,33 +49,31 @@ export function ImportPage() {
       });
       navigate('/', { replace: true });
     } catch (e) {
-      setError(`Import nieudany: ${String(e)}`);
+      setError(t('import.importFailed', { error: String(e) }));
       setState('error');
     }
   };
 
   return (
     <div className="page">
-      <div className="page-header"><h1>📥 Import danych z linku</h1></div>
+      <div className="page-header"><h1>{t('import.title')}</h1></div>
       {state === 'error' && (
         <div className="card" style={{ background: '#faeaea' }}>{error}</div>
       )}
       {preview && state === 'waiting' && (
         <div className="card stack">
           <div>
-            W linku znaleziono: <strong>{preview.dishes}</strong> dań,
-            {' '}<strong>{preview.plans}</strong> planów,
-            {' '}<strong>{preview.tags}</strong> etykiet.
+            {t('import.found', { dishes: preview.dishes, plans: preview.plans, tags: preview.tags })}
           </div>
-          <div className="muted">Import nadpisze wszystkie dane lokalne.</div>
+          <div className="muted">{t('import.overwriteWarning')}</div>
           <div className="row">
-            <button onClick={() => navigate('/')} className="ghost">Anuluj</button>
+            <button onClick={() => navigate('/')} className="ghost">{t('common.cancel')}</button>
             <div className="spacer" />
-            <button onClick={confirmImport}>Nadpisz dane lokalne</button>
+            <button onClick={confirmImport}>{t('import.confirmButton')}</button>
           </div>
         </div>
       )}
-      {state === 'loading' && <div className="card">Importuję…</div>}
+      {state === 'loading' && <div className="card">{t('import.loading')}</div>}
     </div>
   );
 }

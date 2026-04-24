@@ -1,10 +1,12 @@
 import { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { parseDishCsv, exportDishesToCsv, DISH_CSV_SAMPLE } from '../lib/csv/dishImport';
 import { download } from '../lib/share/webShare';
 import type { Dish } from '../types/dish';
 
 export function DishCsvImport() {
+  const { t } = useTranslation();
   const tagDefs = useAppStore((s) => s.tagDefinitions);
   const dishes = useAppStore((s) => s.dishes);
   const upsertDish = useAppStore((s) => s.upsertDish);
@@ -42,7 +44,7 @@ export function DishCsvImport() {
   const confirmImport = () => {
     if (!preview) return;
     for (const d of preview) upsertDish(d);
-    setStatus(`Zaimportowano ${preview.length} dań.`);
+    setStatus(t('csv.imported', { count: preview.length }));
     setPreview(null);
     setWarnings([]);
   };
@@ -55,13 +57,11 @@ export function DishCsvImport() {
 
   return (
     <div className="card stack">
-      <h2>📂 Import dań z CSV</h2>
-      <div className="muted">
-        Wczytaj plik CSV z biblioteką dań. Istniejące dania pozostają — nowe są dopisywane.
-      </div>
+      <h2>{t('csv.title')}</h2>
+      <div className="muted">{t('csv.subtitle')}</div>
 
       <div className="row">
-        <button onClick={() => fileRef.current?.click()}>Wybierz plik CSV…</button>
+        <button onClick={() => fileRef.current?.click()}>{t('csv.selectFile')}</button>
         <input
           ref={fileRef}
           type="file"
@@ -74,14 +74,14 @@ export function DishCsvImport() {
           }}
         />
         <button className="ghost" onClick={exportCsv} disabled={dishes.length === 0}>
-          Eksportuj bibliotekę CSV
+          {t('csv.exportLib')}
         </button>
-        <button className="ghost" onClick={downloadSample}>Pobierz przykład CSV</button>
+        <button className="ghost" onClick={downloadSample}>{t('csv.downloadSample')}</button>
       </div>
 
       <details>
         <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--color-blue-dark)' }}>
-          📝 Format pliku (kliknij, aby rozwinąć)
+          {t('csv.formatTitle')}
         </summary>
         <div className="stack" style={{ marginTop: 10 }}>
           <div className="muted">
@@ -90,7 +90,7 @@ export function DishCsvImport() {
           </div>
           <table className="menu-table">
             <thead>
-              <tr><th>Kolumna</th><th>Alias</th><th>Wartości</th></tr>
+              <tr><th>{t('csv.colColumn')}</th><th>{t('csv.colAlias')}</th><th>{t('csv.colValues')}</th></tr>
             </thead>
             <tbody>
               <tr><td><code>name</code></td><td>nazwa</td><td>tekst (wymagane)</td></tr>
@@ -108,13 +108,11 @@ export function DishCsvImport() {
 
       {preview && (
         <div className="card stack" style={{ background: 'var(--color-blue-soft)' }}>
-          <div>
-            <strong>Podgląd:</strong> znaleziono <strong>{preview.length}</strong> dań.
-          </div>
+          <div dangerouslySetInnerHTML={{ __html: t('csv.preview', { count: preview.length }) }} />
           {warnings.length > 0 && (
             <details open>
               <summary style={{ cursor: 'pointer', color: 'var(--color-red-dark)' }}>
-                ⚠️ {warnings.length} ostrzeżeń
+                {t('csv.warnings', { count: warnings.length })}
               </summary>
               <ul style={{ margin: '8px 0 0 0', fontSize: 13 }}>
                 {warnings.map((w, i) => <li key={i}>{w}</li>)}
@@ -128,12 +126,12 @@ export function DishCsvImport() {
                 {d.tags.length > 0 && ` · [${d.tags.length} etykiet]`}
               </li>
             ))}
-            {preview.length > 20 && <li className="muted">…i {preview.length - 20} więcej</li>}
+            {preview.length > 20 && <li className="muted">{t('csv.previewMore', { count: preview.length - 20 })}</li>}
           </ul>
           <div className="row">
-            <button className="ghost" onClick={cancel}>Anuluj</button>
+            <button className="ghost" onClick={cancel}>{t('common.cancel')}</button>
             <div className="spacer" />
-            <button onClick={confirmImport}>Dopisz do biblioteki</button>
+            <button onClick={confirmImport}>{t('csv.confirmImport')}</button>
           </div>
         </div>
       )}
