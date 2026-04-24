@@ -79,7 +79,7 @@ export function DishCsvImport() {
         <button className="ghost" onClick={downloadSample}>{t('csv.downloadSample')}</button>
       </div>
 
-      <details>
+      <details style={{ marginTop: 8 }}>
         <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--color-blue-dark)' }}>
           {t('csv.formatTitle')}
         </summary>
