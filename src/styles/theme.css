@@ -744,7 +744,7 @@ pre.format-sample {
      barszcz #A02828  beetroot red accent
    ═══════════════════════════════════════════════════════ */
 
-[data-theme="prl"] {
+html[data-theme="prl"] {
   --color-red:        #A02828;   /* barszcz beetroot — primary */
   --color-red-dark:   #6A1010;
   --color-red-soft:   #E4C8C0;
@@ -779,17 +779,24 @@ pre.format-sample {
 }
 
 /* ── Headings: condensed, uppercase, poster treatment ── */
-[data-theme="prl"] h1,
-[data-theme="prl"] h2,
-[data-theme="prl"] h3 {
+html[data-theme="prl"] h1,
+html[data-theme="prl"] h2,
+html[data-theme="prl"] h3 {
   font-family: 'Oswald', 'Arial Narrow', sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
+/* ── Explicit background re-declaration (forces re-resolve on body) ── */
+html[data-theme="prl"],
+html[data-theme="prl"] body {
+  background-color: var(--color-cream);
+  background-image: var(--gingham);
+}
+
 /* ── Nav: swap to prl-hero ── */
-[data-theme="prl"] .nav {
+html[data-theme="prl"] .nav {
   background:
     linear-gradient(rgba(18, 14, 6, 0.80), rgba(18, 14, 6, 0.80)),
     url('/basil-cooking-planner/prl-hero.png') center 40% / cover no-repeat;
@@ -797,53 +804,58 @@ pre.format-sample {
 }
 
 /* ── Hero banner: swap image ── */
-[data-theme="prl"] .hero-banner {
+html[data-theme="prl"] .hero-banner {
   background-image: url('/basil-cooking-planner/prl-hero.png');
   background-position: center 25%;
 }
 
 /* ── Welcome modal strip ── */
-[data-theme="prl"] .welcome-hero-strip {
+html[data-theme="prl"] .welcome-hero-strip {
   background-image: url('/basil-cooking-planner/prl-hero.png');
   background-position: center 40%;
 }
 
 /* ── Buttons: flatter, uppercase stamp feel ── */
-[data-theme="prl"] button {
+html[data-theme="prl"] button {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   font-size: 13px;
   font-weight: 700;
+  background: var(--color-red);
+  border-color: var(--color-red-dark);
   box-shadow: 0 2px 0 var(--color-red-dark), 0 3px 8px rgba(0,0,0,0.14);
   border-radius: var(--radius);
 }
-[data-theme="prl"] button:hover:not(:disabled) {
+html[data-theme="prl"] button:hover:not(:disabled) {
   box-shadow: 0 3px 0 var(--color-red-dark), 0 6px 12px rgba(0,0,0,0.20);
 }
-[data-theme="prl"] button:active:not(:disabled) {
+html[data-theme="prl"] button:active:not(:disabled) {
   box-shadow: 0 1px 0 var(--color-red-dark);
 }
-[data-theme="prl"] button.ghost {
+html[data-theme="prl"] button.ghost {
+  background: var(--color-paper);
+  color: var(--color-green);
+  border-color: var(--color-green);
   box-shadow: 0 2px 0 var(--color-green), 0 3px 6px rgba(0,0,0,0.10);
 }
-[data-theme="prl"] button.ghost:hover:not(:disabled) {
+html[data-theme="prl"] button.ghost:hover:not(:disabled) {
   box-shadow: 0 3px 0 var(--color-green), 0 6px 10px rgba(0,0,0,0.16);
 }
-[data-theme="prl"] button.small {
+html[data-theme="prl"] button.small {
   box-shadow: 0 1px 0 var(--color-red-dark);
 }
-[data-theme="prl"] button.small.ghost {
+html[data-theme="prl"] button.small.ghost {
   box-shadow: 0 1px 0 var(--color-green);
 }
 
 /* ── Remove ornamental decorations ── */
-[data-theme="prl"] .menu-card::after          { display: none; }
-[data-theme="prl"] .vine-border               { display: none; }
-[data-theme="prl"] .violations-panel::before  { display: none; }
-[data-theme="prl"] .page::after               { display: none; }
+html[data-theme="prl"] .menu-card::after          { display: none; }
+html[data-theme="prl"] .vine-border               { display: none; }
+html[data-theme="prl"] .violations-panel::before  { display: none; }
+html[data-theme="prl"] .page::after               { display: none; }
 
 /* ── Day cards ── */
-[data-theme="prl"] .day-card     { border-radius: var(--radius); }
-[data-theme="prl"] .day-weekday  { color: var(--color-green-mid); }
-[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
-[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; font-style: normal; font-weight: 700; }
+html[data-theme="prl"] .day-card     { border-radius: var(--radius); }
+html[data-theme="prl"] .day-weekday  { color: var(--color-green-mid); }
+html[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; font-size: 1.1rem; }
+html[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; font-style: normal; font-weight: 700; }
