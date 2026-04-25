@@ -14,18 +14,16 @@ function modMap(...mods: DayModifier[]): Map<string, DayModifier> {
 }
 
 describe('computeDayContext', () => {
-  it('weekday without modifiers: cap=3, isWeekend=false', () => {
+  it('weekday without modifiers: cap=3', () => {
     const ctx = computeDayContext('2026-04-20', noMods());
     expect(ctx.difficultyCap).toBe(3);
-    expect(ctx.isWeekend).toBe(false);
     expect(ctx.skip).toBe(false);
     expect(ctx.requiresTags).toEqual([]);
   });
 
-  it('weekend without modifiers: cap=5, isWeekend=true', () => {
+  it('weekend without modifiers: cap=5', () => {
     const ctx = computeDayContext('2026-04-25', noMods());
     expect(ctx.difficultyCap).toBe(5);
-    expect(ctx.isWeekend).toBe(true);
   });
 
   it('explicit difficultyCap overrides base cap', () => {

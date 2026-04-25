@@ -3,7 +3,6 @@ import { isWeekend } from '../utils/date';
 
 export interface DayContext {
   date: string;
-  isWeekend: boolean;
   difficultyCap: number;
   skip: boolean;
   requiresTags: string[];
@@ -23,7 +22,6 @@ export function computeDayContext(
   if (mod?.difficultyCap !== undefined) cap = mod.difficultyCap;
   return {
     date,
-    isWeekend: weekend,
     difficultyCap: Math.max(1, cap),
     skip: mod?.skip ?? false,
     requiresTags: mod?.requiresTags ?? [],

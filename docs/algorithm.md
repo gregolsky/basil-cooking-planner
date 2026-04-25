@@ -48,7 +48,6 @@ A `DayContext` is computed for each day in the plan:
 | Field | Description |
 |---|---|
 | `difficultyCap` | Base cap: **3** on weekdays, **5** on weekends. Overridden by a day modifier. Minimum: 1. |
-| `isWeekend` | `true` for Saturday and Sunday |
 | `skip` | Day is skipped (not cooking) |
 | `requiresTags` | Tags that the dish must have on this day |
 

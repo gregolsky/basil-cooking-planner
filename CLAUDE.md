@@ -29,6 +29,11 @@ npm run build
 
 Vitest transpiles with esbuild and does not enforce TypeScript errors (unused imports, type mismatches). `tsc -b` inside the build is the only gate for those. Tests can be green while the build is broken.
 
+## Development requirements
+
+- **Unit tests**: Every new pure function added to `src/lib/` must have a corresponding unit test in `tests/` mirroring the same directory structure.
+- **Docs**: When modifying the GA algorithm, data model, or adding significant features, update `CLAUDE.md`, `README.md`, and `docs/algorithm.md` to reflect the change.
+
 ## Architecture
 
 ### State

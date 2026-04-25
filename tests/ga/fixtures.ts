@@ -21,7 +21,6 @@ export function simpleDays(startISO: string, count: number): DayContext[] {
     const isWe = date.getDay() === 0 || date.getDay() === 6;
     out.push({
       date: iso,
-      isWeekend: isWe,
       difficultyCap: isWe ? 4 : 2,
       skip: false,
       requiresTags: [],

@@ -1,11 +1,6 @@
 # TODO
 
-- setup default difficulty cap for days of the week - default monday - friday 3, saturday and sunday 5
-
-- taking the above into consideration you can remove isWeekend flag and leave the difficulty cap alone
-
-- claude md, add requirement for adding unit tests for testing any new logic, add requirement to keep the md documentation up to date claud, readme and algorithm
--  check if requiresTags is dead code 
+- `requiresTags` on `DayModifier` has no UI — the field is fully wired through the algorithm and display layer, but there is no way for a user to set `requiresTags` on a day via the UI. Consider adding a multi-select in the day editor or generator.
 
 ## UX / Onboarding
 - [ ] First-run tutorial / guided walkthrough (step-by-step: add dishes → generate plan → view calendar)
