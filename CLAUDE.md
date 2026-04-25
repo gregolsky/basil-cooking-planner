@@ -78,6 +78,95 @@ Unit tests mirror the `src/lib/` structure under `tests/`. Vitest is configured 
 
 New pure functions should go in `src/lib/` so they can be tested without React or Zustand. Do not add testable logic directly to components or the store.
 
+### File map
+
+#### Types (`src/types/`)
+- `dish.ts` — `Dish` interface, `MeatType` union, `MEAT_LABELS` lookup
+- `plan.ts` — `Plan`, `PlannedMeal`, `Violation`, `ViolationSeverity`
+- `day.ts` — `DayModifier` (per-day overrides: difficultyCap, skip, requiresTags), `CumulativeLimit`
+- `tag.ts` — `TagDefinition` (name, optional maxPerWeek, minGapDays)
+
+#### Genetic algorithm (`src/lib/ga/`)
+- `types.ts` — `Chromosome`, `GAConfig`, `DEFAULT_GA_CONFIG`, `GAInput`, `DecodedPlan`, `GAProgress`
+- `rng.ts` — `mulberry32` seeded PRNG
+- `chromosome.ts` — `buildSlots` (day → slot with filtered candidates), `randomChromosome`
+- `decoder.ts` — `decode` chromosome → `PlannedMeal[]` with leftover insertion
+- `fitness.ts` — `evaluate` plan → score + violations; `DEFAULT_WEIGHTS`; all penalty/reward logic
+- `operators.ts` — `tournamentSelect`, `uniformCrossover`, `mutate`
+- `algorithm.ts` — `runGA` main evolution loop
+- `runner.ts` — `runGAInWorker` spawns Web Worker, returns `{ promise, abort }`
+
+#### Worker (`src/workers/`)
+- `ga.worker.ts` — Comlink-exposed `run`/`abort` API bridging to `runGA`
+
+#### Day capacity (`src/lib/days/`)
+- `capacity.ts` — `computeDayContext`, `buildDayContexts` (weekday/weekend base caps, modifier overrides)
+
+#### Plan logic (`src/lib/plan/`)
+- `regen.ts` — `getLockedMealsForRegen` (past + pinned meals), `isPlanFullyInPast`
+- `extend.ts` — `buildLockedMealsForExtend` (date range → locked meals), `validateExtendRange`
+- `duplicate.ts` — `duplicatePlanData` (deep-copy a plan with new ID)
+- `evaluate.ts` — `reevaluatePlan` (re-score after manual pin/swap)
+
+#### Storage (`src/lib/storage/`)
+- `schema.ts` — Zod schemas for JSON import validation (`SCHEMA_VERSION = 1`)
+- `exportImport.ts` — `buildAppData`, `parseJson`, `exportJson`
+- `normalize.ts` — migration/normalization of imported data
+- `tagCascade.ts` — `cascadeDeleteTag` removes tag from all dishes
+
+#### CSV (`src/lib/csv/`)
+- `dishImport.ts` — CSV → `Dish[]` parser with auto-detected separator, Polish/English column names
+- `exporter.ts` — plan → CSV export (semicolon, UTF-8 BOM)
+
+#### Share (`src/lib/share/`)
+- `webShare.ts` — Web Share API wrapper for mobile sharing
+
+#### PDF (`src/lib/pdf/`)
+- PDF generation using jsPDF + jspdf-autotable
+
+#### Utils (`src/lib/utils/`)
+- `date.ts` — ISO date helpers (`toISODate`, `fromISODate`, `addDays`, `daysBetween`, `listDates`), locale formatting (`formatDateLocale`, `formatMonthLocale`, `weekdayShortLocale`, `calendarDayLabels`), Polish-only legacy functions for GA worker context
+- `id.ts` — `uid()` UUID generator
+
+#### i18n (`src/i18n/`)
+- `index.ts` — react-i18next config
+- `pl.ts` — Polish translations (default locale)
+- `en.ts` — English translations
+
+#### Store (`src/store/`)
+- `useAppStore.ts` — single Zustand store with persist middleware; holds all app state; side-effect actions for theme/locale
+
+#### Pages (`src/pages/`)
+- `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
+- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate, violations panel
+- `GeneratorPage.tsx` — new plan form (date range, day modifiers, cumulative limits)
+- `ExtendPlanPage.tsx` — continue plan form (source range picker, end date)
+- `DishesPage.tsx` — dish library with add/edit/delete
+- `SettingsPage.tsx` — family name, theme, locale, tags, JSON export/import, reset
+- `ImportPage.tsx` — import from compressed share link
+
+#### Components (`src/components/`)
+- `NavBar.tsx` — top navigation with greeting
+- `Calendar.tsx` — 7-column grid with month banners, padding, day labels
+- `DayCard.tsx` — single day in the calendar (dish, meat emoji, difficulty cap, locked/leftover badges)
+- `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip
+- `PlanSummary.tsx` — unique dishes count, meat types count, fitness score, export button
+- `ViolationsPanel.tsx` — grouped display of hard/soft/info violations
+- `GenerateDialog.tsx` — progress modal during GA run
+- `ExportDialog.tsx` — export options (CSV, PDF, JSON, share link)
+- `DishForm.tsx` — add/edit dish form
+- `DishList.tsx` — dish library list with search and filters
+- `DishCsvImport.tsx` — CSV import UI with preview
+- `TagManager.tsx` — tag CRUD in settings
+- `TagPicker.tsx` — multi-select tag picker in dish form
+- `DateSelect.tsx` — day/month/year dropdown selects
+- `WelcomeModal.tsx` — first-run family name prompt
+- `Candle.tsx` — decorative candle animation (Trattoria theme)
+
+#### Entry points
+- `src/main.tsx` — React root, FOUC prevention (theme from localStorage before render)
+- `src/App.tsx` — routes, WelcomeModal, NavBar
+
 ## Git
 
 - Push with `git push origin main`
