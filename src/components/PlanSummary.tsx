@@ -1,6 +1,5 @@
 import type { Plan } from '../types/plan';
 import type { Dish } from '../types/dish';
-import { formatDateLocale } from '../lib/utils/date';
 import { ExportDialog } from './ExportDialog';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +10,7 @@ interface Props {
 }
 
 export function PlanSummary({ plan, dishMap }: Props) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [exportOpen, setExportOpen] = useState(false);
   const uniqueDishes = new Set(
     plan.meals.filter((m) => !m.isLeftover && m.dishId).map((m) => m.dishId!),
@@ -26,9 +25,6 @@ export function PlanSummary({ plan, dishMap }: Props) {
     <div className="card no-print" style={{ marginBottom: 20 }}>
       <div className="row">
         <div className="grow">
-          <div className="muted">
-            {formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {t('plans.days', { count: plan.meals.length })}
-          </div>
           <div className="row" style={{ marginTop: 6 }}>
             <span className="badge soft">{t('summary.uniqueDishes', { count: uniqueDishes.size })}</span>
             <span className="badge soft">{t('summary.meatTypes', { count: meats.size })}</span>

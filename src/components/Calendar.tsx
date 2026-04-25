@@ -32,7 +32,7 @@ export function Calendar({ plan }: Props) {
     <>
       <div className="calendar-grid">
         {labels.map((l) => (
-          <div key={l} style={{ textAlign: 'center', fontWeight: 700, fontSize: 12, color: 'var(--color-ink)', opacity: 0.6, padding: '2px 0' }}>{l}</div>
+          <div key={l} className="calendar-day-label" style={{ textAlign: 'center', fontWeight: 700, fontSize: 12, color: 'var(--color-ink)', opacity: 0.6, padding: '2px 0' }}>{l}</div>
         ))}
         {Array.from({ length: padding }, (_, i) => (
           <div key={`pad-${i}`} />
