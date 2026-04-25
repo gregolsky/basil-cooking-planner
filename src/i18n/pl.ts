@@ -51,6 +51,7 @@ const pl = {
   'plans.delete': 'Usuń',
   'plans.confirmDelete': 'Usunąć plan?',
   'plans.renamePlan': 'Zmień nazwę planu',
+  'plans.print': '🖨️ Drukuj',
   'plans.planFallbackName': 'Plan {{date}}',
 
   // Plan summary

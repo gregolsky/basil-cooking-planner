@@ -138,6 +138,7 @@ export function PlanDetailPage() {
           <Link to={`/extend-plan/${plan.id}`}>
             <button className="small ghost">{t('plans.extend')}</button>
           </Link>
+          <button className="small ghost" onClick={() => { window.print(); }}>{t('plans.print')}</button>
           <button className="small ghost" onClick={() => duplicatePlan(plan.id)}>{t('plans.duplicate')}</button>
           <button className="small danger" onClick={() => { if (confirm(t('plans.confirmDelete'))) { deletePlan(plan.id); window.location.hash = '#/plans'; } }}>
             {t('plans.delete')}
