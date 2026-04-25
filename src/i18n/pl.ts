@@ -50,6 +50,7 @@ const pl = {
   'plans.copySuffix': '(kopia)',
   'plans.delete': 'Usuń',
   'plans.confirmDelete': 'Usunąć plan?',
+  'plans.renamePlan': 'Zmień nazwę planu',
   'plans.planFallbackName': 'Plan {{date}}',
 
   // Plan summary

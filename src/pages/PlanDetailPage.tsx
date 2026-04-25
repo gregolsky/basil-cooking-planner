@@ -30,6 +30,8 @@ export function PlanDetailPage() {
   const [regenId, setRegenId] = useState<string | null>(null);
   const [progress, setProgress] = useState({ generation: 0, bestFitness: 0, totalGenerations: 200 });
   const [abortFn, setAbortFn] = useState<(() => void) | null>(null);
+  const [editingName, setEditingName] = useState(false);
+  const [nameValue, setNameValue] = useState('');
 
   if (!plan) {
     return (
@@ -88,8 +90,38 @@ export function PlanDetailPage() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>{plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}</h1>
-        <Link to="/plans"><button className="ghost">{t('extend.backToPlans')}</button></Link>
+        {editingName ? (
+          <form
+            className="row"
+            style={{ gap: 8, flexGrow: 1 }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              updatePlan(plan.id, (p) => ({ ...p, name: nameValue.trim() || undefined }));
+              setEditingName(false);
+            }}
+          >
+            <input
+              autoFocus
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
+              placeholder={t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}
+              style={{ flexGrow: 1, fontSize: '1.4rem', fontWeight: 700 }}
+            />
+            <button type="submit">{t('common.save')}</button>
+            <button type="button" className="ghost" onClick={() => setEditingName(false)}>{t('common.cancel')}</button>
+          </form>
+        ) : (
+          <h1 className="row" style={{ gap: 8, alignItems: 'center' }}>
+            {plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}
+            <button
+              className="ghost small no-print"
+              style={{ fontSize: '0.9rem' }}
+              onClick={() => { setNameValue(plan.name ?? ''); setEditingName(true); }}
+              aria-label={t('plans.renamePlan')}
+            >✏️</button>
+          </h1>
+        )}
+        {!editingName && <Link to="/plans"><button className="ghost">{t('extend.backToPlans')}</button></Link>}
       </div>
 
       <div className="card no-print">

@@ -48,6 +48,7 @@ const en = {
   'plans.copySuffix': '(copy)',
   'plans.delete': 'Delete',
   'plans.confirmDelete': 'Delete this plan?',
+  'plans.renamePlan': 'Rename plan',
   'plans.planFallbackName': 'Plan {{date}}',
 
   // Plan summary
