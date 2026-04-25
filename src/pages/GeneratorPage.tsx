@@ -27,6 +27,7 @@ export function GeneratorPage() {
   const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
   const clearDayModifier = useAppStore((s) => s.clearDayModifier);
   const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
+  const tagDefinitions = useAppStore((s) => s.tagDefinitions);
   const upsertCumulativeLimit = useAppStore((s) => s.upsertCumulativeLimit);
   const deleteCumulativeLimit = useAppStore((s) => s.deleteCumulativeLimit);
   const addPlan = useAppStore((s) => s.addPlan);
@@ -73,6 +74,7 @@ export function GeneratorPage() {
       days,
       lockedMeals: [],
       cumulativeLimits,
+      tagDefs: tagDefinitions,
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);

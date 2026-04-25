@@ -106,3 +106,54 @@ test('pin dish to specific day via DayEditor', async ({ page }) => {
   await expect(dayCards.first()).toContainText('Ryba z pieca');
   await expect(dayCards.first()).toContainText('📌');
 });
+
+test('extend plan: date range carry-over creates new plan with locked days', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Dania' }).click();
+  for (const d of SEED_DISHES) {
+    await addDish(page, d);
+  }
+
+  // Generate source plan: 2026-05-04 – 2026-05-10 (7 days)
+  await page.getByRole('link', { name: 'Nowy plan', exact: true }).click();
+  await page.getByLabel('Nazwa planu (opcjonalnie)').fill('Source');
+  await page.getByLabel('Data początkowa').fill('2026-05-04');
+  await page.getByLabel('Data końcowa').fill('2026-05-10');
+  await page.getByRole('button', { name: 'Generuj plan' }).click();
+  await expect(page.getByRole('heading', { name: 'Source' })).toBeVisible({ timeout: 60_000 });
+
+  // Note the dishes on the last 3 days (May 8–10) before extending
+  const dayCards = page.locator('.day-card');
+  await expect(dayCards).toHaveCount(7);
+  const sourceLast3 = await Promise.all([4, 5, 6].map((i) => dayCards.nth(i).innerText()));
+
+  // Open extend page via the Extend button
+  await page.getByRole('link', { name: '➕ Przedłuż' }).click();
+  await expect(page.getByRole('heading', { name: 'Przedłuż plan' })).toBeVisible();
+
+  // Set carry range: May 8–10 (last 3 days of source — this is the default)
+  // Set new plan end to May 17
+  await page.getByLabel('Data końcowa').last().selectOption({ label: '17' });
+
+  await page.getByRole('button', { name: 'Generuj plan' }).click();
+  await expect(page.getByRole('link', { name: 'Plany' })).toBeVisible({ timeout: 60_000 });
+  await page.goto('/#/plans');
+
+  // New plan should appear in the list
+  await expect(page.getByText('(kontynuacja)')).toBeVisible();
+
+  // Open the new plan and verify first 3 days match source last 3
+  await page.getByText('(kontynuacja)').click();
+  const newDayCards = page.locator('.day-card');
+  await expect(newDayCards.first()).toContainText('📌');
+
+  for (let i = 0; i < 3; i++) {
+    const dishNames = SEED_DISHES.map((d) => d.name);
+    const sourceText = sourceLast3[i].toLowerCase();
+    const newText = (await newDayCards.nth(i).innerText()).toLowerCase();
+    const matched = dishNames.find((n) => sourceText.includes(n.toLowerCase()));
+    if (matched) {
+      expect(newText).toContain(matched.toLowerCase());
+    }
+  }
+});

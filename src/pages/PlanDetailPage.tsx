@@ -21,6 +21,7 @@ export function PlanDetailPage() {
   const dishes = useAppStore((s) => s.dishes);
   const dayModifiers = useAppStore((s) => s.dayModifiers);
   const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
+  const tagDefinitions = useAppStore((s) => s.tagDefinitions);
   const updatePlan = useAppStore((s) => s.updatePlan);
   const deletePlan = useAppStore((s) => s.deletePlan);
   const duplicatePlan = useAppStore((s) => s.duplicatePlan);
@@ -58,6 +59,7 @@ export function PlanDetailPage() {
       days: dayContexts,
       lockedMeals: locked,
       cumulativeLimits,
+      tagDefs: tagDefinitions,
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);

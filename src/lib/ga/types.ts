@@ -1,6 +1,7 @@
 import type { Dish } from '../../types/dish';
 import type { PlannedMeal, Violation } from '../../types/plan';
 import type { DayContext } from '../days/capacity';
+import type { TagDefinition } from '../../types/tag';
 
 export type Chromosome = (string | null)[];
 
@@ -28,6 +29,7 @@ export interface GAInput {
   days: DayContext[];
   lockedMeals: Map<string, PlannedMeal>;
   config?: Partial<GAConfig>;
+  tagDefs?: TagDefinition[];
 }
 
 export interface DecodedPlan {

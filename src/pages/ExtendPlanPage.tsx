@@ -18,6 +18,7 @@ import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
 import type { CumulativeLimit } from '../types/day';
 import { runGAInWorker } from '../lib/ga/runner';
+import { buildLockedMealsForExtend, validateExtendRange } from '../lib/plan/extend';
 
 export function ExtendPlanPage() {
   const { t, i18n } = useTranslation();
@@ -30,13 +31,18 @@ export function ExtendPlanPage() {
   const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
   const clearDayModifier = useAppStore((s) => s.clearDayModifier);
   const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
+  const tagDefinitions = useAppStore((s) => s.tagDefinitions);
   const upsertCumulativeLimit = useAppStore((s) => s.upsertCumulativeLimit);
   const deleteCumulativeLimit = useAppStore((s) => s.deleteCumulativeLimit);
   const addPlan = useAppStore((s) => s.addPlan);
 
   const planLength = sourcePlan ? sourcePlan.meals.length : 0;
-  const defaultCarry = Math.min(3, planLength);
-  const [carryDays, setCarryDays] = useState(defaultCarry);
+  const [rangeStart, setRangeStart] = useState(() =>
+    sourcePlan ? addDays(sourcePlan.endDate, -2) : toISODate(new Date()),
+  );
+  const [rangeEnd, setRangeEnd] = useState(() =>
+    sourcePlan ? sourcePlan.endDate : toISODate(new Date()),
+  );
   const [end, setEnd] = useState(() =>
     sourcePlan ? addDays(sourcePlan.endDate, 7) : toISODate(new Date()),
   );
@@ -49,11 +55,13 @@ export function ExtendPlanPage() {
   const [newLimitEnd, setNewLimitEnd] = useState('');
   const [newLimitMax, setNewLimitMax] = useState<number | ''>('');
 
-  const start = useMemo(() => {
-    if (!sourcePlan) return '';
-    const n = Math.max(1, Math.min(carryDays, planLength));
-    return addDays(sourcePlan.endDate, -(n - 1));
-  }, [sourcePlan, carryDays, planLength]);
+  const start = rangeStart;
+
+  const carryDays = useMemo(() => {
+    if (!rangeStart || !rangeEnd) return 0;
+    const n = daysBetween(rangeStart, rangeEnd);
+    return n >= 0 ? n + 1 : 0;
+  }, [rangeStart, rangeEnd]);
 
   const rangeDays = useMemo(() => {
     if (!start || !end) return 0;
@@ -87,10 +95,12 @@ export function ExtendPlanPage() {
     setDialogOpen(true);
     setProgress({ generation: 0, bestFitness: 0, totalGenerations: 200 });
 
-    const clampedCarry = Math.max(1, Math.min(carryDays, planLength));
-    const lockedMeals: PlannedMeal[] = sourcePlan.meals
-      .slice(-clampedCarry)
-      .map((m) => ({ ...m, locked: true }));
+    const rangeValidation = validateExtendRange(rangeStart, rangeEnd, sourcePlan.startDate, sourcePlan.endDate);
+    if (!rangeValidation.valid) {
+      setError(t(rangeValidation.error!));
+      return;
+    }
+    const lockedMeals: PlannedMeal[] = buildLockedMealsForExtend(sourcePlan.meals, rangeStart, rangeEnd);
 
     const dates = listDates(start, end);
     const days = buildDayContexts(dates, dayModifiers);
@@ -100,6 +110,7 @@ export function ExtendPlanPage() {
       days,
       lockedMeals,
       cumulativeLimits,
+      tagDefs: tagDefinitions,
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);
@@ -146,29 +157,19 @@ export function ExtendPlanPage() {
           {' '}· {t('plans.days', { count: planLength })}
         </div>
 
-        <label>
-          {t('extend.carryDays')}
-          <input
-            type="number"
-            min={1}
-            max={planLength}
-            value={carryDays}
-            onChange={(e) => {
-              const v = Number(e.target.value);
-              if (v >= 1 && v <= planLength) setCarryDays(v);
-            }}
-            style={{ width: 80 }}
-          />
-          <span className="muted" style={{ fontSize: 13, marginLeft: 8 }}>
-            {t(carryDays === 1 ? 'extend.carryHint_one' : 'extend.carryHint_other', { count: carryDays })}
-          </span>
-        </label>
-
         <div className="row" style={{ flexWrap: 'wrap', gap: 12 }}>
           <label>
-            {t('extend.derivedStart')}
-            <div className="muted" style={{ padding: '6px 0', fontWeight: 600 }}>
-              {start ? `${weekdayShortLocale(start, i18n.language)} ${formatShortDateLocale(start, i18n.language)}` : '—'}
+            {t('extend.rangeStart')}
+            <div className="row" style={{ gap: 6, alignItems: 'center' }}>
+              <DateSelect value={rangeStart} onChange={setRangeStart} />
+              <span className="muted" style={{ fontSize: 13 }}>{rangeStart ? weekdayShortLocale(rangeStart, i18n.language) : ''}</span>
+            </div>
+          </label>
+          <label>
+            {t('extend.rangeEnd')}
+            <div className="row" style={{ gap: 6, alignItems: 'center' }}>
+              <DateSelect value={rangeEnd} onChange={setRangeEnd} />
+              <span className="muted" style={{ fontSize: 13 }}>{rangeEnd ? weekdayShortLocale(rangeEnd, i18n.language) : ''}</span>
             </div>
           </label>
           <label>
