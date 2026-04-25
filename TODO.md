@@ -5,6 +5,7 @@
 - taking the above into consideration you can remove isWeekend flag and leave the difficulty cap alone
 
 - claude md, add requirement for adding unit tests for testing any new logic, add requirement to keep the md documentation up to date claud, readme and algorithm
+-  check if requiresTags is dead code 
 
 ## UX / Onboarding
 - [ ] First-run tutorial / guided walkthrough (step-by-step: add dishes → generate plan → view calendar)
