@@ -11,7 +11,7 @@
 
 **Meal planning**
 - Generate a meal schedule for any date range using a genetic algorithm
-- Constraints: no same meat two days in a row, difficulty caps per day, nanny-friendly dishes
+- Constraints: no same meat two days in a row, difficulty caps per day, tag-based requirements per day
 - Soft preferences: family ratings, dish variety, repeat penalties
 - Pin any day manually — regeneration respects locked meals
 - Swap dishes between days or mark a day as skip
@@ -38,6 +38,9 @@
 - Share via compressed URL or Web Share API (Android)
 - Import JSON restores everything including settings
 
+**Themes**
+- Trattoria della Famiglia (default) and PRL (Polish People's Republic canteen) — switchable in Settings
+
 **PWA**
 - Installable on Android and desktop
 - Offline-capable (app shell + assets cached by service worker)
@@ -63,4 +66,5 @@ npm run build
 
 ## Deploy
 
-Pushes to `main` trigger GitHub Actions → builds → deploys to GitHub Pages.
+- Pushes to `main` trigger GitHub Actions → tests + build → deploys to GitHub Pages
+- Tests also run on every PR via a separate CI workflow
