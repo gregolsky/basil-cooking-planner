@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
-import { formatDateLocale, daysBetween } from '../lib/utils/date';
+import { formatDateLocale, daysBetween, toISODate } from '../lib/utils/date';
 import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
@@ -34,7 +34,8 @@ export function PlansListPage() {
     setRegenId(plan.id);
     setProgress({ generation: 0, bestFitness: 0, totalGenerations: 200 });
 
-    const locked = plan.meals.filter((m) => m.locked);
+    const today = toISODate(new Date());
+    const locked = plan.meals.filter((m) => m.locked || m.date < today);
     const dates = listDates(plan.startDate, plan.endDate);
     const days = buildDayContexts(dates, dayModifiers);
 
@@ -86,6 +87,8 @@ export function PlansListPage() {
           const isExpanded = p.id === expandedId;
           const days = daysBetween(p.startDate, p.endDate) + 1;
           const hard = p.violations.filter((v) => v.severity === 'hard').length;
+          const today = toISODate(new Date());
+          const allInPast = p.endDate < today;
 
           return (
             <div key={p.id} className={`card stack${isExpanded ? '' : ' no-print'}`}>
@@ -105,13 +108,15 @@ export function PlansListPage() {
                 >
                   {isExpanded ? t('plans.hideCalendar') : t('plans.showCalendar')}
                 </button>
-                <button
-                  className="ghost"
-                  disabled={regenId !== null}
-                  onClick={() => handleRegen(p)}
-                >
-                  {t('plans.regenerate')}
-                </button>
+                {!allInPast && (
+                  <button
+                    className="ghost"
+                    disabled={regenId !== null}
+                    onClick={() => handleRegen(p)}
+                  >
+                    {t('plans.regenerate')}
+                  </button>
+                )}
                 <Link to={`/extend-plan/${p.id}`}>
                   <button className="small ghost" disabled={regenId !== null}>{t('plans.extend')}</button>
                 </Link>
