@@ -1,10 +1,9 @@
 import type { DayModifier } from '../../types/day';
-import { isWeekend, addDays } from '../utils/date';
+import { isWeekend } from '../utils/date';
 
 export interface DayContext {
   date: string;
   isWeekend: boolean;
-  wifeDuty: boolean;
   difficultyCap: number;
   skip: boolean;
   requiresTags: string[];
@@ -19,16 +18,12 @@ export function computeDayContext(
   modifiers: Map<string, DayModifier>,
 ): DayContext {
   const mod = modifiers.get(date);
-  const nextMod = modifiers.get(addDays(date, 1));
   const weekend = isWeekend(date);
   let cap = weekend ? WEEKEND_BASE : WEEKDAY_BASE;
-  if (mod?.wifeDuty) cap -= 1;
-  if (nextMod?.wifeDuty) cap -= 1;
   if (mod?.difficultyCap !== undefined) cap = mod.difficultyCap;
   return {
     date,
     isWeekend: weekend,
-    wifeDuty: mod?.wifeDuty ?? false,
     difficultyCap: Math.max(1, cap),
     skip: mod?.skip ?? false,
     requiresTags: mod?.requiresTags ?? [],

@@ -214,7 +214,7 @@ export function ExtendPlanPage() {
 
                     const save = (newCap: number | undefined) => {
                       const next = { ...(mod ?? { date }), difficultyCap: newCap };
-                      const isEmpty = !next.wifeDuty && next.difficultyCap === undefined && !next.skip && !next.requiresTags?.length && !next.note;
+                      const isEmpty = next.difficultyCap === undefined && !next.skip && !next.requiresTags?.length && !next.note;
                       if (isEmpty) clearDayModifier(date);
                       else upsertDayModifier(next as typeof mod & { date: string });
                     };

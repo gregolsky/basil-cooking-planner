@@ -37,7 +37,6 @@ export const cumulativeLimitSchema = z.object({
 
 export const dayModifierSchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  wifeDuty: z.boolean().optional(),
   skip: z.boolean().optional(),
   requiresTags: z.array(z.string()).optional(),
   difficultyCap: z.number().int().optional(),

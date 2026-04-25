@@ -147,7 +147,7 @@ export function evaluate({ meals, days, dishMap, tagDefs = [], cumulativeLimits 
       }
       dishCounts.set(dish.id, repeats + 1);
 
-      if (!day.isWeekend && !day.wifeDuty && dish.difficulty >= 4) {
+      if (!day.isWeekend && dish.difficulty >= 4) {
         score -= w.slowWeekdayPenalty;
       }
     } else {

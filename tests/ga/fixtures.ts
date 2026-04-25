@@ -22,7 +22,6 @@ export function simpleDays(startISO: string, count: number): DayContext[] {
     out.push({
       date: iso,
       isWeekend: isWe,
-      wifeDuty: false,
       difficultyCap: isWe ? 4 : 2,
       skip: false,
       requiresTags: [],
