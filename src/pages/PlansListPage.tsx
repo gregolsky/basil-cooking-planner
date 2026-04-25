@@ -20,7 +20,8 @@ export function PlansListPage() {
 
       {sorted.length === 0 && (
         <div className="card empty-state">
-          {t('plans.empty')} <Link to="/new-plan">{t('plans.emptyAction')}</Link>.
+          <div>{t('plans.empty')} <Link to="/new-plan">{t('plans.emptyAction')}</Link>.</div>
+          <div className="muted" style={{ marginTop: 4, fontSize: 13 }}>{t('plans.emptyHint')}</div>
         </div>
       )}
 

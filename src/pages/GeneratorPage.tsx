@@ -10,6 +10,7 @@ import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
 import type { CumulativeLimit } from '../types/day';
 import { runGAInWorker } from '../lib/ga/runner';
+import { TagPicker } from '../components/TagPicker';
 
 function defaultStart(): string {
   return toISODate(new Date());
@@ -151,6 +152,7 @@ export function GeneratorPage() {
                   <tr>
                     <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colDay')}</th>
                     <th style={{ textAlign: 'center', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colCap')}</th>
+                    {tagDefinitions.length > 0 && <th style={{ textAlign: 'left', padding: '4px 8px', borderBottom: '1px solid #c7b79d' }}>{t('generator.colTags')}</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -158,8 +160,8 @@ export function GeneratorPage() {
                     const mod = dayModifiers.find((m) => m.date === date);
                     const cap = mod?.difficultyCap;
 
-                    const save = (newCap: number | undefined) => {
-                      const next = { ...(mod ?? { date }), difficultyCap: newCap };
+                    const saveMod = (patch: Partial<typeof mod>) => {
+                      const next = { ...(mod ?? { date }), ...patch };
                       const isEmpty = next.difficultyCap === undefined && !next.skip && !next.requiresTags?.length && !next.note;
                       if (isEmpty) clearDayModifier(date);
                       else upsertDayModifier(next as typeof mod & { date: string });
@@ -172,12 +174,21 @@ export function GeneratorPage() {
                           <select
                             value={cap ?? ''}
                             style={{ fontSize: 13 }}
-                            onChange={(e) => save(e.target.value ? Number(e.target.value) : undefined)}
+                            onChange={(e) => saveMod({ difficultyCap: e.target.value ? Number(e.target.value) : undefined })}
                           >
                             <option value="">{t('generator.capAuto')}</option>
                             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
                           </select>
                         </td>
+                        {tagDefinitions.length > 0 && (
+                          <td style={{ padding: '4px 8px' }}>
+                            <TagPicker
+                              tagDefs={tagDefinitions}
+                              selected={mod?.requiresTags ?? []}
+                              onChange={(tags) => saveMod({ requiresTags: tags })}
+                            />
+                          </td>
+                        )}
                       </tr>
                     );
                   })}

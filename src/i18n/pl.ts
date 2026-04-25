@@ -39,6 +39,7 @@ const pl = {
   'plans.title': '📚 Plany',
   'plans.newPlan': '+ Nowy plan',
   'plans.empty': 'Brak planów.',
+  'plans.emptyHint': 'Najpierw dodaj dania w bibliotece, potem wygeneruj plan.',
   'plans.emptyAction': 'Wygeneruj pierwszy plan',
   'plans.days': '{{count}} dni',
   'plans.violations': '{{count}} naruszeń',
@@ -72,6 +73,7 @@ const pl = {
   'generator.difficultyLimits': 'Limity trudności dni',
   'generator.colDay': 'Dzień',
   'generator.colCap': 'Limit trudności',
+  'generator.colTags': 'Wymagane etykiety',
   'generator.capAuto': 'auto',
   'generator.cumulativeLimits': 'Sumaryczne limity trudności',
   'generator.noLimits': 'Brak limitów — dodaj poniżej.',
@@ -112,6 +114,8 @@ const pl = {
   'dayeditor.pinTitle': 'Przypnij obiad',
   'dayeditor.searchPlaceholder': 'Szukaj…',
   'dayeditor.noMatches': 'Brak pasujących dań.',
+  'dayeditor.requiredTags': 'Wymagane etykiety',
+  'dayeditor.requiredTagsHint': 'Tylko dania z tymi etykietami będą przypisane do tego dnia.',
   'dayeditor.dishRow': '{{name}} · {{meat}} · trudność {{difficulty}}',
 
   // Generate dialog
@@ -149,8 +153,11 @@ const pl = {
   'dishform.name': 'Nazwa dania',
   'dishform.meatType': 'Rodzaj mięsa',
   'dishform.difficulty': 'Trudność (1-5)',
+  'dishform.difficultyHint': '1 = szybki obiad, 5 = całodniowe gotowanie. Algorytm unika trudnych dań w dni robocze.',
   'dishform.preference': 'Preferencja (1-5)',
+  'dishform.preferenceHint': 'Im wyższa, tym częściej danie pojawi się w planie.',
   'dishform.servesDays': 'Starcza na',
+  'dishform.servesDaysHint': 'Danie na 2-3 dni oznacza resztki w kolejnych dniach — nie trzeba gotować.',
   'dishform.serves_1': '1 dzień',
   'dishform.serves_2': '2 dni',
   'dishform.serves_3': '3 dni',
@@ -158,7 +165,8 @@ const pl = {
   'dishform.noTagsHint': 'Brak etykiet. Zdefiniuj je w Dane → Etykiety.',
 
   // Dish list
-  'dishlist.empty': 'Brak dań w bibliotece. Dodaj pierwsze danie, aby zacząć planowanie.',
+  'dishlist.empty': 'Brak dań w bibliotece.',
+  'dishlist.emptyHint': 'Dodaj swoje ulubione dania, a potem wygeneruj plan — algorytm dobierze obiady na każdy dzień.',
   'dishlist.difficulty': 'trudność {{n}}',
   'dishlist.preference': 'preferencja {{n}}/5',
   'dishlist.serves_one': '{{count}} dzień',

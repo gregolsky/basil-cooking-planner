@@ -106,6 +106,21 @@ export function DayEditor({ planId, date, onClose }: Props) {
             </label>
           </div>
 
+          {tagDefs.length > 0 && (
+            <div>
+              <strong>{t('dayeditor.requiredTags')}</strong>
+              <div className="muted" style={{ fontSize: 12, marginBottom: 4 }}>{t('dayeditor.requiredTagsHint')}</div>
+              <TagPicker
+                tagDefs={tagDefs}
+                selected={modifier?.requiresTags ?? []}
+                onChange={(tags) => {
+                  upsertDayModifier({ ...(modifier ?? { date }), date, requiresTags: tags });
+                  reevaluate();
+                }}
+              />
+            </div>
+          )}
+
           <hr style={{ width: '100%', border: 'none', borderTop: '1px dashed #c7b79d' }} />
 
           <h3 style={{ margin: 0 }}>{t('dayeditor.pinTitle')}</h3>

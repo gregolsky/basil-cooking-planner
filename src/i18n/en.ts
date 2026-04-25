@@ -37,6 +37,7 @@ const en = {
   'plans.title': '📚 Plans',
   'plans.newPlan': '+ New plan',
   'plans.empty': 'No plans yet.',
+  'plans.emptyHint': 'Start by adding dishes to the library, then generate a plan.',
   'plans.emptyAction': 'Generate your first plan',
   'plans.days': '{{count}} days',
   'plans.violations': '{{count}} violations',
@@ -70,6 +71,7 @@ const en = {
   'generator.difficultyLimits': 'Day difficulty limits',
   'generator.colDay': 'Day',
   'generator.colCap': 'Difficulty cap',
+  'generator.colTags': 'Required tags',
   'generator.capAuto': 'auto',
   'generator.cumulativeLimits': 'Cumulative difficulty limits',
   'generator.noLimits': 'No limits — add one below.',
@@ -110,6 +112,8 @@ const en = {
   'dayeditor.pinTitle': 'Pin lunch',
   'dayeditor.searchPlaceholder': 'Search…',
   'dayeditor.noMatches': 'No matching dishes.',
+  'dayeditor.requiredTags': 'Required tags',
+  'dayeditor.requiredTagsHint': 'Only dishes with these tags will be assigned to this day.',
   'dayeditor.dishRow': '{{name}} · {{meat}} · difficulty {{difficulty}}',
 
   // Generate dialog
@@ -147,8 +151,11 @@ const en = {
   'dishform.name': 'Dish name',
   'dishform.meatType': 'Meat type',
   'dishform.difficulty': 'Difficulty (1-5)',
+  'dishform.difficultyHint': '1 = quick meal, 5 = all-day cooking. The algorithm avoids hard dishes on weekdays.',
   'dishform.preference': 'Preference (1-5)',
+  'dishform.preferenceHint': 'Higher preference means the dish appears more often in plans.',
   'dishform.servesDays': 'Serves',
+  'dishform.servesDaysHint': 'A dish for 2-3 days means leftovers on following days — no cooking needed.',
   'dishform.serves_1': '1 day',
   'dishform.serves_2': '2 days',
   'dishform.serves_3': '3 days',
@@ -156,7 +163,8 @@ const en = {
   'dishform.noTagsHint': 'No tags. Define them in Settings → Tags.',
 
   // Dish list
-  'dishlist.empty': 'No dishes in library. Add your first dish to start planning.',
+  'dishlist.empty': 'No dishes in the library.',
+  'dishlist.emptyHint': 'Add your favorite dishes, then generate a plan — the algorithm will pick meals for each day.',
   'dishlist.difficulty': 'difficulty {{n}}',
   'dishlist.preference': 'preference {{n}}/5',
   'dishlist.serves_one': '{{count}} day',

@@ -68,6 +68,7 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
           <select value={form.difficulty} onChange={(e) => update('difficulty', Number(e.target.value) as Dish['difficulty'])}>
             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
+          <span className="muted" style={{ fontSize: 12 }}>{t('dishform.difficultyHint')}</span>
         </label>
       </div>
 
@@ -77,6 +78,7 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
           <select value={form.preference} onChange={(e) => update('preference', Number(e.target.value) as Dish['preference'])}>
             {[1, 2, 3, 4, 5].map((n) => <option key={n} value={n}>{n}</option>)}
           </select>
+          <span className="muted" style={{ fontSize: 12 }}>{t('dishform.preferenceHint')}</span>
         </label>
 
         <label>
@@ -86,6 +88,7 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
             <option value={2}>{t('dishform.serves_2')}</option>
             <option value={3}>{t('dishform.serves_3')}</option>
           </select>
+          <span className="muted" style={{ fontSize: 12 }}>{t('dishform.servesDaysHint')}</span>
         </label>
       </div>
 

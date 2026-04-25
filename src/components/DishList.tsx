@@ -25,7 +25,8 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
   if (dishes.length === 0) {
     return (
       <div className="empty-state card">
-        {t('dishlist.empty')}
+        <div>{t('dishlist.empty')}</div>
+        <div className="muted" style={{ marginTop: 4, fontSize: 13 }}>{t('dishlist.emptyHint')}</div>
       </div>
     );
   }
