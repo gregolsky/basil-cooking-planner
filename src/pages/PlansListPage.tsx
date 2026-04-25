@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { formatDateLocale, daysBetween, toISODate } from '../lib/utils/date';
+import { getLockedMealsForRegen, isPlanFullyInPast } from '../lib/plan/regen';
 import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
@@ -34,8 +35,7 @@ export function PlansListPage() {
     setRegenId(plan.id);
     setProgress({ generation: 0, bestFitness: 0, totalGenerations: 200 });
 
-    const today = toISODate(new Date());
-    const locked = plan.meals.filter((m) => m.locked || m.date < today);
+    const locked = getLockedMealsForRegen(plan.meals, toISODate(new Date()));
     const dates = listDates(plan.startDate, plan.endDate);
     const days = buildDayContexts(dates, dayModifiers);
 
@@ -87,8 +87,7 @@ export function PlansListPage() {
           const isExpanded = p.id === expandedId;
           const days = daysBetween(p.startDate, p.endDate) + 1;
           const hard = p.violations.filter((v) => v.severity === 'hard').length;
-          const today = toISODate(new Date());
-          const allInPast = p.endDate < today;
+          const allInPast = isPlanFullyInPast(p, toISODate(new Date()));
 
           return (
             <div key={p.id} className={`card stack${isExpanded ? '' : ' no-print'}`}>
