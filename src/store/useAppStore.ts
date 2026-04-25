@@ -6,6 +6,8 @@ import type { Plan, PlannedMeal } from '../types/plan';
 import type { TagDefinition } from '../types/tag';
 import { SCHEMA_VERSION } from '../lib/storage/schema';
 import { normalizeDishTags } from '../lib/storage/normalize';
+import { cascadeDeleteTag } from '../lib/storage/tagCascade';
+import { duplicatePlanData } from '../lib/plan/duplicate';
 import { uid } from '../lib/utils/id';
 import i18n from '../i18n/index';
 
@@ -105,14 +107,7 @@ export const useAppStore = create<AppState>()(
         }),
 
       deleteTag: (id) =>
-        set((s) => ({
-          tagDefinitions: s.tagDefinitions.filter((t) => t.id !== id),
-          dishes: s.dishes.map((d) => ({ ...d, tags: d.tags.filter((t) => t !== id) })),
-          dayModifiers: s.dayModifiers.map((m) => ({
-            ...m,
-            requiresTags: m.requiresTags?.filter((t) => t !== id),
-          })),
-        })),
+        set((s) => cascadeDeleteTag(id, s)),
 
       upsertDayModifier: (mod) =>
         set((s) => {
@@ -157,14 +152,7 @@ export const useAppStore = create<AppState>()(
       duplicatePlan: (id) => {
         const plan = get().plans.find((p) => p.id === id);
         if (!plan) return null;
-        const copy: Plan = {
-          ...plan,
-          id: uid(),
-          name: (plan.name ?? 'Plan') + ' ' + i18n.t('plans.copySuffix'),
-          createdAt: new Date().toISOString(),
-          meals: plan.meals.map((m) => ({ ...m })),
-          violations: plan.violations.map((v) => ({ ...v })),
-        };
+        const copy = duplicatePlanData(plan, i18n.t('plans.copySuffix'));
         set((s) => ({ plans: [...s.plans, copy], activePlanId: copy.id }));
         return copy.id;
       },
