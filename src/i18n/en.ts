@@ -43,7 +43,7 @@ const en = {
   'plans.showCalendar': '📅 Calendar',
   'plans.hideCalendar': '▲ Hide',
   'plans.regenerate': '↺ Regenerate',
-  'plans.extend': '➕ Extend',
+  'plans.extend': '➕ Continue',
   'plans.duplicate': 'Duplicate',
   'plans.copySuffix': '(copy)',
   'plans.delete': 'Delete',
@@ -82,7 +82,7 @@ const en = {
   'generator.errorInvalidRange': 'End date must be equal to or later than start date.',
 
   // Extend plan
-  'extend.title': '➕ Extend plan',
+  'extend.title': '➕ Continue plan',
   'extend.notFound': 'Plan not found.',
   'extend.backToPlans': 'Back to plans',
   'extend.source': 'Source',

@@ -45,7 +45,7 @@ const pl = {
   'plans.showCalendar': '📅 Kalendarz',
   'plans.hideCalendar': '▲ Schowaj',
   'plans.regenerate': '↺ Regeneruj',
-  'plans.extend': '➕ Przedłuż',
+  'plans.extend': '➕ Kontynuuj',
   'plans.duplicate': 'Duplikuj',
   'plans.copySuffix': '(kopia)',
   'plans.delete': 'Usuń',
@@ -84,7 +84,7 @@ const pl = {
   'generator.errorInvalidRange': 'Data końcowa musi być równa lub późniejsza niż początkowa.',
 
   // Extend plan
-  'extend.title': '➕ Przedłuż plan',
+  'extend.title': '➕ Kontynuuj plan',
   'extend.notFound': 'Nie znaleziono planu.',
   'extend.backToPlans': 'Wróć do listy planów',
   'extend.source': 'Źródło',
