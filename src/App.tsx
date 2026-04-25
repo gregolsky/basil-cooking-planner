@@ -6,6 +6,7 @@ import { DishesPage } from './pages/DishesPage';
 import { GeneratorPage } from './pages/GeneratorPage';
 import { ExtendPlanPage } from './pages/ExtendPlanPage';
 import { PlansListPage } from './pages/PlansListPage';
+import { PlanDetailPage } from './pages/PlanDetailPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ImportPage } from './pages/ImportPage';
 
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/new-plan" element={<GeneratorPage />} />
         <Route path="/extend-plan/:id" element={<ExtendPlanPage />} />
         <Route path="/plans" element={<PlansListPage />} />
+        <Route path="/plans/:id" element={<PlanDetailPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/import" element={<ImportPage />} />
         <Route path="*" element={<Navigate to="/plans" replace />} />
