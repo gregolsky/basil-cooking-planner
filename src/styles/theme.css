@@ -381,10 +381,22 @@ label {
   transform: translateY(-3px) rotate(0.5deg);
   box-shadow: var(--shadow-lift);
 }
-.day-card.weekend { border-color: var(--color-gold); background: #fffbf0; }
+.day-card.weekend    { border-color: var(--color-gold); background: #fffbf0; }
 .day-card.weekend::before { border-color: rgba(201,149,10,0.4); }
-.day-card.skip   { opacity: 0.5; }
-.day-card.locked { border-color: var(--color-green); border-width: 2px; }
+.day-card.skip       { opacity: 0.5; }
+.day-card.locked     { border-color: var(--color-green); border-width: 2px; }
+.day-card.month-start { border-top: 3px solid var(--color-red-dark); }
+
+.calendar-month-banner {
+  grid-column: 1 / -1;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--color-red-dark);
+  letter-spacing: 0.05em;
+  padding: 6px 2px 2px;
+  border-top: 1px solid var(--color-red-dark);
+  opacity: 0.75;
+}
 
 .day-date    { font-family: var(--font-display); color: var(--color-red-dark); font-size: 1.25rem; line-height: 1; }
 .day-weekday { font-family: var(--font-ui); font-size: 10px; color: var(--color-green); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
@@ -887,6 +899,8 @@ html[data-theme="prl"] .page::after               { display: none; }
 /* ── Day cards ── */
 html[data-theme="prl"] .day-card     { background: #D0CCB8; border-color: #A8A494; border-radius: 2px; }
 html[data-theme="prl"] .day-card.weekend { background: #C8C4A8; border-color: #786018; }
+html[data-theme="prl"] .day-card.month-start { border-top-color: #7A3020; }
+html[data-theme="prl"] .calendar-month-banner { color: #7A3020; border-top-color: #7A3020; font-family: 'Oswald', sans-serif; }
 html[data-theme="prl"] .day-weekday  { color: #586848; }
 html[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; font-size: 1.1rem; color: #7A3020; }
 html[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; font-style: normal; font-weight: 700; color: #181810; }

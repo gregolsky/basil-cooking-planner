@@ -64,6 +64,10 @@ export function weekdayShortLocale(iso: string, locale: string): string {
   return new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(fromISODate(iso));
 }
 
+export function formatMonthLocale(iso: string, locale: string): string {
+  return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(fromISODate(iso));
+}
+
 export function formatDateLocale(iso: string, locale: string): string {
   return new Intl.DateTimeFormat(locale, { day: '2-digit', month: '2-digit', year: 'numeric' }).format(fromISODate(iso));
 }

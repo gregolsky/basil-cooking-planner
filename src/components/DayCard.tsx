@@ -18,10 +18,11 @@ interface Props {
   day: DayContext;
   dish: Dish | null;
   tagMap: Map<string, TagDefinition>;
+  monthStart?: boolean;
   onClick: () => void;
 }
 
-export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
+export function DayCard({ meal, day, dish, tagMap, monthStart, onClick }: Props) {
   const { t, i18n } = useTranslation();
   const weekend = isWeekend(day.date);
   const classes = [
@@ -30,6 +31,7 @@ export function DayCard({ meal, day, dish, tagMap, onClick }: Props) {
     weekend ? 'weekend' : '',
     day.skip ? 'skip' : '',
     meal.locked ? 'locked' : '',
+    monthStart ? 'month-start' : '',
   ].filter(Boolean).join(' ');
 
   return (

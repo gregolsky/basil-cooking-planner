@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import type { Plan } from '../types/plan';
 import { useAppStore } from '../store/useAppStore';
 import { buildDayContexts } from '../lib/days/capacity';
-import { fromISODate, calendarDayLabels } from '../lib/utils/date';
+import { fromISODate, calendarDayLabels, formatMonthLocale } from '../lib/utils/date';
 import { DayCard } from './DayCard';
 import { DayEditor } from './DayEditor';
 
@@ -40,16 +40,23 @@ export function Calendar({ plan }: Props) {
         {plan.meals.map((meal, i) => {
           const day = days[i];
           const dish = meal.dishId ? dishMap.get(meal.dishId) ?? null : null;
-          return (
+          const isMonthStart = i > 0 && meal.date.slice(8) === '01';
+          return [
+            isMonthStart && (
+              <div key={`month-${meal.date}`} className="calendar-month-banner">
+                {formatMonthLocale(meal.date, i18n.language)}
+              </div>
+            ),
             <DayCard
               key={meal.date}
               meal={meal}
               day={day}
               dish={dish}
               tagMap={tagMap}
+              monthStart={isMonthStart}
               onClick={() => setEditingDate(meal.date)}
-            />
-          );
+            />,
+          ];
         })}
       </div>
 
