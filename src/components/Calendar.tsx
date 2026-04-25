@@ -41,12 +41,18 @@ export function Calendar({ plan }: Props) {
           const day = days[i];
           const dish = meal.dishId ? dishMap.get(meal.dishId) ?? null : null;
           const isMonthStart = i > 0 && meal.date.slice(8) === '01';
+          const monthPadding = isMonthStart
+            ? (fromISODate(meal.date).getDay() - weekStartDay + 7) % 7
+            : 0;
           return [
             isMonthStart && (
               <div key={`month-${meal.date}`} className="calendar-month-banner">
                 {formatMonthLocale(meal.date, i18n.language)}
               </div>
             ),
+            ...Array.from({ length: monthPadding }, (_, p) => (
+              <div key={`mpad-${meal.date}-${p}`} />
+            )),
             <DayCard
               key={meal.date}
               meal={meal}
