@@ -30,8 +30,8 @@ export function PlansListPage() {
           const hard = p.violations.filter((v) => v.severity === 'hard').length;
 
           return (
-            <div key={p.id} className="card stack no-print">
-              <Link to={`/plans/${p.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link key={p.id} to={`/plans/${p.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div className="card no-print" style={{ cursor: 'pointer' }}>
                 <div className="row">
                   <div className="grow">
                     <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-red-dark)' }}>
@@ -39,23 +39,22 @@ export function PlansListPage() {
                     </div>
                     <div className="muted">{formatDateLocale(p.startDate, i18n.language)} – {formatDateLocale(p.endDate, i18n.language)} · {t('plans.days', { count: days })}</div>
                   </div>
-                  {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span>}
+                  <div className="row" style={{ gap: 6 }} onClick={(e) => e.preventDefault()}>
+                    {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span>}
+                    <Link to={`/extend-plan/${p.id}`}>
+                      <button className="small ghost">{t('plans.extend')}</button>
+                    </Link>
+                    <button className="small ghost" onClick={() => duplicatePlan(p.id)}>{t('plans.duplicate')}</button>
+                    <button
+                      className="small danger"
+                      onClick={() => { if (confirm(t('plans.confirmDelete'))) deletePlan(p.id); }}
+                    >
+                      {t('plans.delete')}
+                    </button>
+                  </div>
                 </div>
-              </Link>
-              <div className="row">
-                <Link to={`/plans/${p.id}`}><button className="ghost">{t('plans.showCalendar')}</button></Link>
-                <Link to={`/extend-plan/${p.id}`}>
-                  <button className="small ghost">{t('plans.extend')}</button>
-                </Link>
-                <button className="small ghost" onClick={() => duplicatePlan(p.id)}>{t('plans.duplicate')}</button>
-                <button
-                  className="small danger"
-                  onClick={() => { if (confirm(t('plans.confirmDelete'))) deletePlan(p.id); }}
-                >
-                  {t('plans.delete')}
-                </button>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>
