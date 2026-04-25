@@ -115,7 +115,7 @@ export function PlanDetailPage() {
             {plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}
             <button
               className="ghost small no-print"
-              style={{ fontSize: '0.9rem' }}
+              style={{ fontSize: '0.9rem', border: 'none', background: 'none', padding: 0 }}
               onClick={() => { setNameValue(plan.name ?? ''); setEditingName(true); }}
               aria-label={t('plans.renamePlan')}
             >✏️</button>

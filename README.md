@@ -11,7 +11,7 @@
 
 ### 1. Add dishes
 
-Go to **Dania** (Dishes) and build your library. Each dish has:
+Go to **Dishes** and build your library. Each dish has:
 - **Name** and **meat type** (pork, poultry, fish, beef, none)
 - **Difficulty** (1–5) — how hard it is to cook
 - **Preference** (1–5) — how much the family likes it
@@ -21,7 +21,7 @@ You can also bulk-import from CSV (Polish or English column names).
 
 ### 2. Set up tags (optional)
 
-In **Dane** (Settings) → **Etykiety** (Tags), create tags like "niania" (nanny), "zamawiane" (takeout). Tags can have rules:
+In **Settings** → **Tags**, create tags like "nanny", "takeout". Tags can have rules:
 - **Max per week** — e.g. nanny meals max 2×/week
 - **Min gap days** — e.g. takeout at least every 14 days
 
@@ -29,19 +29,19 @@ Assign tags to dishes in the dish form.
 
 ### 3. Generate a plan
 
-Go to **Nowy plan** (New plan), pick a date range, and click **Generuj**. The genetic algorithm runs in the background and produces an optimized meal schedule respecting all constraints. You can fine-tune per-day difficulty limits and cumulative difficulty budgets before generating.
+Go to **New plan**, pick a date range, and click **Generate**. The genetic algorithm runs in the background and produces an optimized meal schedule respecting all constraints. You can fine-tune per-day difficulty limits and cumulative difficulty budgets before generating.
 
 ### 4. Review and adjust
 
 On the plan detail page:
 - Click any day card to **pin a specific dish** or mark it as skip
 - Click **✏️** next to the plan name to **rename** the plan
-- Click **Regeneruj** — unlocked future days are regenerated, past days and pinned days stay
+- Click **Regenerate** — unlocked future days are regenerated, past days and pinned days stay
 - Month boundaries are visually marked in the calendar
 
 ### 5. Continue a plan
 
-Click **Kontynuuj** on any plan to create a follow-up. Select a date range from the source plan to carry over (those days become locked in the new plan), set the new end date, and generate.
+Click **Continue** on any plan to create a follow-up. Select a date range from the source plan to carry over (those days become locked in the new plan), set the new end date, and generate.
 
 ### 6. Export and share
 
