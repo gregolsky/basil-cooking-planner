@@ -7,7 +7,6 @@ import {
   makeShareUrl,
 } from '../../src/lib/storage/exportImport';
 import { SCHEMA_VERSION } from '../../src/lib/storage/schema';
-import type { AppData } from '../../src/lib/storage/schema';
 
 const baseState = {
   familyName: 'Rodzina Kowalskich',

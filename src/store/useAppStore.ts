@@ -8,7 +8,6 @@ import { SCHEMA_VERSION } from '../lib/storage/schema';
 import { normalizeDishTags } from '../lib/storage/normalize';
 import { cascadeDeleteTag } from '../lib/storage/tagCascade';
 import { duplicatePlanData } from '../lib/plan/duplicate';
-import { uid } from '../lib/utils/id';
 import i18n from '../i18n/index';
 
 interface AppState {
