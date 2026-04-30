@@ -30,6 +30,8 @@ export function SettingsPage() {
   const setTheme = useAppStore((s) => s.setTheme);
   const weekStartDay = useAppStore((s) => s.weekStartDay);
   const setWeekStartDay = useAppStore((s) => s.setWeekStartDay);
+  const sameMeatPenalty = useAppStore((s) => s.sameMeatPenalty);
+  const setSameMeatPenalty = useAppStore((s) => s.setSameMeatPenalty);
   const replaceAll = useAppStore((s) => s.replaceAll);
   const reset = useAppStore((s) => s.reset);
 
@@ -137,6 +139,20 @@ export function SettingsPage() {
             <option value="trattoria">{t('settings.themeTrattoria')}</option>
             <option value="prl">{t('settings.themePrl')}</option>
           </select>
+        </label>
+        <label>
+          {t('settings.sameMeatRule')}
+          <select
+            value={sameMeatPenalty}
+            onChange={(e) => setSameMeatPenalty(Number(e.target.value))}
+            style={{ width: 'fit-content' }}
+          >
+            <option value={1000}>{t('settings.sameMeatStrict')}</option>
+            <option value={300}>{t('settings.sameMeatModerate')}</option>
+            <option value={50}>{t('settings.sameMeatRelaxed')}</option>
+            <option value={0}>{t('settings.sameMeatOff')}</option>
+          </select>
+          <span className="muted" style={{ fontSize: 12 }}>{t('settings.sameMeatHint')}</span>
         </label>
       </div>
 

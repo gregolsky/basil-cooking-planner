@@ -6,6 +6,7 @@ import type { CumulativeLimit } from '../../types/day';
 import type { GAConfig, GAProgress, DecodedPlan } from './types';
 import type { GAWorkerApi } from '../../workers/ga.worker';
 import type { TagDefinition } from '../../types/tag';
+import type { FitnessWeights } from './fitness';
 
 export interface RunInWorkerArgs {
   dishes: Dish[];
@@ -14,6 +15,7 @@ export interface RunInWorkerArgs {
   config?: Partial<GAConfig>;
   cumulativeLimits?: CumulativeLimit[];
   tagDefs?: TagDefinition[];
+  weights?: Partial<FitnessWeights>;
   onProgress?: (p: GAProgress) => void;
 }
 
@@ -41,6 +43,7 @@ export function runGAInWorker(args: RunInWorkerArgs): RunHandle {
         config: args.config,
         cumulativeLimits: args.cumulativeLimits,
         tagDefs: args.tagDefs,
+        weights: args.weights,
       },
       progressProxy,
     )

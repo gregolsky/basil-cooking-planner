@@ -23,6 +23,7 @@ export function PlanDetailPage() {
   const updatePlan = useAppStore((s) => s.updatePlan);
   const deletePlan = useAppStore((s) => s.deletePlan);
   const duplicatePlan = useAppStore((s) => s.duplicatePlan);
+  const sameMeatPenalty = useAppStore((s) => s.sameMeatPenalty);
 
   const dishMap = useMemo(() => new Map(dishes.map((d) => [d.id, d])), [dishes]);
   const [regenId, setRegenId] = useState<string | null>(null);
@@ -60,6 +61,7 @@ export function PlanDetailPage() {
       lockedMeals: locked,
       cumulativeLimits: plan.cumulativeLimits ?? [],
       tagDefs: tagDefinitions,
+      weights: { sameMeatPenalty },
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);

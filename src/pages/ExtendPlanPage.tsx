@@ -29,6 +29,7 @@ export function ExtendPlanPage() {
   const dishes = useAppStore((s) => s.dishes);
   const tagDefinitions = useAppStore((s) => s.tagDefinitions);
   const addPlan = useAppStore((s) => s.addPlan);
+  const sameMeatPenalty = useAppStore((s) => s.sameMeatPenalty);
 
   const planLength = sourcePlan ? sourcePlan.meals.length : 0;
   const [rangeStart, setRangeStart] = useState(() =>
@@ -139,6 +140,7 @@ export function ExtendPlanPage() {
       lockedMeals,
       cumulativeLimits,
       tagDefs: tagDefinitions,
+      weights: { sameMeatPenalty },
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);

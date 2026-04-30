@@ -45,12 +45,8 @@ Click **Continue** on any plan to create a follow-up. Select a date range from t
 
 ### 6. Export and share
 
-From the plan detail page, export as:
-- **PDF** — print-friendly layout
-- **CSV** — semicolon-separated, Excel-friendly
-- **JSON** — full backup of all data (dishes, plans, tags, settings)
-- **Share link** — compressed URL for sharing via messenger
-- **Web Share API** — native share dialog on Android
+- **Print** — click Print on the plan detail page for a print-friendly view (save as PDF from the browser)
+- **JSON backup** — in Settings, download all data (dishes, plans, tags) as a JSON file or copy a compressed share link
 
 ---
 
@@ -58,7 +54,8 @@ From the plan detail page, export as:
 
 **Meal planning**
 - Genetic algorithm generates optimized schedules for any date range
-- Hard constraints: no same meat two days in a row, difficulty caps, tag requirements, tag weekly limits, tag min gap
+- Hard constraints: difficulty caps, tag requirements, tag weekly limits, tag min gap
+- Soft constraint: same-meat rule (strength adjustable in Settings — strict/moderate/relaxed/off)
 - Soft preferences: family ratings, dish variety, repeat penalties, meat diversity (Shannon entropy)
 - Pin any day manually — regeneration respects locked meals
 - Cumulative difficulty budgets for date ranges
@@ -83,10 +80,9 @@ From the plan detail page, export as:
 - Modifiers persist and are respected by every regeneration
 
 **Export & sharing**
-- PDF (white background, Lobster title font, NotoSans for Polish characters)
-- CSV (semicolon-separated, UTF-8 BOM, Excel-friendly)
+- Print / save as PDF — browser print dialog, print-optimised layout
 - Full JSON backup — includes dishes, plans, tags, family name, settings
-- Share via compressed URL or Web Share API (Android)
+- Share via compressed URL (copy to clipboard)
 - Import JSON restores everything including settings
 
 **Themes**
@@ -101,7 +97,6 @@ From the plan detail page, export as:
 - Vite 7 + React 19 + TypeScript
 - Zustand (state), Zod (validation), React Router (hash routing)
 - Web Worker + Comlink — GA runs off the main thread
-- jsPDF + jspdf-autotable — PDF export
 - pako — compressed share links
 - vite-plugin-pwa — service worker, manifest
 

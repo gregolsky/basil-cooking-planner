@@ -15,6 +15,7 @@ interface AppState {
   locale: 'pl' | 'en';
   theme: 'trattoria' | 'prl';
   weekStartDay: 0 | 1;
+  sameMeatPenalty: number;
   dishes: Dish[];
   plans: Plan[];
   activePlanId: string | null;
@@ -24,6 +25,7 @@ interface AppState {
   setLocale: (locale: 'pl' | 'en') => void;
   setTheme: (theme: 'trattoria' | 'prl') => void;
   setWeekStartDay: (day: 0 | 1) => void;
+  setSameMeatPenalty: (value: number) => void;
   upsertDish: (dish: Dish) => void;
   deleteDish: (id: string) => void;
 
@@ -57,6 +59,7 @@ export const useAppStore = create<AppState>()(
       locale: 'pl',
       theme: 'trattoria',
       weekStartDay: 1,
+      sameMeatPenalty: 1000,
       dishes: [],
       plans: [],
       activePlanId: null,
@@ -70,6 +73,7 @@ export const useAppStore = create<AppState>()(
         set({ theme });
       },
       setWeekStartDay: (day) => set({ weekStartDay: day }),
+      setSameMeatPenalty: (value) => set({ sameMeatPenalty: value }),
 
       upsertDish: (dish) =>
         set((s) => {

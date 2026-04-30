@@ -4,6 +4,7 @@ import type { DayModifier } from '../../types/day';
 import type { TagDefinition } from '../../types/tag';
 import { buildDayContexts } from '../days/capacity';
 import { evaluate } from '../ga/fitness';
+import type { FitnessWeights } from '../ga/fitness';
 
 export interface EvaluatedPlan {
   fitness: number;
@@ -15,9 +16,10 @@ export function evaluatePlan(
   dishes: Dish[],
   dayModifiers: DayModifier[],
   tagDefs: TagDefinition[] = [],
+  weights?: Partial<FitnessWeights>,
 ): EvaluatedPlan {
   const dishMap = new Map(dishes.map((d) => [d.id, d]));
   const days = buildDayContexts(plan.meals.map((m) => m.date), dayModifiers);
-  const { score, violations } = evaluate({ meals: plan.meals, days, dishMap, tagDefs });
+  const { score, violations } = evaluate({ meals: plan.meals, days, dishMap, tagDefs, weights });
   return { fitness: score, violations };
 }

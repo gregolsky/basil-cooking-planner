@@ -11,6 +11,7 @@ import { tournamentSelect, uniformCrossover, mutate } from './operators';
 import type { ScoredChromosome } from './operators';
 import { decode } from './decoder';
 import { evaluate } from './fitness';
+import type { FitnessWeights } from './fitness';
 
 export interface RunGAInput {
   dishes: Dish[];
@@ -19,6 +20,7 @@ export interface RunGAInput {
   config?: Partial<GAConfig>;
   cumulativeLimits?: CumulativeLimit[];
   tagDefs?: TagDefinition[];
+  weights?: Partial<FitnessWeights>;
 }
 
 export interface RunGAOptions {
@@ -37,7 +39,7 @@ export function runGA(input: RunGAInput, options: RunGAOptions = {}): DecodedPla
 
   const scorer = (chromo: Chromosome): ScoredChromosome => {
     const meals = decode(chromo, { days: input.days, dishMap, lockedMeals: lockedMap });
-    const { score } = evaluate({ meals, days: input.days, dishMap, cumulativeLimits: input.cumulativeLimits, tagDefs: input.tagDefs });
+    const { score } = evaluate({ meals, days: input.days, dishMap, cumulativeLimits: input.cumulativeLimits, tagDefs: input.tagDefs, weights: input.weights });
     return { chromo, fitness: score };
   };
 
@@ -84,6 +86,6 @@ export function runGA(input: RunGAInput, options: RunGAOptions = {}): DecodedPla
   }
 
   const meals = decode(best.chromo, { days: input.days, dishMap, lockedMeals: lockedMap });
-  const { score, violations } = evaluate({ meals, days: input.days, dishMap, cumulativeLimits: input.cumulativeLimits, tagDefs: input.tagDefs });
+  const { score, violations } = evaluate({ meals, days: input.days, dishMap, cumulativeLimits: input.cumulativeLimits, tagDefs: input.tagDefs, weights: input.weights });
   return { meals, fitness: score, violations };
 }

@@ -26,6 +26,7 @@ export function GeneratorPage() {
   const dishes = useAppStore((s) => s.dishes);
   const tagDefinitions = useAppStore((s) => s.tagDefinitions);
   const addPlan = useAppStore((s) => s.addPlan);
+  const sameMeatPenalty = useAppStore((s) => s.sameMeatPenalty);
 
   const [start, setStart] = useState(defaultStart);
   const [end, setEnd] = useState(defaultEnd);
@@ -100,6 +101,7 @@ export function GeneratorPage() {
       lockedMeals: [],
       cumulativeLimits,
       tagDefs: tagDefinitions,
+      weights: { sameMeatPenalty },
       onProgress: (p) => setProgress(p),
     });
     setAbortFn(() => abort);

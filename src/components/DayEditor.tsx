@@ -19,6 +19,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
   const tagDefs = useAppStore((s) => s.tagDefinitions);
   const replaceMeal = useAppStore((s) => s.replaceMeal);
   const updatePlan = useAppStore((s) => s.updatePlan);
+  const sameMeatPenalty = useAppStore((s) => s.sameMeatPenalty);
 
   const meal = plan?.meals.find((m) => m.date === date);
   const modifier = (plan?.dayModifiers ?? []).find((m) => m.date === date);
@@ -62,7 +63,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
 
   const reevaluate = () => {
     updatePlan(planId, (p) => {
-      const { fitness, violations } = evaluatePlan(p, dishes, p.dayModifiers ?? [], tagDefs);
+      const { fitness, violations } = evaluatePlan(p, dishes, p.dayModifiers ?? [], tagDefs, { sameMeatPenalty });
       return { ...p, fitness, violations };
     });
   };
