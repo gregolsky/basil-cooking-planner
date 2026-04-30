@@ -1,3 +1,5 @@
+import type { DayModifier, CumulativeLimit } from './day';
+
 export interface PlannedMeal {
   date: string;
   dishId: string | null;
@@ -24,4 +26,6 @@ export interface Plan {
   meals: PlannedMeal[];
   fitness: number;
   violations: Violation[];
+  dayModifiers?: DayModifier[];
+  cumulativeLimits?: CumulativeLimit[];
 }

@@ -16,7 +16,7 @@ import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
 import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
-import type { CumulativeLimit } from '../types/day';
+import type { CumulativeLimit, DayModifier } from '../types/day';
 import { runGAInWorker } from '../lib/ga/runner';
 import { buildLockedMealsForExtend, validateExtendRange } from '../lib/plan/extend';
 
@@ -27,13 +27,7 @@ export function ExtendPlanPage() {
 
   const sourcePlan = useAppStore((s) => s.plans.find((p) => p.id === id) ?? null);
   const dishes = useAppStore((s) => s.dishes);
-  const dayModifiers = useAppStore((s) => s.dayModifiers);
-  const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
-  const clearDayModifier = useAppStore((s) => s.clearDayModifier);
-  const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
   const tagDefinitions = useAppStore((s) => s.tagDefinitions);
-  const upsertCumulativeLimit = useAppStore((s) => s.upsertCumulativeLimit);
-  const deleteCumulativeLimit = useAppStore((s) => s.deleteCumulativeLimit);
   const addPlan = useAppStore((s) => s.addPlan);
 
   const planLength = sourcePlan ? sourcePlan.meals.length : 0;
@@ -47,6 +41,12 @@ export function ExtendPlanPage() {
     sourcePlan ? addDays(sourcePlan.endDate, 7) : toISODate(new Date()),
   );
   const [name, setName] = useState('');
+  const [dayModifiers, setDayModifiers] = useState<DayModifier[]>(
+    () => sourcePlan?.dayModifiers ?? [],
+  );
+  const [cumulativeLimits, setCumulativeLimits] = useState<CumulativeLimit[]>(
+    () => sourcePlan?.cumulativeLimits ?? [],
+  );
   const [dialogOpen, setDialogOpen] = useState(false);
   const [progress, setProgress] = useState({ generation: 0, bestFitness: 0, totalGenerations: 200 });
   const [abortFn, setAbortFn] = useState<(() => void) | null>(null);
@@ -70,6 +70,34 @@ export function ExtendPlanPage() {
   }, [start, end]);
 
   const newDays = rangeDays - carryDays;
+
+  const upsertDayModifier = (mod: DayModifier) => {
+    setDayModifiers((prev) => {
+      const idx = prev.findIndex((m) => m.date === mod.date);
+      if (idx === -1) return [...prev, mod];
+      const next = prev.slice();
+      next[idx] = mod;
+      return next;
+    });
+  };
+
+  const clearDayModifier = (date: string) => {
+    setDayModifiers((prev) => prev.filter((m) => m.date !== date));
+  };
+
+  const upsertCumulativeLimit = (limit: CumulativeLimit) => {
+    setCumulativeLimits((prev) => {
+      const idx = prev.findIndex((l) => l.id === limit.id);
+      if (idx === -1) return [...prev, limit];
+      const next = prev.slice();
+      next[idx] = limit;
+      return next;
+    });
+  };
+
+  const deleteCumulativeLimit = (id: string) => {
+    setCumulativeLimits((prev) => prev.filter((l) => l.id !== id));
+  };
 
   if (!sourcePlan) {
     return (
@@ -127,6 +155,8 @@ export function ExtendPlanPage() {
         meals: result.meals as PlannedMeal[],
         fitness: result.fitness,
         violations: result.violations,
+        dayModifiers,
+        cumulativeLimits,
       };
       addPlan(plan);
       setDialogOpen(false);

@@ -12,11 +12,9 @@ const baseState = {
   familyName: 'Rodzina Kowalskich',
   weekStartDay: 1 as const,
   dishes: [],
-  dayModifiers: [],
   plans: [],
   activePlanId: null,
   tagDefinitions: [],
-  cumulativeLimits: [],
 };
 
 describe('buildAppData', () => {
@@ -29,6 +27,27 @@ describe('buildAppData', () => {
     const data = buildAppData(baseState);
     expect(data.familyName).toBe('Rodzina Kowalskich');
     expect(data.weekStartDay).toBe(1);
+  });
+
+  it('normalizes optional plan fields to empty arrays', () => {
+    const state = {
+      ...baseState,
+      plans: [
+        {
+          id: 'p1',
+          createdAt: '2026-04-20T00:00:00.000Z',
+          startDate: '2026-04-20',
+          endDate: '2026-04-26',
+          meals: [],
+          fitness: 0,
+          violations: [],
+          // dayModifiers and cumulativeLimits intentionally omitted
+        },
+      ],
+    };
+    const data = buildAppData(state);
+    expect(data.plans[0].dayModifiers).toEqual([]);
+    expect(data.plans[0].cumulativeLimits).toEqual([]);
   });
 });
 
@@ -66,6 +85,31 @@ describe('parseJson', () => {
 
   it('throws on valid JSON with wrong schema', async () => {
     await expect(parseJson(JSON.stringify({ schemaVersion: 99 }))).rejects.toThrow();
+  });
+
+  it('migrates v1 JSON (global dayModifiers) to v2 per-plan format', async () => {
+    const v1Json = JSON.stringify({
+      schemaVersion: 1,
+      dishes: [],
+      dayModifiers: [{ date: '2026-05-05', difficultyCap: 2 }],
+      cumulativeLimits: [],
+      plans: [
+        {
+          id: 'p1',
+          createdAt: '2026-05-01T00:00:00.000Z',
+          startDate: '2026-05-04',
+          endDate: '2026-05-10',
+          meals: [],
+          fitness: 0,
+          violations: [],
+        },
+      ],
+      activePlanId: 'p1',
+    });
+    const parsed = await parseJson(v1Json);
+    expect(parsed.schemaVersion).toBe(SCHEMA_VERSION);
+    const plan = parsed.plans[0];
+    expect(plan.dayModifiers.some((m) => m.date === '2026-05-05')).toBe(true);
   });
 });
 

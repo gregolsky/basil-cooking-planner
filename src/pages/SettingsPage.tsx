@@ -18,11 +18,9 @@ export function SettingsPage() {
     familyName: s.familyName,
     weekStartDay: s.weekStartDay,
     dishes: s.dishes,
-    dayModifiers: s.dayModifiers,
     plans: s.plans,
     activePlanId: s.activePlanId,
     tagDefinitions: s.tagDefinitions,
-    cumulativeLimits: s.cumulativeLimits,
   })));
   const familyName = useAppStore((s) => s.familyName);
   const setFamilyName = useAppStore((s) => s.setFamilyName);
@@ -63,11 +61,9 @@ export function SettingsPage() {
         familyName: data.familyName,
         weekStartDay: data.weekStartDay,
         dishes: data.dishes,
-        dayModifiers: data.dayModifiers,
         plans: data.plans,
         activePlanId: data.activePlanId,
         tagDefinitions: data.tagDefinitions ?? [],
-        cumulativeLimits: data.cumulativeLimits ?? [],
       });
       setMessage(t('settings.importSuccess', { dishes: data.dishes.length, plans: data.plans.length }));
     } catch (e) {
@@ -106,6 +102,7 @@ export function SettingsPage() {
               {t('settings.saveName')}
             </button>
           </div>
+          <span className="muted" style={{ fontSize: 12 }}>{t('settings.familyNameHint')}</span>
         </label>
         <label>
           {t('settings.weekStart')}
@@ -117,6 +114,7 @@ export function SettingsPage() {
             <option value={1}>{t('settings.monday')}</option>
             <option value={0}>{t('settings.sunday')}</option>
           </select>
+          <span className="muted" style={{ fontSize: 12 }}>{t('settings.weekStartHint')}</span>
         </label>
         <label>
           {t('settings.language')}

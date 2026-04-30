@@ -71,6 +71,8 @@ const pl = {
   'generator.rangeInvalid': 'Zakres: nieprawidłowy.',
   'generator.rangeNote': 'Plany mogą się nakładać zakresami — to nie jest błąd.',
   'generator.difficultyLimits': 'Limity trudności dni',
+  'generator.difficultyLimitsHint': 'Ustaw maksymalną trudność dania na wybrany dzień. „Auto" pozwala algorytmowi wybrać dowolnie (3 w dni robocze, 5 w weekend).',
+  'generator.cumulativeLimitsHint': 'Ogranicz sumę trudności wszystkich dań w podanym przedziale dat. Przydatne, żeby cały tydzień był lżejszy.',
   'generator.colDay': 'Dzień',
   'generator.colCap': 'Limit trudności',
   'generator.colTags': 'Wymagane etykiety',
@@ -152,6 +154,7 @@ const pl = {
   // Dish form
   'dishform.name': 'Nazwa dania',
   'dishform.meatType': 'Rodzaj mięsa',
+  'dishform.meatTypeHint': 'Algorytm unika powtarzania tego samego rodzaju mięsa w kolejnych dniach.',
   'dishform.difficulty': 'Trudność (1-5)',
   'dishform.difficultyHint': '1 = szybki obiad, 5 = całodniowe gotowanie. Algorytm unika trudnych dań w dni robocze.',
   'dishform.preference': 'Preferencja (1-5)',
@@ -194,6 +197,8 @@ const pl = {
   'settings.familySection': '🌿 Rodzina',
   'settings.familyName': 'Nazwa rodziny',
   'settings.familyNamePlaceholder': 'np. Kowalskich',
+  'settings.familyNameHint': 'Wyświetlana w powitaniu na stronie głównej.',
+  'settings.weekStartHint': 'Wpływa na układ kalendarza oraz sposób liczenia limitów tygodniowych (etykiety z max/tydz.).',
   'settings.saveName': 'Zapisz',
   'settings.nameSaved': 'Nazwa rodziny zapisana.',
   'settings.weekStart': 'Pierwszy dzień tygodnia',
@@ -221,6 +226,8 @@ const pl = {
 
   // Tag manager
   'tags.title': 'Etykiety',
+  'tags.maxPerWeekHint': 'Maks. liczba wystąpień dań z tą etykietą w jednym tygodniu. Algorytm traktuje to jako twarde ograniczenie.',
+  'tags.minGapHint': 'Minimalna liczba dni przerwy między dwoma daniami z tą etykietą.',
   'tags.desc': 'Etykiety opisują dania (np. „niania może", „zamawiane", „wege"). Limity: max razy w tygodniu (np. niania 2×) lub minimalna przerwa w dniach (np. „zamawiane" co najmniej co 14 dni).',
   'tags.namePlaceholder': 'Nazwa (np. niania)',
   'tags.maxPerWeekPlaceholder': 'max/tydz.',

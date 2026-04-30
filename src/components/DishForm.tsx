@@ -61,6 +61,7 @@ export function DishForm({ initial, onSubmit, onCancel }: Props) {
               <option key={m} value={m}>{t(`meat.${m}`)}</option>
             ))}
           </select>
+          <span className="muted" style={{ fontSize: 12 }}>{t('dishform.meatTypeHint')}</span>
         </label>
 
         <label>

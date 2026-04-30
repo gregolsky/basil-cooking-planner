@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import type { Dish, MeatType } from '../types/dish';
+import type { DayModifier } from '../types/day';
 import { formatDateLocale, weekdayLocale } from '../lib/utils/date';
 import { evaluatePlan } from '../lib/plan/evaluate';
 import { TagPicker } from './TagPicker';
@@ -15,14 +16,12 @@ interface Props {
 export function DayEditor({ planId, date, onClose }: Props) {
   const plan = useAppStore((s) => s.plans.find((p) => p.id === planId));
   const dishes = useAppStore((s) => s.dishes);
-  const dayModifiers = useAppStore((s) => s.dayModifiers);
   const tagDefs = useAppStore((s) => s.tagDefinitions);
   const replaceMeal = useAppStore((s) => s.replaceMeal);
   const updatePlan = useAppStore((s) => s.updatePlan);
-  const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
 
   const meal = plan?.meals.find((m) => m.date === date);
-  const modifier = dayModifiers.find((m) => m.date === date);
+  const modifier = (plan?.dayModifiers ?? []).find((m) => m.date === date);
 
   const { t, i18n } = useTranslation();
   const [query, setQuery] = useState('');
@@ -41,9 +40,29 @@ export function DayEditor({ planId, date, onClose }: Props) {
 
   if (!plan || !meal) return null;
 
+  const upsertModifier = (patch: Partial<DayModifier>) => {
+    updatePlan(planId, (p) => {
+      const mods = p.dayModifiers ?? [];
+      const idx = mods.findIndex((m) => m.date === date);
+      const existing = idx >= 0 ? mods[idx] : { date };
+      const next = { ...existing, ...patch };
+      const isEmpty = next.difficultyCap === undefined && !next.skip && !next.requiresTags?.length && !next.note;
+      let newMods: DayModifier[];
+      if (isEmpty) {
+        newMods = mods.filter((_, i) => i !== idx);
+      } else if (idx >= 0) {
+        newMods = mods.slice();
+        newMods[idx] = next as DayModifier;
+      } else {
+        newMods = [...mods, next as DayModifier];
+      }
+      return { ...p, dayModifiers: newMods };
+    });
+  };
+
   const reevaluate = () => {
     updatePlan(planId, (p) => {
-      const { fitness, violations } = evaluatePlan(p, dishes, dayModifiers, tagDefs);
+      const { fitness, violations } = evaluatePlan(p, dishes, p.dayModifiers ?? [], tagDefs);
       return { ...p, fitness, violations };
     });
   };
@@ -66,10 +85,8 @@ export function DayEditor({ planId, date, onClose }: Props) {
   const setSkip = (on: boolean) => {
     if (on) {
       replaceMeal(planId, date, { date, dishId: null, isLeftover: false, locked: true });
-      upsertDayModifier({ ...(modifier ?? { date }), date, skip: true });
-    } else {
-      upsertDayModifier({ ...(modifier ?? { date }), date, skip: false });
     }
+    upsertModifier({ skip: on });
     reevaluate();
   };
 
@@ -114,7 +131,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
                 tagDefs={tagDefs}
                 selected={modifier?.requiresTags ?? []}
                 onChange={(tags) => {
-                  upsertDayModifier({ ...(modifier ?? { date }), date, requiresTags: tags });
+                  upsertModifier({ requiresTags: tags });
                   reevaluate();
                 }}
               />

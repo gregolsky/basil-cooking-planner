@@ -1,27 +1,28 @@
 import { deflate, inflate } from 'pako';
-import { appDataSchema, SCHEMA_VERSION } from './schema';
+import { appDataSchema, SCHEMA_VERSION, migrateV1toV2 } from './schema';
 import type { AppData } from './schema';
+import type { Plan } from '../../types/plan';
 
 export function buildAppData(state: {
   familyName: string | null;
   weekStartDay: 0 | 1;
   dishes: AppData['dishes'];
-  dayModifiers: AppData['dayModifiers'];
-  plans: AppData['plans'];
+  plans: Plan[];
   activePlanId: string | null;
   tagDefinitions: AppData['tagDefinitions'];
-  cumulativeLimits: AppData['cumulativeLimits'];
 }): AppData {
   return {
     schemaVersion: SCHEMA_VERSION,
     familyName: state.familyName,
     weekStartDay: state.weekStartDay,
     dishes: state.dishes,
-    dayModifiers: state.dayModifiers,
-    plans: state.plans,
+    plans: state.plans.map((p) => ({
+      ...p,
+      dayModifiers: p.dayModifiers ?? [],
+      cumulativeLimits: p.cumulativeLimits ?? [],
+    })),
     activePlanId: state.activePlanId,
     tagDefinitions: state.tagDefinitions,
-    cumulativeLimits: state.cumulativeLimits,
   };
 }
 
@@ -33,7 +34,7 @@ export function exportJson(data: AppData): Blob {
 export async function parseJson(file: File | Blob | string): Promise<AppData> {
   const text = typeof file === 'string' ? file : await file.text();
   const raw = JSON.parse(text);
-  return appDataSchema.parse(raw);
+  return appDataSchema.parse(migrateV1toV2(raw));
 }
 
 function b64urlEncode(bytes: Uint8Array): string {
@@ -60,7 +61,7 @@ export function decodeLink(encoded: string): AppData {
   const compressed = b64urlDecode(encoded);
   const inflated = inflate(compressed);
   const json = new TextDecoder().decode(inflated);
-  return appDataSchema.parse(JSON.parse(json));
+  return appDataSchema.parse(migrateV1toV2(JSON.parse(json)));
 }
 
 export function makeShareUrl(encoded: string): string {

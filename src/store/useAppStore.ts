@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { Dish } from '../types/dish';
-import type { DayModifier, CumulativeLimit } from '../types/day';
 import type { Plan, PlannedMeal } from '../types/plan';
 import type { TagDefinition } from '../types/tag';
 import { SCHEMA_VERSION } from '../lib/storage/schema';
@@ -17,11 +16,9 @@ interface AppState {
   theme: 'trattoria' | 'prl';
   weekStartDay: 0 | 1;
   dishes: Dish[];
-  dayModifiers: DayModifier[];
   plans: Plan[];
   activePlanId: string | null;
   tagDefinitions: TagDefinition[];
-  cumulativeLimits: CumulativeLimit[];
 
   setFamilyName: (name: string) => void;
   setLocale: (locale: 'pl' | 'en') => void;
@@ -32,12 +29,6 @@ interface AppState {
 
   upsertTag: (tag: TagDefinition) => void;
   deleteTag: (id: string) => void;
-
-  upsertDayModifier: (mod: DayModifier) => void;
-  clearDayModifier: (date: string) => void;
-
-  upsertCumulativeLimit: (limit: CumulativeLimit) => void;
-  deleteCumulativeLimit: (id: string) => void;
 
   addPlan: (plan: Plan) => void;
   updatePlan: (id: string, updater: (p: Plan) => Plan) => void;
@@ -51,11 +42,9 @@ interface AppState {
     familyName?: string | null;
     weekStartDay?: 0 | 1;
     dishes: Dish[];
-    dayModifiers: DayModifier[];
     plans: Plan[];
     activePlanId: string | null;
     tagDefinitions: TagDefinition[];
-    cumulativeLimits?: CumulativeLimit[];
   }) => void;
   reset: () => void;
 }
@@ -69,11 +58,9 @@ export const useAppStore = create<AppState>()(
       theme: 'trattoria',
       weekStartDay: 1,
       dishes: [],
-      dayModifiers: [],
       plans: [],
       activePlanId: null,
       tagDefinitions: [],
-      cumulativeLimits: [],
 
       setFamilyName: (name) => set({ familyName: name.trim() || null }),
       setLocale: (locale) => { i18n.changeLanguage(locale); set({ locale }); },
@@ -107,30 +94,6 @@ export const useAppStore = create<AppState>()(
 
       deleteTag: (id) =>
         set((s) => cascadeDeleteTag(id, s)),
-
-      upsertDayModifier: (mod) =>
-        set((s) => {
-          const idx = s.dayModifiers.findIndex((m) => m.date === mod.date);
-          if (idx === -1) return { dayModifiers: [...s.dayModifiers, mod] };
-          const next = s.dayModifiers.slice();
-          next[idx] = mod;
-          return { dayModifiers: next };
-        }),
-
-      clearDayModifier: (date) =>
-        set((s) => ({ dayModifiers: s.dayModifiers.filter((m) => m.date !== date) })),
-
-      upsertCumulativeLimit: (limit) =>
-        set((s) => {
-          const idx = s.cumulativeLimits.findIndex((l) => l.id === limit.id);
-          if (idx === -1) return { cumulativeLimits: [...s.cumulativeLimits, limit] };
-          const next = s.cumulativeLimits.slice();
-          next[idx] = limit;
-          return { cumulativeLimits: next };
-        }),
-
-      deleteCumulativeLimit: (id) =>
-        set((s) => ({ cumulativeLimits: s.cumulativeLimits.filter((l) => l.id !== id) })),
 
       addPlan: (plan) =>
         set((s) => ({ plans: [...s.plans, plan], activePlanId: plan.id })),
@@ -170,27 +133,59 @@ export const useAppStore = create<AppState>()(
           ...(data.familyName !== undefined ? { familyName: data.familyName } : {}),
           ...(data.weekStartDay !== undefined ? { weekStartDay: data.weekStartDay } : {}),
           dishes: normalizeDishTags(data.dishes, data.tagDefinitions),
-          dayModifiers: data.dayModifiers,
           plans: data.plans,
           activePlanId: data.activePlanId,
           tagDefinitions: data.tagDefinitions,
-          cumulativeLimits: data.cumulativeLimits ?? [],
         }),
 
       reset: () =>
         set({
           familyName: null,
           dishes: [],
-          dayModifiers: [],
           plans: [],
           activePlanId: null,
           tagDefinitions: [],
-          cumulativeLimits: [],
         }),
     }),
     {
       name: 'family-cooking-planner',
       storage: createJSONStorage(() => localStorage),
+      version: 2,
+      migrate: (persistedState: unknown, version: number) => {
+        if (version < 2) {
+          const state = persistedState as Record<string, unknown>;
+          const globalModifiers: Array<Record<string, unknown>> =
+            Array.isArray(state['dayModifiers']) ? (state['dayModifiers'] as Array<Record<string, unknown>>) : [];
+          const globalLimits: Array<Record<string, unknown>> =
+            Array.isArray(state['cumulativeLimits']) ? (state['cumulativeLimits'] as Array<Record<string, unknown>>) : [];
+
+          const plans = Array.isArray(state['plans'])
+            ? (state['plans'] as Array<Record<string, unknown>>).map((plan) => ({
+                ...plan,
+                dayModifiers: globalModifiers.filter(
+                  (m) => typeof m['date'] === 'string' &&
+                    typeof plan['startDate'] === 'string' &&
+                    typeof plan['endDate'] === 'string' &&
+                    m['date'] >= (plan['startDate'] as string) &&
+                    m['date'] <= (plan['endDate'] as string),
+                ),
+                cumulativeLimits: globalLimits.filter(
+                  (l) => typeof l['startDate'] === 'string' &&
+                    typeof l['endDate'] === 'string' &&
+                    typeof plan['startDate'] === 'string' &&
+                    typeof plan['endDate'] === 'string' &&
+                    (l['startDate'] as string) <= (plan['endDate'] as string) &&
+                    (l['endDate'] as string) >= (plan['startDate'] as string),
+                ),
+              }))
+            : [];
+
+          const { dayModifiers: _dm, cumulativeLimits: _cl, ...rest } = state;
+          void _dm; void _cl;
+          return { ...rest, schemaVersion: SCHEMA_VERSION, plans };
+        }
+        return persistedState;
+      },
       onRehydrateStorage: () => (state) => {
         if (!state) return;
         const normalized = normalizeDishTags(state.dishes, state.tagDefinitions);

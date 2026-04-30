@@ -157,3 +157,39 @@ test('extend plan: date range carry-over creates new plan with locked days', asy
     }
   }
 });
+
+test('per-plan dayModifiers: cap set in Plan A does not leak into new Plan B generator', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Dania' }).click();
+  for (const d of SEED_DISHES) {
+    await addDish(page, d);
+  }
+
+  // Create Plan A with a custom difficulty cap on the first day (May 4)
+  await page.getByRole('link', { name: 'Nowy plan', exact: true }).click();
+  await page.getByLabel('Nazwa planu (opcjonalnie)').fill('Plan A');
+  await page.getByLabel('Data początkowa').fill('2026-05-04');
+  await page.getByLabel('Data końcowa').fill('2026-05-10');
+
+  // Open the difficulty limits section and set cap=2 on May 4
+  await page.getByText('Limity trudności dni').click();
+  const capSelects = page.locator('select[value]');
+  // The first cap select corresponds to May 4
+  await capSelects.first().selectOption('2');
+
+  await page.getByRole('button', { name: 'Generuj plan' }).click();
+  await expect(page.getByRole('heading', { name: 'Plan A' })).toBeVisible({ timeout: 60_000 });
+
+  // Navigate to new plan generator — modifiers should NOT be pre-filled
+  await page.getByRole('link', { name: 'Nowy plan', exact: true }).click();
+  await page.getByLabel('Data początkowa').fill('2026-05-04');
+  await page.getByLabel('Data końcowa').fill('2026-05-10');
+
+  // Open difficulty limits section and check that May 4 shows "auto" (empty value)
+  await page.getByText('Limity trudności dni').click();
+  const firstCapSelect = page.locator('select').filter({ hasText: 'auto' }).first();
+  await expect(firstCapSelect).toBeVisible();
+  // Verify the first day cap is "auto" (not "2" from Plan A)
+  const capValue = await page.locator('table select').first().inputValue();
+  expect(capValue, 'Difficulty cap from Plan A must not leak into new plan generator').toBe('');
+});

@@ -19,8 +19,6 @@ export function PlanDetailPage() {
 
   const plan = useAppStore((s) => s.plans.find((p) => p.id === id) ?? null);
   const dishes = useAppStore((s) => s.dishes);
-  const dayModifiers = useAppStore((s) => s.dayModifiers);
-  const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
   const tagDefinitions = useAppStore((s) => s.tagDefinitions);
   const updatePlan = useAppStore((s) => s.updatePlan);
   const deletePlan = useAppStore((s) => s.deletePlan);
@@ -54,13 +52,13 @@ export function PlanDetailPage() {
 
     const locked = getLockedMealsForRegen(plan.meals, toISODate(new Date()));
     const dates = listDates(plan.startDate, plan.endDate);
-    const dayContexts = buildDayContexts(dates, dayModifiers);
+    const dayContexts = buildDayContexts(dates, plan.dayModifiers ?? []);
 
     const { promise, abort } = runGAInWorker({
       dishes,
       days: dayContexts,
       lockedMeals: locked,
-      cumulativeLimits,
+      cumulativeLimits: plan.cumulativeLimits ?? [],
       tagDefs: tagDefinitions,
       onProgress: (p) => setProgress(p),
     });

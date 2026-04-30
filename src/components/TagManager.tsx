@@ -35,7 +35,7 @@ export function TagManager() {
         {t('tags.desc')}
       </div>
 
-      <div className="row">
+      <div className="row" style={{ flexWrap: 'wrap', gap: 8, alignItems: 'flex-start' }}>
         <input
           type="text"
           placeholder={t('tags.namePlaceholder')}
@@ -43,22 +43,28 @@ export function TagManager() {
           onChange={(e) => setDraft({ ...draft, name: e.target.value })}
           className="grow"
         />
-        <input
-          type="number"
-          placeholder={t('tags.maxPerWeekPlaceholder')}
-          min={1}
-          value={draft.maxPerWeek ?? ''}
-          onChange={(e) => setDraft({ ...draft, maxPerWeek: e.target.value ? Number(e.target.value) : undefined })}
-          style={{ width: 110 }}
-        />
-        <input
-          type="number"
-          placeholder={t('tags.minGapPlaceholder')}
-          min={1}
-          value={draft.minGapDays ?? ''}
-          onChange={(e) => setDraft({ ...draft, minGapDays: e.target.value ? Number(e.target.value) : undefined })}
-          style={{ width: 140 }}
-        />
+        <div className="stack" style={{ gap: 2 }}>
+          <input
+            type="number"
+            placeholder={t('tags.maxPerWeekPlaceholder')}
+            min={1}
+            value={draft.maxPerWeek ?? ''}
+            onChange={(e) => setDraft({ ...draft, maxPerWeek: e.target.value ? Number(e.target.value) : undefined })}
+            style={{ width: 110 }}
+          />
+          <span className="muted" style={{ fontSize: 11 }}>{t('tags.maxPerWeekHint')}</span>
+        </div>
+        <div className="stack" style={{ gap: 2 }}>
+          <input
+            type="number"
+            placeholder={t('tags.minGapPlaceholder')}
+            min={1}
+            value={draft.minGapDays ?? ''}
+            onChange={(e) => setDraft({ ...draft, minGapDays: e.target.value ? Number(e.target.value) : undefined })}
+            style={{ width: 140 }}
+          />
+          <span className="muted" style={{ fontSize: 11 }}>{t('tags.minGapHint')}</span>
+        </div>
         <button onClick={addTag} disabled={!draft.name.trim()}>{t('tags.add')}</button>
       </div>
 

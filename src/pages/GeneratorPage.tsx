@@ -8,7 +8,7 @@ import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
 import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
-import type { CumulativeLimit } from '../types/day';
+import type { CumulativeLimit, DayModifier } from '../types/day';
 import { runGAInWorker } from '../lib/ga/runner';
 import { TagPicker } from '../components/TagPicker';
 
@@ -24,18 +24,14 @@ export function GeneratorPage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const dishes = useAppStore((s) => s.dishes);
-  const dayModifiers = useAppStore((s) => s.dayModifiers);
-  const upsertDayModifier = useAppStore((s) => s.upsertDayModifier);
-  const clearDayModifier = useAppStore((s) => s.clearDayModifier);
-  const cumulativeLimits = useAppStore((s) => s.cumulativeLimits);
   const tagDefinitions = useAppStore((s) => s.tagDefinitions);
-  const upsertCumulativeLimit = useAppStore((s) => s.upsertCumulativeLimit);
-  const deleteCumulativeLimit = useAppStore((s) => s.deleteCumulativeLimit);
   const addPlan = useAppStore((s) => s.addPlan);
 
   const [start, setStart] = useState(defaultStart);
   const [end, setEnd] = useState(defaultEnd);
   const [name, setName] = useState('');
+  const [dayModifiers, setDayModifiers] = useState<DayModifier[]>([]);
+  const [cumulativeLimits, setCumulativeLimits] = useState<CumulativeLimit[]>([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [progress, setProgress] = useState({ generation: 0, bestFitness: 0, totalGenerations: 0 });
   const [abortFn, setAbortFn] = useState<(() => void) | null>(null);
@@ -53,6 +49,34 @@ export function GeneratorPage() {
   useEffect(() => {
     if (end < start) setEnd(start);
   }, [start, end]);
+
+  const upsertDayModifier = (mod: DayModifier) => {
+    setDayModifiers((prev) => {
+      const idx = prev.findIndex((m) => m.date === mod.date);
+      if (idx === -1) return [...prev, mod];
+      const next = prev.slice();
+      next[idx] = mod;
+      return next;
+    });
+  };
+
+  const clearDayModifier = (date: string) => {
+    setDayModifiers((prev) => prev.filter((m) => m.date !== date));
+  };
+
+  const upsertCumulativeLimit = (limit: CumulativeLimit) => {
+    setCumulativeLimits((prev) => {
+      const idx = prev.findIndex((l) => l.id === limit.id);
+      if (idx === -1) return [...prev, limit];
+      const next = prev.slice();
+      next[idx] = limit;
+      return next;
+    });
+  };
+
+  const deleteCumulativeLimit = (id: string) => {
+    setCumulativeLimits((prev) => prev.filter((l) => l.id !== id));
+  };
 
   const handleGenerate = async () => {
     if (dishes.length === 0) {
@@ -91,6 +115,8 @@ export function GeneratorPage() {
         meals: result.meals as PlannedMeal[],
         fitness: result.fitness,
         violations: result.violations,
+        dayModifiers,
+        cumulativeLimits,
       };
       addPlan(plan);
       setDialogOpen(false);
@@ -146,6 +172,7 @@ export function GeneratorPage() {
         {rangeDays > 0 && (
           <details>
             <summary style={{ cursor: 'pointer', fontWeight: 600 }}>{t('generator.difficultyLimits')}</summary>
+            <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>{t('generator.difficultyLimitsHint')}</div>
             <div style={{ marginTop: 10, overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
                 <thead>
@@ -201,6 +228,7 @@ export function GeneratorPage() {
         {rangeDays > 0 && (
           <details>
             <summary style={{ cursor: 'pointer', fontWeight: 600 }}>{t('generator.cumulativeLimits')}</summary>
+            <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>{t('generator.cumulativeLimitsHint')}</div>
             <div style={{ marginTop: 10 }} className="stack">
               {cumulativeLimits.length === 0 && (
                 <div className="muted" style={{ fontSize: 13 }}>{t('generator.noLimits')}</div>

@@ -42,7 +42,6 @@ export function ImportPage() {
       const data = decodeLink(encoded);
       replaceAll({
         dishes: data.dishes,
-        dayModifiers: data.dayModifiers,
         plans: data.plans,
         activePlanId: data.activePlanId,
         tagDefinitions: data.tagDefinitions ?? [],

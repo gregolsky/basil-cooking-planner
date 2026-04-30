@@ -27,11 +27,9 @@ export function ExportDialog({ plan, dishMap, onClose }: Props) {
     familyName: s.familyName,
     weekStartDay: s.weekStartDay,
     dishes: s.dishes,
-    dayModifiers: s.dayModifiers,
     plans: s.plans,
     activePlanId: s.activePlanId,
     tagDefinitions: s.tagDefinitions,
-    cumulativeLimits: s.cumulativeLimits,
   })));
   const [busy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);

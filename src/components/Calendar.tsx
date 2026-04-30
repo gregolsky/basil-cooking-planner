@@ -14,7 +14,6 @@ interface Props {
 export function Calendar({ plan }: Props) {
   const { i18n } = useTranslation();
   const dishes = useAppStore((s) => s.dishes);
-  const dayModifiers = useAppStore((s) => s.dayModifiers);
   const tagDefs = useAppStore((s) => s.tagDefinitions);
   const weekStartDay = useAppStore((s) => s.weekStartDay);
   const dishMap = useMemo(() => new Map(dishes.map((d) => [d.id, d])), [dishes]);
@@ -22,7 +21,8 @@ export function Calendar({ plan }: Props) {
   const [editingDate, setEditingDate] = useState<string | null>(null);
 
   const dates = plan.meals.map((m) => m.date);
-  const days = useMemo(() => buildDayContexts(dates, dayModifiers), [dates, dayModifiers]);
+  const planDayModifiers = plan.dayModifiers ?? [];
+  const days = useMemo(() => buildDayContexts(dates, planDayModifiers), [dates, planDayModifiers]);
 
   const labels = calendarDayLabels(i18n.language, weekStartDay);
   const firstDow = fromISODate(plan.startDate).getDay(); // 0=Sun

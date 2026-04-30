@@ -69,6 +69,8 @@ const en = {
   'generator.rangeInvalid': 'Range: invalid.',
   'generator.rangeNote': 'Plans can overlap in date ranges — that\'s not an error.',
   'generator.difficultyLimits': 'Day difficulty limits',
+  'generator.difficultyLimitsHint': 'Set a maximum dish difficulty for a specific day. "Auto" lets the algorithm choose freely (3 on weekdays, 5 on weekends).',
+  'generator.cumulativeLimitsHint': 'Limit the total difficulty sum across a date range. Useful to keep a whole week lighter overall.',
   'generator.colDay': 'Day',
   'generator.colCap': 'Difficulty cap',
   'generator.colTags': 'Required tags',
@@ -150,6 +152,7 @@ const en = {
   // Dish form
   'dishform.name': 'Dish name',
   'dishform.meatType': 'Meat type',
+  'dishform.meatTypeHint': 'The algorithm avoids repeating the same meat type on consecutive days.',
   'dishform.difficulty': 'Difficulty (1-5)',
   'dishform.difficultyHint': '1 = quick meal, 5 = all-day cooking. The algorithm avoids hard dishes on weekdays.',
   'dishform.preference': 'Preference (1-5)',
@@ -192,6 +195,8 @@ const en = {
   'settings.familySection': '🌿 Family',
   'settings.familyName': 'Family name',
   'settings.familyNamePlaceholder': 'e.g. Smiths',
+  'settings.familyNameHint': 'Displayed in the greeting on the main page.',
+  'settings.weekStartHint': 'Affects the calendar grid layout and how weekly tag limits (max/week) are calculated.',
   'settings.saveName': 'Save',
   'settings.nameSaved': 'Family name saved.',
   'settings.weekStart': 'First day of week',
@@ -219,6 +224,8 @@ const en = {
 
   // Tag manager
   'tags.title': 'Tags',
+  'tags.maxPerWeekHint': 'Maximum number of times dishes with this tag can appear in a single week. The algorithm treats this as a hard constraint.',
+  'tags.minGapHint': 'Minimum number of days between two dishes sharing this tag.',
   'tags.desc': 'Tags describe dishes (e.g. "babysitter ok", "takeout", "vegan"). Limits: max times per week (e.g. babysitter 2×) or minimum gap in days (e.g. "takeout" at least every 14 days).',
   'tags.namePlaceholder': 'Name (e.g. takeout)',
   'tags.maxPerWeekPlaceholder': 'max/week',
