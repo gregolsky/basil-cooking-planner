@@ -2,7 +2,7 @@
   <img src="public/basil-logo.png" alt="Basil" height="120" />
   <h1>Basil — family cooking planner</h1>
   <p>Polish-language PWA for planning weekly family dinners</p>
-  <a href="https://gregolsky.github.io/basil-cooking-planner/">🌿 Open app</a>
+  <a href="https://gregolsky.pl/basil-cooking-planner/">🌿 Open app</a>
 </div>
 
 ---
