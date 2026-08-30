@@ -67,6 +67,8 @@ GA pipeline per generation:
 
 Two visual themes: **Trattoria della Famiglia** (default, Italian restaurant) and **PRL** (Polish People's Republic canteen). The active theme is stored as `'trattoria' | 'prl'` in the Zustand store and applied by setting `document.documentElement.dataset.theme = 'prl'` (or removing the attribute for Trattoria). All PRL overrides are scoped to `html[data-theme="prl"]` in `src/styles/theme.css` using hardcoded hex values (not `var()` references) to avoid CSS cascade issues.
 
+**Fonts.** Each theme defines three CSS variables: `--font-display` (headings — h1/h2 only, plus `.hero-title` and the welcome modal), `--font-body` (a narrow decorative accent — currently only `.day-dish` and `.hero-sub`), and `--font-ui` (the ambient default, applied to `html, body` and to virtually every concrete UI element). Trattoria uses Fraunces for both `--font-display` and `--font-body` (its italic axis covers the accent role) and Lato for `--font-ui`. PRL uses Oswald / Roboto Condensed / Roboto respectively. Keep `--font-ui` as the `html, body` default — letting `--font-body` leak into that role reintroduces serif text in places like `.muted` or plain unstyled text that should read as UI copy.
+
 ### i18n
 
 `react-i18next` with two locales: `pl` (default) and `en`. Translation files are `src/i18n/pl.ts` and `src/i18n/en.ts`. Always add new keys to **both** files. Violation messages produced inside the GA Web Worker are Polish-only (i18n is not available in the worker context).
@@ -112,6 +114,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `extend.ts` — `buildLockedMealsForExtend` (date range → locked meals), `validateExtendRange`
 - `duplicate.ts` — `duplicatePlanData` (deep-copy a plan with new ID)
 - `evaluate.ts` — `reevaluatePlan` (re-score after manual pin/swap)
+- `pastDays.ts` — `isPastDate`, `splitByPast` (splits date-bearing items into past/upcoming for the calendar's collapsed history view)
 
 #### Storage (`src/lib/storage/`)
 - `schema.ts` — Zod schemas for JSON import validation (`SCHEMA_VERSION = 1`)
@@ -132,6 +135,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### Utils (`src/lib/utils/`)
 - `date.ts` — ISO date helpers (`toISODate`, `fromISODate`, `addDays`, `daysBetween`, `listDates`), locale formatting (`formatDateLocale`, `formatMonthLocale`, `weekdayShortLocale`, `calendarDayLabels`), Polish-only legacy functions for GA worker context
 - `id.ts` — `uid()` UUID generator
+- `meat.ts` — `MEAT_EMOJI` lookup shared by `DayCard`, `DishList`, `DayEditor`
 
 #### i18n (`src/i18n/`)
 - `index.ts` — react-i18next config
@@ -143,7 +147,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 
 #### Pages (`src/pages/`)
 - `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
-- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate, violations panel
+- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (extend/duplicate/delete) live behind an overflow menu
 - `GeneratorPage.tsx` — new plan form (date range, day modifiers, cumulative limits)
 - `ExtendPlanPage.tsx` — continue plan form (source range picker, end date)
 - `DishesPage.tsx` — dish library with add/edit/delete
@@ -152,10 +156,11 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 
 #### Components (`src/components/`)
 - `NavBar.tsx` — top navigation with greeting
-- `Calendar.tsx` — 7-column grid with month banners, padding, day labels
-- `DayCard.tsx` — single day in the calendar (dish, meat emoji, difficulty cap, locked/leftover badges)
-- `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip
-- `PlanSummary.tsx` — unique dishes count, meat types count, fitness score, export button
+- `Calendar.tsx` — 7-column grid with month banners, padding, day labels; splits meals into a collapsed past-days grid (hidden by default, excluded from print) and an always-visible upcoming grid via `splitByPast`
+- `DayCard.tsx` — single day in the calendar (dish, meat emoji, `DifficultyBar` for the day's cap, locked/leftover badges); a dedicated pin button toggles `meal.locked` directly with no re-evaluation; flags a red over-cap badge when the assigned dish's difficulty exceeds the day's cap
+- `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip; dish search/filters are sticky at the top of the picker so they stay reachable above an on-screen keyboard, day settings (skip, required tags) are collapsed in a `<details>`
+- `DifficultyBar.tsx` — renders a 1..5 value as filled/unfilled horizontal segments (dish difficulty, day difficulty cap)
+- `PlanSummary.tsx` — unique dishes count, meat types count, fitness score as bare badges (no wrapper), meant to sit inline in the plan header next to the date range
 - `ViolationsPanel.tsx` — grouped display of hard/soft/info violations
 - `GenerateDialog.tsx` — progress modal during GA run
 - `ExportDialog.tsx` — export options (CSV, PDF, JSON, share link)

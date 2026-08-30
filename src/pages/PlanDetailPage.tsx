@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
@@ -31,6 +31,22 @@ export function PlanDetailPage() {
   const [abortFn, setAbortFn] = useState<(() => void) | null>(null);
   const [editingName, setEditingName] = useState(false);
   const [nameValue, setNameValue] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false); };
+    document.addEventListener('mousedown', onClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
 
   if (!plan) {
     return (
@@ -89,7 +105,7 @@ export function PlanDetailPage() {
 
   return (
     <div className="page">
-      <div className="page-header">
+      <div className="page-header" style={{ alignItems: 'flex-start' }}>
         {editingName ? (
           <form
             className="row"
@@ -111,38 +127,58 @@ export function PlanDetailPage() {
             <button type="button" className="ghost" onClick={() => setEditingName(false)}>{t('common.cancel')}</button>
           </form>
         ) : (
-          <h1 className="row" style={{ gap: 8, alignItems: 'center' }}>
-            {plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}
-            <button
-              className="ghost small no-print"
-              style={{ fontSize: '0.9rem', border: 'none', background: 'none', padding: 0 }}
-              onClick={() => { setNameValue(plan.name ?? ''); setEditingName(true); }}
-              aria-label={t('plans.renamePlan')}
-            >✏️</button>
-          </h1>
+          <div className="grow">
+            <h1 className="row" style={{ gap: 8, alignItems: 'center' }}>
+              {plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}
+              <button
+                className="icon-btn no-print"
+                onClick={() => { setNameValue(plan.name ?? ''); setEditingName(true); }}
+                aria-label={t('plans.renamePlan')}
+              >✏️</button>
+            </h1>
+            <div className="row plan-meta no-print">
+              <span>{formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {t('plans.days', { count: days })}</span>
+              <PlanSummary plan={plan} dishMap={dishMap} />
+              {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span>}
+            </div>
+          </div>
         )}
-        {!editingName && <Link to="/plans"><button className="ghost">{t('extend.backToPlans')}</button></Link>}
+        {!editingName && <Link to="/plans"><button className="ghost small">{t('common.back')}</button></Link>}
       </div>
 
-      <div className="card no-print">
-        <div className="row" style={{ flexWrap: 'wrap', gap: 8, alignItems: 'center' }}>
-          <div className="muted" style={{ flexGrow: 1 }}>
-            {formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {t('plans.days', { count: days })}
-            {hard > 0 && <> · <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span></>}
-          </div>
-          {!allInPast && (
-            <button className="ghost" disabled={regenId !== null} onClick={handleRegen}>
-              {t('plans.regenerate')}
-            </button>
-          )}
-          <Link to={`/extend-plan/${plan.id}`}>
-            <button className="small ghost">{t('plans.extend')}</button>
-          </Link>
-          <button className="small ghost" onClick={() => { window.print(); }}>{t('plans.print')}</button>
-          <button className="small ghost" onClick={() => duplicatePlan(plan.id)}>{t('plans.duplicate')}</button>
-          <button className="small danger" onClick={() => { if (confirm(t('plans.confirmDelete'))) { deletePlan(plan.id); window.location.hash = '#/plans'; } }}>
-            {t('plans.delete')}
+      <div className="row no-print" style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
+        {!allInPast && (
+          <button className="small ghost" disabled={regenId !== null} onClick={handleRegen}>
+            {t('plans.regenerate')}
           </button>
+        )}
+        <button className="small ghost" onClick={() => { window.print(); }}>{t('plans.print')}</button>
+        <div className="menu-dropdown" ref={menuRef}>
+          <button
+            type="button"
+            className="small ghost"
+            aria-haspopup="true"
+            aria-expanded={menuOpen}
+            aria-label={t('plans.moreActions')}
+            onClick={() => setMenuOpen((v) => !v)}
+          >⋮</button>
+          {menuOpen && (
+            <div className="menu-dropdown-panel">
+              <Link to={`/extend-plan/${plan.id}`} onClick={() => setMenuOpen(false)}>
+                <button className="small ghost">{t('plans.extend')}</button>
+              </Link>
+              <button className="small ghost" onClick={() => { duplicatePlan(plan.id); setMenuOpen(false); }}>{t('plans.duplicate')}</button>
+              <button
+                className="small danger"
+                onClick={() => {
+                  if (confirm(t('plans.confirmDelete'))) { deletePlan(plan.id); window.location.hash = '#/plans'; }
+                  setMenuOpen(false);
+                }}
+              >
+                {t('plans.delete')}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -150,7 +186,6 @@ export function PlanDetailPage() {
         <div className="print-title">{plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}</div>
         <div className="print-dates">{formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)}</div>
       </div>
-      <PlanSummary plan={plan} dishMap={dishMap} />
       <Calendar plan={plan} />
       <ViolationsPanel plan={plan} />
 

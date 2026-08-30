@@ -7,6 +7,7 @@ interface Props {
   dishMap: Map<string, Dish>;
 }
 
+/** Badges only — no wrapper. Meant to sit inline alongside a plan's dates in the page header. */
 export function PlanSummary({ plan, dishMap }: Props) {
   const { t } = useTranslation();
   const uniqueDishes = new Set(
@@ -19,12 +20,10 @@ export function PlanSummary({ plan, dishMap }: Props) {
   );
 
   return (
-    <div className="card no-print" style={{ marginBottom: 20 }}>
-      <div className="row" style={{ marginTop: 6 }}>
-        <span className="badge soft">{t('summary.uniqueDishes', { count: uniqueDishes.size })}</span>
-        <span className="badge soft">{t('summary.meatTypes', { count: meats.size })}</span>
-        <span className="badge">{t('summary.fitness', { score: Math.round(plan.fitness) })}</span>
-      </div>
-    </div>
+    <>
+      <span className="badge soft">{t('summary.uniqueDishes', { count: uniqueDishes.size })}</span>
+      <span className="badge soft">{t('summary.meatTypes', { count: meats.size })}</span>
+      <span className="badge">{t('summary.fitness', { score: Math.round(plan.fitness) })}</span>
+    </>
   );
 }

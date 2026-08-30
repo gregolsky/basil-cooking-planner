@@ -66,6 +66,7 @@ export function evaluate({ meals, days, dishMap, tagDefs = [], cumulativeLimits 
   let prevMeat: MeatType | null = null;
 
   const dishCounts = new Map<string, number>();
+  const dishDates = new Map<string, string[]>();
   const tagsByWeek = new Map<string, Map<string, number>>();
   const tagLastSeen = new Map<string, string>();
   const tagMap = new Map(tagDefs.map((t) => [t.id, t]));
@@ -146,6 +147,7 @@ export function evaluate({ meals, days, dishMap, tagDefs = [], cumulativeLimits 
         score -= w.dishRepeatPenalty * repeats;
       }
       dishCounts.set(dish.id, repeats + 1);
+      dishDates.set(dish.id, [...(dishDates.get(dish.id) ?? []), day.date]);
 
       if (dish.difficulty > day.difficultyCap) {
         score -= w.slowWeekdayPenalty;
@@ -222,11 +224,13 @@ export function evaluate({ meals, days, dishMap, tagDefs = [], cumulativeLimits 
     if (count > 1) {
       const dish = dishMap.get(dishId);
       if (dish) {
+        const dates = dishDates.get(dishId) ?? [];
+        const dateList = dates.map((d) => formatShortPl(d)).join(', ');
         violations.push({
-          date: '',
+          date: dates[0] ?? '',
           severity: 'soft',
           kind: 'dish_repeat',
-          message: `Powtórzenie dania: ${dish.name} (${count}×)`,
+          message: `Powtórzenie dania: ${dish.name} (${count}×) — ${dateList}`,
         });
       }
     }

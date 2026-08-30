@@ -1,9 +1,9 @@
 const en = {
   // Nav
   'nav.newPlan': '✨ New plan',
-  'nav.plans': '📚 Plans',
-  'nav.dishes': '🥘 Dishes',
-  'nav.settings': '⚙️ Settings',
+  'nav.plans': '📚 Your Plans',
+  'nav.dishes': '🥘 Your Dishes',
+  'nav.settings': '⚙️ Profile',
   'nav.greeting.night': 'Good night, {{name}}!',
   'nav.greeting.morning': 'Good morning, {{name}}!',
   'nav.greeting.day': 'Hello, {{name}}!',
@@ -22,6 +22,7 @@ const en = {
   'common.delete': 'Delete',
   'common.edit': 'Edit',
   'common.add': 'Add',
+  'common.back': '← Back',
   'common.days_one': '{{count}} day',
   'common.days_other': '{{count}} days',
 
@@ -45,12 +46,13 @@ const en = {
   'plans.hideCalendar': '▲ Hide',
   'plans.regenerate': '↺ Regenerate',
   'plans.extend': '➕ Continue',
-  'plans.duplicate': 'Duplicate',
+  'plans.duplicate': '⧉ Duplicate',
   'plans.copySuffix': '(copy)',
-  'plans.delete': 'Delete',
+  'plans.delete': '🗑 Delete',
   'plans.confirmDelete': 'Delete this plan?',
   'plans.renamePlan': 'Rename plan',
   'plans.print': '🖨️ Print',
+  'plans.moreActions': 'More options',
   'plans.planFallbackName': 'Plan {{date}}',
 
   // Plan summary
@@ -101,7 +103,16 @@ const en = {
   // Calendar / Day card
   'daycard.leftover': 'leftovers',
   'daycard.skip': '(not cooking)',
-  'daycard.difficultyLimit': 'cap: {{cap}}',
+  'daycard.difficultyLimit': 'difficulty: {{cap}}',
+  'daycard.limitLabel': 'difficulty',
+  'daycard.overCap': "Dish difficulty ({{difficulty}}) exceeds the day's cap ({{cap}})",
+  'daycard.pin': 'Pin dish',
+  'daycard.unpin': 'Unpin dish',
+  'daycard.openLabel': 'Edit day: {{date}}',
+
+  // Calendar past-days toggle
+  'calendar.showPast': '˅ Show {{count}} past days',
+  'calendar.hidePast': '˄ Hide past days',
 
   // Day editor
   'dayeditor.closeLabel': 'Close',
@@ -117,6 +128,7 @@ const en = {
   'dayeditor.requiredTags': 'Required tags',
   'dayeditor.requiredTagsHint': 'Only dishes with these tags will be assigned to this day.',
   'dayeditor.dishRow': '{{name}} · {{meat}} · difficulty {{difficulty}}',
+  'dayeditor.daySettings': 'Day settings',
 
   // Generate dialog
   'generateDialog.title': 'Cooking up the perfect plan…',

@@ -101,10 +101,10 @@ test('pin dish to specific day via DayEditor', async ({ page }) => {
   await expect(modal.getByRole('heading', { name: 'Przypnij obiad' })).toBeVisible();
 
   await modal.getByRole('button', { name: /Ryba z pieca/ }).click();
-  await modal.getByRole('button', { name: 'Gotowe' }).click();
+  await modal.getByRole('button', { name: 'Zamknij' }).click();
 
   await expect(dayCards.first()).toContainText('Ryba z pieca');
-  await expect(dayCards.first()).toContainText('📌');
+  await expect(dayCards.first().getByRole('button', { name: 'Odepnij danie' })).toBeVisible();
 });
 
 test('extend plan: date range carry-over creates new plan with locked days', async ({ page }) => {
@@ -127,8 +127,9 @@ test('extend plan: date range carry-over creates new plan with locked days', asy
   await expect(dayCards).toHaveCount(7);
   const sourceLast3 = await Promise.all([4, 5, 6].map((i) => dayCards.nth(i).innerText()));
 
-  // Open extend page via the Extend button
-  await page.getByRole('link', { name: '➕ Przedłuż' }).click();
+  // Open extend page via the overflow menu
+  await page.getByRole('button', { name: 'Więcej opcji' }).click();
+  await page.getByRole('link', { name: 'Kontynuuj' }).click();
   await expect(page.getByRole('heading', { name: 'Przedłuż plan' })).toBeVisible();
 
   // Set carry range: May 8–10 (last 3 days of source — this is the default)
@@ -145,7 +146,7 @@ test('extend plan: date range carry-over creates new plan with locked days', asy
   // Open the new plan and verify first 3 days match source last 3
   await page.getByText('(kontynuacja)').click();
   const newDayCards = page.locator('.day-card');
-  await expect(newDayCards.first()).toContainText('📌');
+  await expect(newDayCards.first().getByRole('button', { name: 'Odepnij danie' })).toBeVisible();
 
   for (let i = 0; i < 3; i++) {
     const dishNames = SEED_DISHES.map((d) => d.name);

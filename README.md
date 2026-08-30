@@ -34,10 +34,13 @@ Go to **New plan**, pick a date range, and click **Generate**. The genetic algor
 ### 4. Review and adjust
 
 On the plan detail page:
-- Click any day card to **pin a specific dish** or mark it as skip
+- Click the 📌 on any day card to **pin/unpin its current dish** in one tap — no need to open the day
+- Click any day card to open it and **pick a different dish**, or mark the day as skip
 - Click **✏️** next to the plan name to **rename** the plan
 - Click **Regenerate** — unlocked future days are regenerated, past days and pinned days stay
 - Month boundaries are visually marked in the calendar
+- Past days are collapsed by default; use **Show N past days** above the calendar to reveal them (they're excluded from printing either way)
+- A day whose pinned dish exceeds that day's difficulty cap is flagged with a red ⚠ badge
 
 ### 5. Continue a plan
 
@@ -64,7 +67,8 @@ Click **Continue** on any plan to create a follow-up. Select a date range from t
 - 7-column weekly grid with configurable first day of week (Mon/Sun)
 - Weekends highlighted, meat type emoji next to dish name
 - Month boundary banners with realigned grid
-- Per-day difficulty cap shown on each card, leftovers labelled
+- Per-day difficulty cap shown on each card as a filled/unfilled bar, leftovers labelled
+- One-tap pin/unpin directly from the calendar; past days collapse by default and are never printed
 
 **Dish library**
 - Full CRUD with meat type, difficulty (1–5), family preference (1–5), serves days (1–3)

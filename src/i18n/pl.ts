@@ -1,9 +1,9 @@
 const pl = {
   // Nav
   'nav.newPlan': '✨ Nowy plan',
-  'nav.plans': '📚 Plany',
-  'nav.dishes': '🥘 Dania',
-  'nav.settings': '⚙️ Dane',
+  'nav.plans': '📚 Twoje Plany',
+  'nav.dishes': '🥘 Twoje Dania',
+  'nav.settings': '⚙️ Profil',
   'nav.greeting.night': 'Dobranoc, {{name}}!',
   'nav.greeting.morning': 'Dzień dobry, {{name}}!',
   'nav.greeting.day': 'Cześć, {{name}}!',
@@ -22,6 +22,7 @@ const pl = {
   'common.delete': 'Usuń',
   'common.edit': 'Edytuj',
   'common.add': 'Dodaj',
+  'common.back': '← Powrót',
   'common.days_one': '{{count}} dzień',
   'common.days_few': '{{count}} dni',
   'common.days_many': '{{count}} dni',
@@ -47,12 +48,13 @@ const pl = {
   'plans.hideCalendar': '▲ Schowaj',
   'plans.regenerate': '↺ Regeneruj',
   'plans.extend': '➕ Kontynuuj',
-  'plans.duplicate': 'Duplikuj',
+  'plans.duplicate': '⧉ Duplikuj',
   'plans.copySuffix': '(kopia)',
-  'plans.delete': 'Usuń',
+  'plans.delete': '🗑 Usuń',
   'plans.confirmDelete': 'Usunąć plan?',
   'plans.renamePlan': 'Zmień nazwę planu',
   'plans.print': '🖨️ Drukuj',
+  'plans.moreActions': 'Więcej opcji',
   'plans.planFallbackName': 'Plan {{date}}',
 
   // Plan summary
@@ -103,7 +105,16 @@ const pl = {
   // Calendar / Day card
   'daycard.leftover': 'resztki',
   'daycard.skip': '(nie gotujemy)',
-  'daycard.difficultyLimit': 'limit: {{cap}}',
+  'daycard.difficultyLimit': 'trudność: {{cap}}',
+  'daycard.limitLabel': 'trudność',
+  'daycard.overCap': 'Trudność dania ({{difficulty}}) przekracza limit dnia ({{cap}})',
+  'daycard.pin': 'Przypnij danie',
+  'daycard.unpin': 'Odepnij danie',
+  'daycard.openLabel': 'Edytuj dzień: {{date}}',
+
+  // Calendar past-days toggle
+  'calendar.showPast': '˅ Pokaż {{count}} minionych dni',
+  'calendar.hidePast': '˄ Schowaj minione dni',
 
   // Day editor
   'dayeditor.closeLabel': 'Zamknij',
@@ -119,6 +130,7 @@ const pl = {
   'dayeditor.requiredTags': 'Wymagane etykiety',
   'dayeditor.requiredTagsHint': 'Tylko dania z tymi etykietami będą przypisane do tego dnia.',
   'dayeditor.dishRow': '{{name}} · {{meat}} · trudność {{difficulty}}',
+  'dayeditor.daySettings': 'Ustawienia dnia',
 
   // Generate dialog
   'generateDialog.title': 'Gotuję idealny plan…',
