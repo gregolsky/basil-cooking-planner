@@ -32,14 +32,18 @@ export function DayCard({ meal, day, dish, tagMap, monthStart, isPast, onClick, 
   ].filter(Boolean).join(' ');
 
   const dateLabel = `${weekdayShortLocale(day.date, i18n.language)} ${formatShortDateLocale(day.date, i18n.language)}`;
+  const dishSummary = day.skip ? t('daycard.skip') : dish ? dish.name : '—';
   const pinDisabled = !meal.dishId || meal.isLeftover || day.skip || !!isPast;
+  // Leftovers aren't checked against the day's difficulty cap (see fitness.ts), so don't
+  // show them as "over budget" — nothing is actually being cooked that day.
+  const cookedDifficulty = meal.isLeftover ? 0 : dish?.difficulty ?? 0;
 
   return (
     <div className={classes}>
       <button
         type="button"
         className="day-card-open"
-        aria-label={t('daycard.openLabel', { date: dateLabel })}
+        aria-label={t('daycard.openLabel', { date: dateLabel, dish: dishSummary })}
         onClick={onClick}
       />
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -73,9 +77,9 @@ export function DayCard({ meal, day, dish, tagMap, monthStart, isPast, onClick, 
         <div className="muted" style={{ fontSize: 11, display: 'flex', alignItems: 'center', gap: 4 }}>
           {t('daycard.limitLabel')}
           <DifficultyBar
-            value={dish?.difficulty ?? 0}
+            value={cookedDifficulty}
             capacity={day.difficultyCap}
-            label={t('daycard.difficultyLimit', { difficulty: dish?.difficulty ?? 0, cap: day.difficultyCap })}
+            label={t('daycard.difficultyLimit', { difficulty: cookedDifficulty, cap: day.difficultyCap })}
           />
         </div>
       </div>

@@ -169,10 +169,12 @@ Each decoded plan receives a score that is the sum of rewards and penalties:
 
 ### Soft penalties
 
-| Rule | Penalty |
-|---|---|
-| Dish repeat | −40 × number of prior occurrences |
-| Hard dish (≥4) on weekday | −20 |
+| Rule | Penalty | Violation kind |
+|---|---|---|
+| Dish repeat | −40 × number of prior occurrences | `dish_repeat` |
+| Hard dish (≥4) on weekday | −20 | — |
+
+`dish_repeat` violations carry every date the dish recurs on (not just a count), so `ViolationsPanel` can show which days to look at.
 
 ### Rewards
 

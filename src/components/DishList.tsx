@@ -41,7 +41,7 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
             )}
           </div>
           <span className="badge soft">{MEAT_EMOJI[d.meat]} {t(`meat.${d.meat}`)}</span>
-          <span className="badge difficulty-badge">
+          <span className="badge">
             <DifficultyBar value={d.difficulty} capacity={5} label={t('dishlist.difficulty', { n: d.difficulty })} />
           </span>
           <span className="badge green">{t('dishlist.preference', { n: d.preference })}</span>

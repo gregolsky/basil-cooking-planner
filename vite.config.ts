@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'icons/*.png', 'fonts/*.ttf'],
+      includeAssets: ['favicon.svg', 'icons/*.png'],
       manifest: {
         name: 'Basil — Family Cooking Planner',
         short_name: 'Basil',

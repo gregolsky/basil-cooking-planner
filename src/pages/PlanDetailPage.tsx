@@ -59,9 +59,13 @@ export function PlanDetailPage() {
     );
   }
 
-  const allInPast = isPlanFullyInPast(plan, toISODate(new Date()));
+  const today = toISODate(new Date());
+  const allInPast = isPlanFullyInPast(plan, today);
   const days = daysBetween(plan.startDate, plan.endDate) + 1;
   const hard = plan.violations.filter((v) => v.severity === 'hard').length;
+  // Past days are excluded from print (Calendar.tsx), so the printed date range
+  // should reflect what actually prints, not the plan's full stored range.
+  const printStartDate = !allInPast && today > plan.startDate ? today : plan.startDate;
 
   const handleRegen = () => {
     setRegenId(plan.id);
@@ -186,7 +190,7 @@ export function PlanDetailPage() {
       <div className="print-header">
         <img src="/basil-cooking-planner/basil-logo-transparent.png" alt="Basil" className="print-logo" />
         <div className="print-title">{plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}</div>
-        <div className="print-dates">{formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)}</div>
+        <div className="print-dates">{formatDateLocale(printStartDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)}</div>
       </div>
       <Calendar plan={plan} />
       <ViolationsPanel plan={plan} />

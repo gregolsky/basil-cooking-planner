@@ -103,7 +103,7 @@ export function Calendar({ plan }: Props) {
         </div>
       )}
 
-      {!allInPast && showPast && renderGrid(past, { past: true, gridExtraClass: 'past-grid no-print' })}
+      {!allInPast && showPast && renderGrid(past, { past: true, gridExtraClass: 'no-print' })}
 
       {renderGrid(allInPast ? entries : upcoming, { past: allInPast })}
 

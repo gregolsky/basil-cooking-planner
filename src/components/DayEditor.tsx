@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import type { Dish, MeatType } from '../types/dish';
@@ -30,6 +30,12 @@ export function DayEditor({ planId, date, onClose }: Props) {
   const [query, setQuery] = useState('');
   const [meatFilter, setMeatFilter] = useState<MeatType | 'all'>('all');
   const [tagFilter, setTagFilter] = useState<string[]>([]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

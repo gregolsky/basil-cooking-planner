@@ -111,10 +111,11 @@ const en = {
   'daycard.limitLabel': 'difficulty',
   'daycard.pin': 'Pin dish',
   'daycard.unpin': 'Unpin dish',
-  'daycard.openLabel': 'Edit day: {{date}}',
+  'daycard.openLabel': 'Edit day: {{date}} — {{dish}}',
 
   // Calendar past-days toggle
-  'calendar.showPast': 'Show {{count}} past days',
+  'calendar.showPast_one': 'Show {{count}} past day',
+  'calendar.showPast_other': 'Show {{count}} past days',
   'calendar.hidePast': 'Hide past days',
 
   // Day editor
@@ -130,7 +131,6 @@ const en = {
   'dayeditor.noMatches': 'No matching dishes.',
   'dayeditor.requiredTags': 'Required tags',
   'dayeditor.requiredTagsHint': 'Only dishes with these tags will be assigned to this day.',
-  'dayeditor.dishRow': '{{name}} · {{meat}} · difficulty {{difficulty}}',
   'dayeditor.daySettings': 'Day settings',
 
   // Generate dialog

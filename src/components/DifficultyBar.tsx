@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { computeDifficultySegments } from '../lib/utils/difficultyBar';
 
 interface Props {
   value: number;
@@ -6,28 +6,16 @@ interface Props {
   label: string;
 }
 
-/**
- * Segment count = capacity (e.g. the day's difficulty cap); red-filled count = value
- * (e.g. the dish's difficulty). When value exceeds capacity, the excess renders as
- * distinct "overflow" segments past a divider, showing the dish going over budget.
- */
+/** Segment count = capacity, red-filled count = value; overflow renders past a divider. */
 export function DifficultyBar({ value, capacity, label }: Props) {
-  const total = Math.max(value, capacity);
-  const hasOverflow = value > capacity;
-  const nodes: ReactNode[] = [];
-  for (let i = 0; i < total; i++) {
-    if (hasOverflow && i === capacity) {
-      nodes.push(<span key="cap" className="cap-mark" />);
-    }
-    const filled = i < value;
-    const overflow = filled && i >= capacity;
-    nodes.push(
-      <span key={i} className={['seg', filled && 'filled', overflow && 'overflow'].filter(Boolean).join(' ')} />,
-    );
-  }
+  const segments = computeDifficultySegments(value, capacity);
   return (
     <span className="difficulty-bar" role="img" aria-label={label}>
-      {nodes}
+      {segments.map((seg, i) =>
+        seg.kind === 'divider'
+          ? <span key={`divider-${i}`} className="cap-mark" />
+          : <span key={i} className={['seg', seg.filled && 'filled', seg.overflow && 'overflow'].filter(Boolean).join(' ')} />,
+      )}
     </span>
   );
 }

@@ -809,8 +809,6 @@ pre.format-sample {
 }
 
 /* ── Responsive nav & compact mobile chrome ───────────── */
-.hide-sm { display: inline; }
-
 @media (max-width: 640px) {
   .nav-brand { font-size: 1.5rem; }
   .nav-logo { height: 40px; }
@@ -830,8 +828,6 @@ pre.format-sample {
 
   h1 { font-size: 1.5rem; }
   h2 { font-size: 1.15rem; }
-
-  .hide-sm { display: none; }
 
   .page { padding: 14px 12px; }
   .page-header { margin-bottom: 16px; flex-wrap: wrap; }
@@ -897,9 +893,10 @@ pre.format-sample {
   .print-header {
     display: block;
     position: relative;
-    text-align: center;
+    text-align: left;
     margin-bottom: 10mm;
     padding-bottom: 4mm;
+    padding-right: 40mm;
     border-bottom: 1.5px solid #222;
   }
 
@@ -933,6 +930,11 @@ pre.format-sample {
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
   }
+  /* A4 print width falls under the 820px mobile breakpoint, so restore
+     what that breakpoint hides — otherwise weekday-alignment padding
+     cells disappear and the whole grid shifts by a column. */
+  .calendar-grid .calendar-day-label { display: block; }
+  .calendar-grid .calendar-pad { display: block; }
 
   /* ── Day cards ── */
   .day-card {

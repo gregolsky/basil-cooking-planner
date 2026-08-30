@@ -40,7 +40,7 @@ On the plan detail page:
 - Click **Regenerate** — unlocked future days are regenerated, past days and pinned days stay
 - Month boundaries are visually marked in the calendar
 - Past days are collapsed by default; use **Show N past days** above the calendar to reveal them (they're excluded from printing either way)
-- A day whose pinned dish exceeds that day's difficulty cap is flagged with a red ⚠ badge
+- A day whose dish exceeds that day's difficulty cap shows the excess as extra "overflow" segments on the difficulty bar
 
 ### 5. Continue a plan
 

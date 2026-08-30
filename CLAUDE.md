@@ -137,6 +137,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `date.ts` — ISO date helpers (`toISODate`, `fromISODate`, `addDays`, `daysBetween`, `listDates`), locale formatting (`formatDateLocale`, `formatMonthLocale`, `weekdayShortLocale`, `calendarDayLabels`), Polish-only legacy functions for GA worker context
 - `id.ts` — `uid()` UUID generator
 - `meat.ts` — `MEAT_EMOJI` lookup shared by `DayCard`, `DishList`, `DayEditor`
+- `difficultyBar.ts` — `computeDifficultySegments` (segment/overflow/divider layout for `DifficultyBar`)
 
 #### i18n (`src/i18n/`)
 - `index.ts` — react-i18next config
@@ -158,7 +159,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### Components (`src/components/`)
 - `NavBar.tsx` — top navigation with greeting
 - `Calendar.tsx` — 7-column grid with month banners, padding, day labels; splits meals into a collapsed past-days grid (hidden by default, excluded from print) and an always-visible upcoming grid via `splitByPast`
-- `DayCard.tsx` — single day in the calendar (dish, meat emoji, `DifficultyBar` for the day's cap, locked/leftover badges); a dedicated pin button toggles `meal.locked` directly with no re-evaluation; flags a red over-cap badge when the assigned dish's difficulty exceeds the day's cap
+- `DayCard.tsx` — single day in the calendar (dish, meat emoji, locked/leftover badges); a dedicated pin button toggles `meal.locked` directly with no re-evaluation; `DifficultyBar` segment count is the day's cap, red-filled count is the dish's difficulty (0 for leftovers, which the GA never checks against the cap) — a dish over budget renders as distinct overflow segments past a divider, no separate badge needed
 - `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip; dish search/filters are sticky at the top of the picker so they stay reachable above an on-screen keyboard, day settings (skip, required tags) are collapsed in a `<details>`
 - `DifficultyBar.tsx` — renders a 1..5 value as filled/unfilled horizontal segments (dish difficulty, day difficulty cap)
 - `PlanSummary.tsx` — unique dishes count, meat types count, and a `computePlanQuality` tier badge (raw fitness score shown as a tooltip) as bare badges (no wrapper), meant to sit inline in the plan header next to the date range

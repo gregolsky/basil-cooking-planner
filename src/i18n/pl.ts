@@ -113,10 +113,13 @@ const pl = {
   'daycard.limitLabel': 'trudność',
   'daycard.pin': 'Przypnij danie',
   'daycard.unpin': 'Odepnij danie',
-  'daycard.openLabel': 'Edytuj dzień: {{date}}',
+  'daycard.openLabel': 'Edytuj dzień: {{date}} — {{dish}}',
 
   // Calendar past-days toggle
-  'calendar.showPast': 'Pokaż {{count}} minionych dni',
+  'calendar.showPast_one': 'Pokaż {{count}} miniony dzień',
+  'calendar.showPast_few': 'Pokaż {{count}} minione dni',
+  'calendar.showPast_many': 'Pokaż {{count}} minionych dni',
+  'calendar.showPast_other': 'Pokaż {{count}} minionych dni',
   'calendar.hidePast': 'Schowaj minione dni',
 
   // Day editor
@@ -132,7 +135,6 @@ const pl = {
   'dayeditor.noMatches': 'Brak pasujących dań.',
   'dayeditor.requiredTags': 'Wymagane etykiety',
   'dayeditor.requiredTagsHint': 'Tylko dania z tymi etykietami będą przypisane do tego dnia.',
-  'dayeditor.dishRow': '{{name}} · {{meat}} · trudność {{difficulty}}',
   'dayeditor.daySettings': 'Ustawienia dnia',
 
   // Generate dialog
