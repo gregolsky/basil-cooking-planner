@@ -34,7 +34,7 @@ const pl = {
   'meat.poultry': 'drób',
   'meat.fish': 'ryba',
   'meat.none': 'bezmięsne',
-  'meat.all': 'wszystkie mięsa',
+  'meat.all': 'wszystkie',
 
   // Plans list
   'plans.title': '📚 Plany',
@@ -105,9 +105,8 @@ const pl = {
   // Calendar / Day card
   'daycard.leftover': 'resztki',
   'daycard.skip': '(nie gotujemy)',
-  'daycard.difficultyLimit': 'trudność: {{cap}}',
+  'daycard.difficultyLimit': 'trudność dania {{difficulty}} / limit dnia {{cap}}',
   'daycard.limitLabel': 'trudność',
-  'daycard.overCap': 'Trudność dania ({{difficulty}}) przekracza limit dnia ({{cap}})',
   'daycard.pin': 'Przypnij danie',
   'daycard.unpin': 'Odepnij danie',
   'daycard.openLabel': 'Edytuj dzień: {{date}}',

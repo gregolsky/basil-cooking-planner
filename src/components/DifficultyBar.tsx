@@ -1,17 +1,33 @@
+import type { ReactNode } from 'react';
+
 interface Props {
   value: number;
-  max?: number;
+  capacity: number;
   label: string;
 }
 
-/** Renders a 1..max value as filled/unfilled horizontal segments, e.g. difficulty 3 of 5. */
-export function DifficultyBar({ value, max = 5, label }: Props) {
-  const segments = Array.from({ length: max }, (_, i) => i < value);
+/**
+ * Segment count = capacity (e.g. the day's difficulty cap); red-filled count = value
+ * (e.g. the dish's difficulty). When value exceeds capacity, the excess renders as
+ * distinct "overflow" segments past a divider, showing the dish going over budget.
+ */
+export function DifficultyBar({ value, capacity, label }: Props) {
+  const total = Math.max(value, capacity);
+  const hasOverflow = value > capacity;
+  const nodes: ReactNode[] = [];
+  for (let i = 0; i < total; i++) {
+    if (hasOverflow && i === capacity) {
+      nodes.push(<span key="cap" className="cap-mark" />);
+    }
+    const filled = i < value;
+    const overflow = filled && i >= capacity;
+    nodes.push(
+      <span key={i} className={['seg', filled && 'filled', overflow && 'overflow'].filter(Boolean).join(' ')} />,
+    );
+  }
   return (
     <span className="difficulty-bar" role="img" aria-label={label}>
-      {segments.map((filled, i) => (
-        <span key={i} className={filled ? 'seg filled' : 'seg'} />
-      ))}
+      {nodes}
     </span>
   );
 }

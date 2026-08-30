@@ -281,8 +281,18 @@ label {
 .difficulty-bar { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; }
 .difficulty-bar .seg { width: 10px; height: 5px; border-radius: 2px; background: #d8c7a8; }
 .difficulty-bar .seg.filled { background: var(--color-red); }
+.difficulty-bar .seg.overflow {
+  background: var(--color-red-dark);
+  box-shadow: 0 0 0 1px var(--color-paper), 0 0 3px rgba(139,38,53,0.7);
+}
+.difficulty-bar .cap-mark { width: 2px; height: 8px; background: var(--color-ink-soft); opacity: 0.5; border-radius: 1px; }
 html[data-theme="prl"] .difficulty-bar .seg { background: #A8A494; }
 html[data-theme="prl"] .difficulty-bar .seg.filled { background: #7A3020; }
+html[data-theme="prl"] .difficulty-bar .seg.overflow {
+  background: #401408;
+  box-shadow: 0 0 0 1px #D0CCB8, 0 0 3px rgba(64,20,8,0.7);
+}
+html[data-theme="prl"] .difficulty-bar .cap-mark { background: #484038; }
 
 /* ── Badges ───────────────────────────────────────────── */
 .badge {
@@ -465,15 +475,6 @@ html[data-theme="prl"] .difficulty-bar .seg.filled { background: #7A3020; }
 .day-card.month-start { border-top: 3px solid var(--color-red-dark); }
 .day-card.past        { opacity: 0.55; filter: grayscale(0.6); }
 .day-card.past:hover   { transform: none; box-shadow: var(--shadow-paper); }
-.day-card.over-cap     { box-shadow: 0 0 0 2px rgba(192,57,43,0.35), var(--shadow-paper); }
-.day-card.over-cap:hover { box-shadow: 0 0 0 2px rgba(192,57,43,0.35), var(--shadow-lift); }
-
-.over-cap-badge {
-  background: var(--color-red);
-  color: #fff;
-  border-color: var(--color-red-dark);
-  font-weight: 700;
-}
 
 .day-pin {
   font-size: 1rem;

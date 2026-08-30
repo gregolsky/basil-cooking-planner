@@ -32,7 +32,7 @@ const en = {
   'meat.poultry': 'poultry',
   'meat.fish': 'fish',
   'meat.none': 'meatless',
-  'meat.all': 'all meats',
+  'meat.all': 'all',
 
   // Plans list
   'plans.title': '📚 Plans',
@@ -103,9 +103,8 @@ const en = {
   // Calendar / Day card
   'daycard.leftover': 'leftovers',
   'daycard.skip': '(not cooking)',
-  'daycard.difficultyLimit': 'difficulty: {{cap}}',
+  'daycard.difficultyLimit': "dish difficulty {{difficulty}} / day limit {{cap}}",
   'daycard.limitLabel': 'difficulty',
-  'daycard.overCap': "Dish difficulty ({{difficulty}}) exceeds the day's cap ({{cap}})",
   'daycard.pin': 'Pin dish',
   'daycard.unpin': 'Unpin dish',
   'daycard.openLabel': 'Edit day: {{date}}',

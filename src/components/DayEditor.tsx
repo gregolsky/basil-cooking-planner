@@ -150,7 +150,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
                 >
                   <span className="name">{d.name}</span>
                   <span>{MEAT_EMOJI[d.meat]}</span>
-                  <DifficultyBar value={d.difficulty} label={t('dishlist.difficulty', { n: d.difficulty })} />
+                  <DifficultyBar value={d.difficulty} capacity={5} label={t('dishlist.difficulty', { n: d.difficulty })} />
                 </button>
               ))}
             </div>
