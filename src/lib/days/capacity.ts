@@ -11,6 +11,10 @@ export interface DayContext {
 
 const WEEKDAY_BASE = 3;
 const WEEKEND_BASE = 5;
+// Dish.difficulty tops out at 5 (see src/types/dish.ts), so a cap above that is
+// meaningless — clamping also keeps difficultyCap safe to use as a DOM segment
+// count (e.g. DifficultyBar) even from an unvalidated JSON import.
+const MAX_DIFFICULTY = 5;
 
 export function computeDayContext(
   date: string,
@@ -22,7 +26,7 @@ export function computeDayContext(
   if (mod?.difficultyCap !== undefined) cap = mod.difficultyCap;
   return {
     date,
-    difficultyCap: Math.max(1, cap),
+    difficultyCap: Math.min(MAX_DIFFICULTY, Math.max(1, cap)),
     skip: mod?.skip ?? false,
     requiresTags: mod?.requiresTags ?? [],
     note: mod?.note,

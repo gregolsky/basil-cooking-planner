@@ -38,6 +38,12 @@ describe('computeDayContext', () => {
     expect(ctx.difficultyCap).toBe(1);
   });
 
+  it('explicit difficultyCap above the max dish difficulty is clamped to 5', () => {
+    const mods = modMap({ date: '2026-04-20', difficultyCap: 99999 });
+    const ctx = computeDayContext('2026-04-20', mods);
+    expect(ctx.difficultyCap).toBe(5);
+  });
+
   it('propagates skip flag', () => {
     const mods = modMap({ date: '2026-04-20', skip: true });
     const ctx = computeDayContext('2026-04-20', mods);

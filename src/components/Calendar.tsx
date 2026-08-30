@@ -29,9 +29,10 @@ export function Calendar({ plan }: Props) {
   const [editingDate, setEditingDate] = useState<string | null>(null);
   const [showPast, setShowPast] = useState(false);
 
-  const dates = plan.meals.map((m) => m.date);
-  const planDayModifiers = plan.dayModifiers ?? [];
-  const days = useMemo(() => buildDayContexts(dates, planDayModifiers), [dates, planDayModifiers]);
+  const days = useMemo(
+    () => buildDayContexts(plan.meals.map((m) => m.date), plan.dayModifiers ?? []),
+    [plan.meals, plan.dayModifiers],
+  );
 
   const today = toISODate(new Date());
   const entries: Entry[] = useMemo(
@@ -60,9 +61,11 @@ export function Calendar({ plan }: Props) {
         {Array.from({ length: padding }, (_, i) => (
           <div key={`pad-${i}`} className="calendar-pad" />
         ))}
-        {list.map(({ meal, day }, i) => {
+        {list.map(({ meal, day }) => {
           const dish = meal.dishId ? dishMap.get(meal.dishId) ?? null : null;
-          const isMonthStart = i > 0 && meal.date.slice(8) === '01';
+          // No `i > 0` guard: each grid (past/upcoming) can independently start
+          // on the 1st of a month once past days are collapsed by default.
+          const isMonthStart = meal.date.slice(8) === '01';
           const monthPadding = isMonthStart
             ? (fromISODate(meal.date).getDay() - weekStartDay + 7) % 7
             : 0;

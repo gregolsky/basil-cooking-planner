@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import type { Dish, MeatType } from '../types/dish';
@@ -6,6 +6,7 @@ import type { DayModifier } from '../types/day';
 import { formatDateLocale, weekdayLocale } from '../lib/utils/date';
 import { evaluatePlan } from '../lib/plan/evaluate';
 import { MEAT_EMOJI } from '../lib/utils/meat';
+import { useDismiss } from '../hooks/useDismiss';
 import { TagPicker } from './TagPicker';
 import { DifficultyBar } from './DifficultyBar';
 
@@ -31,11 +32,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
   const [meatFilter, setMeatFilter] = useState<MeatType | 'all'>('all');
   const [tagFilter, setTagFilter] = useState<string[]>([]);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [onClose]);
+  useDismiss({ onDismiss: onClose, active: true });
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -132,7 +129,6 @@ export function DayEditor({ planId, date, onClose }: Props) {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   className="grow"
-                  autoFocus
                 />
                 <select value={meatFilter} onChange={(e) => setMeatFilter(e.target.value as MeatType | 'all')}>
                   <option value="all">{t('meat.all')}</option>

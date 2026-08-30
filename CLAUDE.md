@@ -116,6 +116,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `evaluate.ts` — `reevaluatePlan` (re-score after manual pin/swap)
 - `pastDays.ts` — `isPastDate`, `splitByPast` (splits date-bearing items into past/upcoming for the calendar's collapsed history view)
 - `quality.ts` — `computePlanQuality` (buckets a plan into a human-readable quality tier from average dish preference; `null` while hard violations remain)
+- `dayCard.ts` — `isPinDisabled`, `cookedDifficulty` (rules behind `DayCard`'s pin button and difficulty bar)
 
 #### Storage (`src/lib/storage/`)
 - `schema.ts` — Zod schemas for JSON import validation (`SCHEMA_VERSION = 1`)
@@ -147,6 +148,9 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### Store (`src/store/`)
 - `useAppStore.ts` — single Zustand store with persist middleware; holds all app state; side-effect actions for theme/locale
 
+#### Hooks (`src/hooks/`)
+- `useDismiss.ts` — shared Escape-key (and optional outside-click) dismiss behavior for menus/modals; used by `PlanDetailPage`'s overflow menu and `DayEditor`
+
 #### Pages (`src/pages/`)
 - `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
 - `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (extend/duplicate/delete) live behind an overflow menu
@@ -159,7 +163,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### Components (`src/components/`)
 - `NavBar.tsx` — top navigation with greeting
 - `Calendar.tsx` — 7-column grid with month banners, padding, day labels; splits meals into a collapsed past-days grid (hidden by default, excluded from print) and an always-visible upcoming grid via `splitByPast`
-- `DayCard.tsx` — single day in the calendar (dish, meat emoji, locked/leftover badges); a dedicated pin button toggles `meal.locked` directly with no re-evaluation; `DifficultyBar` segment count is the day's cap, red-filled count is the dish's difficulty (0 for leftovers, which the GA never checks against the cap) — a dish over budget renders as distinct overflow segments past a divider, no separate badge needed
+- `DayCard.tsx` — single day in the calendar (dish, meat emoji, locked/leftover badges); the whole card is a `role="button"` div (`onClick` + Enter/Space) so it opens the day editor from anywhere, except the nested pin button, which calls `stopPropagation()` to act independently; a dedicated pin button toggles `meal.locked` directly with no re-evaluation; `DifficultyBar` segment count is the day's cap, red-filled count is the dish's difficulty (0 for leftovers, which the GA never checks against the cap) — a dish over budget renders as distinct overflow segments past a divider, no separate badge needed
 - `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip; dish search/filters are sticky at the top of the picker so they stay reachable above an on-screen keyboard, day settings (skip, required tags) are collapsed in a `<details>`
 - `DifficultyBar.tsx` — renders a 1..5 value as filled/unfilled horizontal segments (dish difficulty, day difficulty cap)
 - `PlanSummary.tsx` — unique dishes count, meat types count, and a `computePlanQuality` tier badge (raw fitness score shown as a tooltip) as bare badges (no wrapper), meant to sit inline in the plan header next to the date range

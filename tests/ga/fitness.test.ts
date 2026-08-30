@@ -65,4 +65,27 @@ describe('fitness', () => {
     const { violations } = evaluate({ meals, days, dishMap, tagDefs });
     expect(violations.some((v) => v.kind === 'tag_week_limit')).toBe(true);
   });
+
+  it('flags dish repeats with every recurrence date listed in the message', () => {
+    const days = simpleDays('2026-04-20', 3);
+    const meals = days.map((d) => ({ date: d.date, dishId: 'pasta', isLeftover: false, locked: false }));
+    const { violations } = evaluate({ meals, days, dishMap });
+    const repeat = violations.find((v) => v.kind === 'dish_repeat');
+    expect(repeat).toBeDefined();
+    expect(repeat!.date).toBe('2026-04-20');
+    expect(repeat!.message).toContain('3×');
+    expect(repeat!.message).toContain('20.04');
+    expect(repeat!.message).toContain('21.04');
+    expect(repeat!.message).toContain('22.04');
+  });
+
+  it('does not flag a dish cooked only once', () => {
+    const days = simpleDays('2026-04-20', 2);
+    const meals = [
+      { date: days[0].date, dishId: 'pasta', isLeftover: false, locked: false },
+      { date: days[1].date, dishId: 'kotlet', isLeftover: false, locked: false },
+    ];
+    const { violations } = evaluate({ meals, days, dishMap });
+    expect(violations.filter((v) => v.kind === 'dish_repeat')).toHaveLength(0);
+  });
 });

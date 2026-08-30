@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store/useAppStore';
 import { formatDateLocale, daysBetween, toISODate } from '../lib/utils/date';
 import { getLockedMealsForRegen, isPlanFullyInPast } from '../lib/plan/regen';
+import { isPastDate } from '../lib/plan/pastDays';
 import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
@@ -11,6 +12,7 @@ import { GenerateDialog } from '../components/GenerateDialog';
 import { buildDayContexts } from '../lib/days/capacity';
 import { listDates } from '../lib/utils/date';
 import { runGAInWorker } from '../lib/ga/runner';
+import { useDismiss } from '../hooks/useDismiss';
 import type { PlannedMeal } from '../types/plan';
 
 export function PlanDetailPage() {
@@ -33,20 +35,8 @@ export function PlanDetailPage() {
   const [nameValue, setNameValue] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onClick = (e: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setMenuOpen(false);
-    };
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false); };
-    document.addEventListener('mousedown', onClick);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onClick);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, [menuOpen]);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  useDismiss({ onDismiss: closeMenu, active: menuOpen, containerRef: menuRef });
 
   if (!plan) {
     return (
@@ -65,7 +55,7 @@ export function PlanDetailPage() {
   const hard = plan.violations.filter((v) => v.severity === 'hard').length;
   // Past days are excluded from print (Calendar.tsx), so the printed date range
   // should reflect what actually prints, not the plan's full stored range.
-  const printStartDate = !allInPast && today > plan.startDate ? today : plan.startDate;
+  const printStartDate = !allInPast && isPastDate(plan.startDate, today) ? today : plan.startDate;
 
   const handleRegen = () => {
     setRegenId(plan.id);

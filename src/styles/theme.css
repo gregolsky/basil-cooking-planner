@@ -463,12 +463,14 @@ html[data-theme="prl"] .difficulty-bar .cap-mark { background: #484038; }
   grid-template-columns: repeat(7, 1fr);
   gap: 10px;
 }
-@media (max-width: 820px) {
+/* `screen` (not a bare max-width) so this never collides with @media print —
+   Chrome lays out an A4 page at ~793px, which is under this breakpoint. */
+@media screen and (max-width: 820px) {
   .calendar-grid { grid-template-columns: repeat(2,1fr); }
   .calendar-grid .calendar-day-label { display: none; }
   .calendar-grid .calendar-pad { display: none; }
 }
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
   .calendar-grid { grid-template-columns: 1fr; }
 }
 
@@ -479,25 +481,17 @@ html[data-theme="prl"] .difficulty-bar .cap-mark { background: #484038; }
   flex-direction: column;
   gap: 6px;
   text-align: left;
+  cursor: pointer;
   transition: transform 150ms, box-shadow 150ms;
   background: var(--color-paper);
 }
-.day-card-open {
-  position: absolute;
-  inset: 0;
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  border-radius: inherit;
-  cursor: pointer;
-  z-index: 0;
-}
-.day-card > *:not(.day-card-open) { position: relative; pointer-events: none; }
-.day-card .day-pin { pointer-events: auto; }
 .day-card:hover {
   transform: translateY(-3px) rotate(0.5deg);
   box-shadow: var(--shadow-lift);
+}
+.day-card:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 2px;
 }
 .day-card.weekend    { border-color: var(--color-gold); background: #fffbf0; }
 .day-card.weekend::before { border-color: rgba(201,149,10,0.4); }
@@ -860,7 +854,6 @@ pre.format-sample {
   .nav,
   .page-header,
   .no-print,
-  .day-card-open,
   .violations-panel,
   .modal-backdrop,
   .hero-banner {
@@ -930,11 +923,6 @@ pre.format-sample {
     grid-template-columns: repeat(7, 1fr);
     gap: 4px;
   }
-  /* A4 print width falls under the 820px mobile breakpoint, so restore
-     what that breakpoint hides — otherwise weekday-alignment padding
-     cells disappear and the whole grid shifts by a column. */
-  .calendar-grid .calendar-day-label { display: block; }
-  .calendar-grid .calendar-pad { display: block; }
 
   /* ── Day cards ── */
   .day-card {

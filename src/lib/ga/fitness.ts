@@ -147,7 +147,9 @@ export function evaluate({ meals, days, dishMap, tagDefs = [], cumulativeLimits 
         score -= w.dishRepeatPenalty * repeats;
       }
       dishCounts.set(dish.id, repeats + 1);
-      dishDates.set(dish.id, [...(dishDates.get(dish.id) ?? []), day.date]);
+      const existingDates = dishDates.get(dish.id);
+      if (existingDates) existingDates.push(day.date);
+      else dishDates.set(dish.id, [day.date]);
 
       if (dish.difficulty > day.difficultyCap) {
         score -= w.slowWeekdayPenalty;
