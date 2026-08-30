@@ -98,6 +98,7 @@ button {
   font-weight: 700;
   font-family: var(--font-ui);
   letter-spacing: 0.3px;
+  line-height: 1.2;
   box-shadow: 0 3px 0 var(--color-red-dark), 0 4px 10px rgba(192,57,43,0.20);
   transition: transform 80ms, box-shadow 80ms, filter 120ms;
 }
@@ -151,6 +152,36 @@ button.icon-btn:hover:not(:disabled) {
   transform: none;
   filter: none;
 }
+button.link-btn {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--color-red-dark);
+  text-decoration: underline;
+  padding: 4px 0;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+button.link-btn:hover:not(:disabled) {
+  filter: brightness(1.2);
+  transform: none;
+  box-shadow: none;
+}
+button.link-btn:active:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+}
+button.link-btn .chevron {
+  display: inline-block;
+  transition: transform 150ms;
+}
+button.link-btn .chevron.open {
+  transform: rotate(90deg);
+}
+
 button.icon-btn:active:not(:disabled) {
   transform: none;
   box-shadow: none;
@@ -667,13 +698,6 @@ table.menu-table th {
   opacity: 0.75;
   margin: 8px 0;
 }
-.violations-panel::before {
-  content: '';
-  display: block; height: 18px;
-  background: url('/basil-cooking-planner/vine-border.svg') repeat-x center / 90px 18px;
-  opacity: 0.55;
-  margin-bottom: 10px;
-}
 .page::after {
   content: '';
   display: block; height: 20px;
@@ -872,10 +896,19 @@ pre.format-sample {
   /* ── Print title block ── */
   .print-header {
     display: block;
+    position: relative;
     text-align: center;
     margin-bottom: 10mm;
     padding-bottom: 4mm;
     border-bottom: 1.5px solid #222;
+  }
+
+  .print-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 14mm;
+    width: auto;
   }
 
   .print-title {
@@ -1092,11 +1125,20 @@ html[data-theme="prl"] button.icon-btn:hover:not(:disabled) {
   background: rgba(0,0,0,0.08);
   box-shadow: none;
 }
+html[data-theme="prl"] button.link-btn {
+  background: none;
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #7A3020;
+}
+html[data-theme="prl"] button.link-btn:hover:not(:disabled) {
+  filter: brightness(1.2);
+}
 
 /* ── Remove ornamental decorations ── */
 html[data-theme="prl"] .menu-card::after          { display: none; }
 html[data-theme="prl"] .vine-border               { display: none; }
-html[data-theme="prl"] .violations-panel::before  { display: none; }
 html[data-theme="prl"] .page::after               { display: none; }
 
 /* ── Day cards ── */

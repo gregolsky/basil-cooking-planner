@@ -143,12 +143,13 @@ export function PlanDetailPage() {
             </div>
           </div>
         )}
-        {!editingName && <Link to="/plans"><button className="ghost small">{t('common.back')}</button></Link>}
       </div>
 
-      <div className="row no-print" style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
+      <div className="row no-print" style={{ marginBottom: 20 }}>
+        <Link to="/plans"><button className="ghost small">{t('common.back')}</button></Link>
+        <div className="spacer" />
         {!allInPast && (
-          <button className="small ghost" disabled={regenId !== null} onClick={handleRegen}>
+          <button className="small" disabled={regenId !== null} onClick={handleRegen}>
             {t('plans.regenerate')}
           </button>
         )}
@@ -183,6 +184,7 @@ export function PlanDetailPage() {
       </div>
 
       <div className="print-header">
+        <img src="/basil-cooking-planner/basil-logo-transparent.png" alt="Basil" className="print-logo" />
         <div className="print-title">{plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}</div>
         <div className="print-dates">{formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)}</div>
       </div>

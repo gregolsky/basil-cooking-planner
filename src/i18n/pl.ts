@@ -1,7 +1,7 @@
 const pl = {
   // Nav
   'nav.newPlan': '✨ Nowy plan',
-  'nav.plans': '📚 Twoje Plany',
+  'nav.plans': '📅 Twoje Plany',
   'nav.dishes': '🥘 Twoje Dania',
   'nav.settings': '⚙️ Profil',
   'nav.greeting.night': 'Dobranoc, {{name}}!',
@@ -12,7 +12,7 @@ const pl = {
   // Welcome
   'welcome.question': 'Jak nazywa się Twoja rodzina?',
   'welcome.placeholder': 'np. Kowalskich, Nowaków…',
-  'welcome.hint': 'Użyjemy tego, żeby Cię witać.\nMożesz zmienić później w Dane.',
+  'welcome.hint': 'Użyjemy tego, żeby Cię witać.\nMożesz zmienić później w Profilu.',
   'welcome.submit': 'Witaj w Basilu 🌿',
 
   // Common
@@ -37,7 +37,7 @@ const pl = {
   'meat.all': 'wszystkie',
 
   // Plans list
-  'plans.title': '📚 Plany',
+  'plans.title': '📅 Twoje Plany',
   'plans.newPlan': '+ Nowy plan',
   'plans.empty': 'Brak planów.',
   'plans.emptyHint': 'Najpierw dodaj dania w bibliotece, potem wygeneruj plan.',
@@ -60,7 +60,11 @@ const pl = {
   // Plan summary
   'summary.uniqueDishes': '{{count}} różnych dań',
   'summary.meatTypes': '{{count}} rodzajów mięsa',
-  'summary.fitness': 'fitness {{score}}',
+  'summary.fitness': 'wynik: {{score}}',
+  'summary.qualityPerfect': 'Idealne dopasowanie',
+  'summary.qualityGreat': 'Świetny plan',
+  'summary.qualityGood': 'Dobry plan',
+  'summary.qualityCouldBeBetter': 'Można lepiej',
   'summary.exportShare': 'Eksport / udostępnij',
 
   // Generator
@@ -112,8 +116,8 @@ const pl = {
   'daycard.openLabel': 'Edytuj dzień: {{date}}',
 
   // Calendar past-days toggle
-  'calendar.showPast': '˅ Pokaż {{count}} minionych dni',
-  'calendar.hidePast': '˄ Schowaj minione dni',
+  'calendar.showPast': 'Pokaż {{count}} minionych dni',
+  'calendar.hidePast': 'Schowaj minione dni',
 
   // Day editor
   'dayeditor.closeLabel': 'Zamknij',
@@ -156,7 +160,7 @@ const pl = {
   'violations.info': 'Informacje',
 
   // Dishes page
-  'dishes.title': '🥘 Biblioteka dań',
+  'dishes.title': '🥘 Twoje Dania',
   'dishes.add': '+ Dodaj danie',
   'dishes.editTitle': '✏️ Edytuj danie',
   'dishes.newTitle': '✨ Nowe danie',
@@ -176,7 +180,7 @@ const pl = {
   'dishform.serves_2': '2 dni',
   'dishform.serves_3': '3 dni',
   'dishform.tags': 'Etykiety',
-  'dishform.noTagsHint': 'Brak etykiet. Zdefiniuj je w Dane → Etykiety.',
+  'dishform.noTagsHint': 'Brak etykiet. Zdefiniuj je w Profilu → Etykiety.',
 
   // Dish list
   'dishlist.empty': 'Brak dań w bibliotece.',
@@ -204,7 +208,7 @@ const pl = {
   'csv.imported': 'Zaimportowano {{count}} dań.',
 
   // Settings
-  'settings.title': '⚙️ Dane i udostępnianie',
+  'settings.title': '⚙️ Profil',
   'settings.familySection': '🌿 Rodzina',
   'settings.familyName': 'Nazwa rodziny',
   'settings.familyNamePlaceholder': 'np. Kowalskich',

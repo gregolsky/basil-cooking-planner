@@ -115,6 +115,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `duplicate.ts` — `duplicatePlanData` (deep-copy a plan with new ID)
 - `evaluate.ts` — `reevaluatePlan` (re-score after manual pin/swap)
 - `pastDays.ts` — `isPastDate`, `splitByPast` (splits date-bearing items into past/upcoming for the calendar's collapsed history view)
+- `quality.ts` — `computePlanQuality` (buckets a plan into a human-readable quality tier from average dish preference; `null` while hard violations remain)
 
 #### Storage (`src/lib/storage/`)
 - `schema.ts` — Zod schemas for JSON import validation (`SCHEMA_VERSION = 1`)
@@ -160,7 +161,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `DayCard.tsx` — single day in the calendar (dish, meat emoji, `DifficultyBar` for the day's cap, locked/leftover badges); a dedicated pin button toggles `meal.locked` directly with no re-evaluation; flags a red over-cap badge when the assigned dish's difficulty exceeds the day's cap
 - `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip; dish search/filters are sticky at the top of the picker so they stay reachable above an on-screen keyboard, day settings (skip, required tags) are collapsed in a `<details>`
 - `DifficultyBar.tsx` — renders a 1..5 value as filled/unfilled horizontal segments (dish difficulty, day difficulty cap)
-- `PlanSummary.tsx` — unique dishes count, meat types count, fitness score as bare badges (no wrapper), meant to sit inline in the plan header next to the date range
+- `PlanSummary.tsx` — unique dishes count, meat types count, and a `computePlanQuality` tier badge (raw fitness score shown as a tooltip) as bare badges (no wrapper), meant to sit inline in the plan header next to the date range
 - `ViolationsPanel.tsx` — grouped display of hard/soft/info violations
 - `GenerateDialog.tsx` — progress modal during GA run
 - `ExportDialog.tsx` — export options (CSV, PDF, JSON, share link)

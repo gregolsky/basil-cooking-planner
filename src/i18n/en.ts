@@ -1,7 +1,7 @@
 const en = {
   // Nav
   'nav.newPlan': '✨ New plan',
-  'nav.plans': '📚 Your Plans',
+  'nav.plans': '📅 Your Plans',
   'nav.dishes': '🥘 Your Dishes',
   'nav.settings': '⚙️ Profile',
   'nav.greeting.night': 'Good night, {{name}}!',
@@ -12,7 +12,7 @@ const en = {
   // Welcome
   'welcome.question': 'What is your family name?',
   'welcome.placeholder': 'e.g. Smiths, Johnsons…',
-  'welcome.hint': "We'll use this to greet you.\nYou can change it later in Settings.",
+  'welcome.hint': "We'll use this to greet you.\nYou can change it later in Profile.",
   'welcome.submit': 'Welcome to Basil 🌿',
 
   // Common
@@ -35,7 +35,7 @@ const en = {
   'meat.all': 'all',
 
   // Plans list
-  'plans.title': '📚 Plans',
+  'plans.title': '📅 Your Plans',
   'plans.newPlan': '+ New plan',
   'plans.empty': 'No plans yet.',
   'plans.emptyHint': 'Start by adding dishes to the library, then generate a plan.',
@@ -58,7 +58,11 @@ const en = {
   // Plan summary
   'summary.uniqueDishes': '{{count}} different dishes',
   'summary.meatTypes': '{{count}} meat types',
-  'summary.fitness': 'fitness {{score}}',
+  'summary.fitness': 'score: {{score}}',
+  'summary.qualityPerfect': 'Perfect match',
+  'summary.qualityGreat': 'Great plan',
+  'summary.qualityGood': 'Good plan',
+  'summary.qualityCouldBeBetter': 'Could be better',
   'summary.exportShare': 'Export / share',
 
   // Generator
@@ -110,8 +114,8 @@ const en = {
   'daycard.openLabel': 'Edit day: {{date}}',
 
   // Calendar past-days toggle
-  'calendar.showPast': '˅ Show {{count}} past days',
-  'calendar.hidePast': '˄ Hide past days',
+  'calendar.showPast': 'Show {{count}} past days',
+  'calendar.hidePast': 'Hide past days',
 
   // Day editor
   'dayeditor.closeLabel': 'Close',
@@ -154,7 +158,7 @@ const en = {
   'violations.info': 'Info',
 
   // Dishes page
-  'dishes.title': '🥘 Dish library',
+  'dishes.title': '🥘 Your Dishes',
   'dishes.add': '+ Add dish',
   'dishes.editTitle': '✏️ Edit dish',
   'dishes.newTitle': '✨ New dish',
@@ -174,7 +178,7 @@ const en = {
   'dishform.serves_2': '2 days',
   'dishform.serves_3': '3 days',
   'dishform.tags': 'Tags',
-  'dishform.noTagsHint': 'No tags. Define them in Settings → Tags.',
+  'dishform.noTagsHint': 'No tags. Define them in Profile → Tags.',
 
   // Dish list
   'dishlist.empty': 'No dishes in the library.',
@@ -202,7 +206,7 @@ const en = {
   'csv.imported': 'Imported {{count}} dishes.',
 
   // Settings
-  'settings.title': '⚙️ Data & sharing',
+  'settings.title': '⚙️ Profile',
   'settings.familySection': '🌿 Family',
   'settings.familyName': 'Family name',
   'settings.familyNamePlaceholder': 'e.g. Smiths',

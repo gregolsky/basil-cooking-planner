@@ -96,8 +96,9 @@ export function Calendar({ plan }: Props) {
     <>
       {!allInPast && past.length > 0 && (
         <div className="row no-print" style={{ marginBottom: 10 }}>
-          <button type="button" className="ghost small" onClick={() => setShowPast((v) => !v)}>
+          <button type="button" className="link-btn" onClick={() => setShowPast((v) => !v)}>
             {showPast ? t('calendar.hidePast') : t('calendar.showPast', { count: past.length })}
+            <span className={showPast ? 'chevron open' : 'chevron'}>»</span>
           </button>
         </div>
       )}

@@ -42,7 +42,7 @@ test('add dishes, generate plan, verify calendar renders filled days', async ({ 
   await expect(page.getByRole('heading', { name: 'Kalendarz' })).toBeVisible();
 
   await page.getByRole('link', { name: 'Dania' }).click();
-  await expect(page.getByRole('heading', { name: 'Biblioteka dań' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Twoje Dania' })).toBeVisible();
 
   for (const d of SEED_DISHES) {
     await addDish(page, d);
