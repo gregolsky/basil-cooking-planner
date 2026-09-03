@@ -8,6 +8,7 @@ import { normalizeDishTags } from '../lib/storage/normalize';
 import { cascadeDeleteTag } from '../lib/storage/tagCascade';
 import { duplicatePlanData } from '../lib/plan/duplicate';
 import i18n from '../i18n/index';
+import { resolveInitialLocale } from '../lib/utils/locale';
 
 interface AppState {
   schemaVersion: number;
@@ -56,7 +57,7 @@ export const useAppStore = create<AppState>()(
     (set, get) => ({
       schemaVersion: SCHEMA_VERSION,
       familyName: null,
-      locale: 'pl',
+      locale: resolveInitialLocale(i18n.resolvedLanguage),
       theme: 'trattoria',
       weekStartDay: 1,
       sameMeatPenalty: 1000,

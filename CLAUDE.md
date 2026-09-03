@@ -78,6 +78,7 @@ Two visual themes: **Trattoria della Famiglia** (default, Italian restaurant) an
 - **JSON backup**: `src/lib/storage/exportImport.ts` — `buildAppData` / `parseJson` / `exportJson`; imports are validated through Zod schemas in `src/lib/storage/schema.ts` (current `SCHEMA_VERSION = 1`)
 - **Compressed share link**: `encodeLink` / `decodeLink` use pako deflate + base64url; the URL fragment is `#/import?d=<payload>`
 - **CSV**: dishes import/export in `src/lib/csv/dishImport.ts`; plan export in `src/lib/csv/exporter.ts`
+- **ICS calendar**: `src/lib/ics/exporter.ts` — `planToIcs` / `icsFileName`; one all-day `VEVENT` per cooking day (leftover and skipped days are omitted), RFC 5545 text escaping and 75-octet line folding
 
 ### Testing layout
 
@@ -134,11 +135,15 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### PDF (`src/lib/pdf/`)
 - PDF generation using jsPDF + jspdf-autotable
 
+#### ICS (`src/lib/ics/`)
+- `exporter.ts` — `planToIcs` (plan + dish map + i18n labels → `.ics` text), `icsFileName`
+
 #### Utils (`src/lib/utils/`)
 - `date.ts` — ISO date helpers (`toISODate`, `fromISODate`, `addDays`, `daysBetween`, `listDates`), locale formatting (`formatDateLocale`, `formatMonthLocale`, `weekdayShortLocale`, `calendarDayLabels`), Polish-only legacy functions for GA worker context
 - `id.ts` — `uid()` UUID generator
 - `meat.ts` — `MEAT_EMOJI` lookup shared by `DayCard`, `DishList`, `DayEditor`
 - `difficultyBar.ts` — `computeDifficultySegments` (segment/overflow/divider layout for `DifficultyBar`)
+- `locale.ts` — `resolveInitialLocale` (maps a detected browser language tag to `'pl' | 'en'`, defaulting to Polish)
 
 #### i18n (`src/i18n/`)
 - `index.ts` — react-i18next config
@@ -146,14 +151,14 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `en.ts` — English translations
 
 #### Store (`src/store/`)
-- `useAppStore.ts` — single Zustand store with persist middleware; holds all app state; side-effect actions for theme/locale
+- `useAppStore.ts` — single Zustand store with persist middleware; holds all app state; side-effect actions for theme/locale; `locale` defaults from the browser-detected language (`resolveInitialLocale(i18n.resolvedLanguage)` in `src/lib/utils/locale.ts`) until the user picks one explicitly, at which point the persisted choice always wins on rehydrate
 
 #### Hooks (`src/hooks/`)
 - `useDismiss.ts` — shared Escape-key (and optional outside-click) dismiss behavior for menus/modals; used by `PlanDetailPage`'s overflow menu and `DayEditor`
 
 #### Pages (`src/pages/`)
 - `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
-- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (extend/duplicate/delete) live behind an overflow menu
+- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (ICS calendar export, extend, duplicate, delete) live behind an overflow menu
 - `GeneratorPage.tsx` — new plan form (date range, day modifiers, cumulative limits)
 - `ExtendPlanPage.tsx` — continue plan form (source range picker, end date)
 - `DishesPage.tsx` — dish library with add/edit/delete

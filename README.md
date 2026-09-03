@@ -49,6 +49,7 @@ Click **Continue** on any plan to create a follow-up. Select a date range from t
 ### 6. Export and share
 
 - **Print** — click Print on the plan detail page for a print-friendly view (save as PDF from the browser)
+- **Calendar (.ics)** — from the plan detail page's overflow menu (⋮), download an ICS file with one all-day event per cooking day, ready to import into Google/Apple/Outlook calendars
 - **JSON backup** — in Settings, download all data (dishes, plans, tags) as a JSON file or copy a compressed share link
 
 ---
@@ -85,6 +86,7 @@ Click **Continue** on any plan to create a follow-up. Select a date range from t
 
 **Export & sharing**
 - Print / save as PDF — browser print dialog, print-optimised layout
+- Calendar (.ics) export — one all-day event per cooking day (leftover/skipped days excluded), from the plan overflow menu
 - Full JSON backup — includes dishes, plans, tags, family name, settings
 - Share via compressed URL (copy to clipboard)
 - Import JSON restores everything including settings

@@ -13,7 +13,10 @@ import { buildDayContexts } from '../lib/days/capacity';
 import { listDates } from '../lib/utils/date';
 import { runGAInWorker } from '../lib/ga/runner';
 import { useDismiss } from '../hooks/useDismiss';
+import { planToIcs, icsFileName } from '../lib/ics/exporter';
+import { download } from '../lib/share/webShare';
 import type { PlannedMeal } from '../types/plan';
+import type { MeatType } from '../types/dish';
 
 export function PlanDetailPage() {
   const { t, i18n } = useTranslation();
@@ -28,6 +31,7 @@ export function PlanDetailPage() {
   const sameMeatPenalty = useAppStore((s) => s.sameMeatPenalty);
 
   const dishMap = useMemo(() => new Map(dishes.map((d) => [d.id, d])), [dishes]);
+  const tagNameMap = useMemo(() => new Map(tagDefinitions.map((t) => [t.id, t.name])), [tagDefinitions]);
   const [regenId, setRegenId] = useState<string | null>(null);
   const [progress, setProgress] = useState({ generation: 0, bestFitness: 0, totalGenerations: 200 });
   const [abortFn, setAbortFn] = useState<(() => void) | null>(null);
@@ -159,6 +163,22 @@ export function PlanDetailPage() {
           >⋮</button>
           {menuOpen && (
             <div className="menu-dropdown-panel">
+              <button
+                className="small ghost"
+                onClick={() => {
+                  const ics = planToIcs(plan, dishMap, {
+                    calendarName: plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) }),
+                    difficulty: t('ics.difficulty'),
+                    tags: t('ics.tags'),
+                    meatLabel: (m: MeatType) => t(`meat.${m}`),
+                    tagName: (id: string) => tagNameMap.get(id) ?? id,
+                  });
+                  download(new Blob([ics], { type: 'text/calendar;charset=utf-8' }), icsFileName(plan));
+                  setMenuOpen(false);
+                }}
+              >
+                {t('plans.exportIcs')}
+              </button>
               <Link to={`/extend-plan/${plan.id}`} onClick={() => setMenuOpen(false)}>
                 <button className="small ghost">{t('plans.extend')}</button>
               </Link>

@@ -296,17 +296,50 @@ label {
   right: 0;
   top: calc(100% + 6px);
   background: var(--color-paper);
-  border: 1.5px solid var(--color-green);
+  border: 1px solid rgba(45,74,30,0.25);
   border-radius: 8px;
   box-shadow: var(--shadow-lift);
   padding: 6px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   min-width: 160px;
   z-index: 20;
 }
-.menu-dropdown-panel button { width: 100%; text-align: left; }
+.menu-dropdown-panel a { display: block; text-decoration: none; }
+.menu-dropdown-panel button,
+.menu-dropdown-panel button.ghost,
+.menu-dropdown-panel button.small.ghost {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.menu-dropdown-panel button:hover:not(:disabled),
+.menu-dropdown-panel button.ghost:hover:not(:disabled) {
+  background: var(--color-green-soft);
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+.menu-dropdown-panel button:active:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+}
+.menu-dropdown-panel button.danger,
+.menu-dropdown-panel button.small.danger {
+  background: transparent;
+  color: var(--color-red-dark);
+}
+.menu-dropdown-panel button.danger:hover:not(:disabled),
+.menu-dropdown-panel button.small.danger:hover:not(:disabled) {
+  background: #faeaea;
+}
 
 /* ── Difficulty bar ───────────────────────────────────── */
 .difficulty-bar { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; }
@@ -1124,6 +1157,35 @@ html[data-theme="prl"] button.link-btn {
 }
 html[data-theme="prl"] button.link-btn:hover:not(:disabled) {
   filter: brightness(1.2);
+}
+html[data-theme="prl"] .menu-dropdown-panel {
+  background: #D0CCB8;
+  border: 1px solid #485638;
+}
+html[data-theme="prl"] .menu-dropdown-panel button,
+html[data-theme="prl"] .menu-dropdown-panel button.ghost,
+html[data-theme="prl"] .menu-dropdown-panel button.small.ghost {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #485638;
+}
+html[data-theme="prl"] .menu-dropdown-panel button:hover:not(:disabled),
+html[data-theme="prl"] .menu-dropdown-panel button.ghost:hover:not(:disabled) {
+  background: #9AAA88;
+  box-shadow: none;
+  filter: none;
+}
+html[data-theme="prl"] .menu-dropdown-panel button.danger,
+html[data-theme="prl"] .menu-dropdown-panel button.small.danger {
+  background: transparent;
+  color: #5A1A10;
+}
+html[data-theme="prl"] .menu-dropdown-panel button.danger:hover:not(:disabled),
+html[data-theme="prl"] .menu-dropdown-panel button.small.danger:hover:not(:disabled) {
+  background: rgba(90,26,16,0.12);
 }
 
 /* ── Remove ornamental decorations ── */

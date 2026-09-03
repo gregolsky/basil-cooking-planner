@@ -52,6 +52,7 @@ const en = {
   'plans.confirmDelete': 'Delete this plan?',
   'plans.renamePlan': 'Rename plan',
   'plans.print': '🖨️ Print',
+  'plans.exportIcs': '📆 Calendar (.ics)',
   'plans.moreActions': 'More options',
   'plans.planFallbackName': 'Plan {{date}}',
 
@@ -64,6 +65,10 @@ const en = {
   'summary.qualityGood': 'Good plan',
   'summary.qualityCouldBeBetter': 'Could be better',
   'summary.exportShare': 'Export / share',
+
+  // ICS calendar export
+  'ics.difficulty': 'Difficulty',
+  'ics.tags': 'Tags',
 
   // Generator
   'generator.title': '✨ New plan',
