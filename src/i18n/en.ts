@@ -9,11 +9,29 @@ const en = {
   'nav.greeting.day': 'Hello, {{name}}!',
   'nav.greeting.evening': 'Good evening, {{name}}!',
 
-  // Welcome
-  'welcome.question': 'What is your family name?',
-  'welcome.placeholder': 'e.g. Smiths, Johnsons…',
-  'welcome.hint': "We'll use this to greet you.\nYou can change it later in Profile.",
-  'welcome.submit': 'Welcome to Basil 🌿',
+  // Home (landing page)
+  'home.lead': 'A menu for the family, week after week.',
+  'home.learnMore': 'Learn more',
+
+  // Footer
+  'footer.tagline': 'A family menu, cooked with intention.',
+  'footer.copyright': '© {{year}} Grzegorz Lachowski',
+  'footer.madeWith': 'Made with basil and a little olive oil.',
+  'home.nameBlank': "We're the",
+  'home.namePlaceholder': 'Smiths…',
+  'home.submit': "Let's begin",
+  'home.hint': 'You can change this later in Profile.',
+  'home.stepsTitle': 'How it works',
+  'home.step1.title': 'Gather the dishes',
+  'home.step1.body': 'Write down what you actually cook — name, effort, meat, how many days it feeds.',
+  'home.step2.title': 'Basil cooks the plan',
+  'home.step2.body': "No meat two days running, the hard dishes on weekends — the rest sorts itself out.",
+  'home.step3.title': 'Serve it up',
+  'home.step3.body': 'Print it, pin it to the fridge, or send it to your calendar. Change it any time.',
+  'home.feature1': 'No repeated meat',
+  'home.feature2': 'Hard dishes land on weekends',
+  'home.feature3': 'Remembers your leftovers',
+  'home.feature4': 'Your own rules and tags',
 
   // Common
   'common.cancel': 'Cancel',

@@ -16,6 +16,8 @@
     "comlink": "^4.4.2",
     "i18next": "^26.0.7",
     "i18next-browser-languagedetector": "^8.2.1",
+    "lucide-react": "^1.40.0",
+    "open-props": "^1.7.23",
     "pako": "^2.1.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",

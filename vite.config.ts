@@ -14,8 +14,8 @@ export default defineConfig({
         short_name: 'Basil',
         description: 'Basil — family cooking planner, generator rodzinnego jadłospisu',
         lang: 'pl',
-        theme_color: '#c92a2a',
-        background_color: '#faf3e0',
+        theme_color: '#191512',
+        background_color: '#191512',
         display: 'standalone',
         start_url: '.',
         scope: '.',
@@ -27,7 +27,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ttf,woff2}'],
-        globIgnores: ['**/hero.png'],
+        // prl-hero.png (1.9MB) was previously precached unintentionally — hero.png had
+        // an ignore entry but its PRL counterpart didn't. The new landing images are
+        // small enough (<150KB each) that they don't need excluding.
+        globIgnores: ['**/prl-hero.png'],
       },
     }),
   ],

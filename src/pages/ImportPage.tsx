@@ -57,7 +57,7 @@ export function ImportPage() {
     <div className="page">
       <div className="page-header"><h1>{t('import.title')}</h1></div>
       {state === 'error' && (
-        <div className="card" style={{ background: '#faeaea' }}>{error}</div>
+        <div className="card" style={{ background: 'var(--wine-tint)' }}>{error}</div>
       )}
       {preview && state === 'waiting' && (
         <div className="card stack">

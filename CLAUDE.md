@@ -46,7 +46,7 @@ FOUC prevention: `src/main.tsx` reads the persisted theme from localStorage and 
 
 ### Routing
 
-Hash-based routing (`react-router-dom` with `HashRouter`). Routes: `/` (calendar), `/dishes`, `/new-plan`, `/plans`, `/extend-plan/:id`, `/import`, `/settings`.
+Hash-based routing (`react-router-dom` with `HashRouter`). Routes: `/welcome` (landing), `/dishes`, `/new-plan`, `/plans`, `/plans/:id`, `/extend-plan/:id`, `/import`, `/settings`, `/style-guide` (dev-only, unlinked). `/` redirects to `/welcome` for first-run users (`familyName === null`) and to `/plans` otherwise. `<NavBar>` is hidden on `/welcome` so the hero can be full-bleed.
 
 ### Genetic Algorithm
 
@@ -65,9 +65,22 @@ GA pipeline per generation:
 
 ### Themes
 
-Two visual themes: **Trattoria della Famiglia** (default, Italian restaurant) and **PRL** (Polish People's Republic canteen). The active theme is stored as `'trattoria' | 'prl'` in the Zustand store and applied by setting `document.documentElement.dataset.theme = 'prl'` (or removing the attribute for Trattoria). All PRL overrides are scoped to `html[data-theme="prl"]` in `src/styles/theme.css` using hardcoded hex values (not `var()` references) to avoid CSS cascade issues.
+Two visual themes: **Trattoria della Famiglia** (default) and **PRL** (Polish People's Republic canteen). The active theme is stored as `'trattoria' | 'prl'` in the Zustand store and applied by setting `document.documentElement.dataset.theme = 'prl'` (or removing the attribute for Trattoria). PRL is now a **~20-line token override** at the bottom of `src/styles/theme.css` — it re-points the same semantic tokens the base rules consume, rather than repeating every rule with hardcoded hex.
 
-**Fonts.** Each theme defines three CSS variables: `--font-display` (headings — h1/h2 only, plus `.hero-title` and the welcome modal), `--font-body` (a narrow decorative accent — currently only `.day-dish` and `.hero-sub`), and `--font-ui` (the ambient default, applied to `html, body` and to virtually every concrete UI element). Trattoria uses Fraunces for both `--font-display` and `--font-body` (its italic axis covers the accent role) and Lato for `--font-ui`. PRL uses Oswald / Roboto Condensed / Roboto respectively. Keep `--font-ui` as the `html, body` default — letting `--font-body` leak into that role reintroduces serif text in places like `.muted` or plain unstyled text that should read as UI copy.
+#### The two-zone token model — read before touching a selector
+
+**The app is a dark table with paper content laid on it.** The page ground, nav, hero and page headers are the TABLE (dark). Cards, day cards, modals, tables and panels are PAPER (light ivory). Both themes share this structure; only the palette differs.
+
+`--ink` / `--ink-soft` / `--hairline` / `--wine-text` / `--basil-text` / `--wine-tint` / `--basil-tint` / `--surface` are **contextual**. They hold the table's dark values at `:root`, and are redefined to paper values on the paper-scope selector group (`.card, .menu-card, .modal, .day-card, table.menu-table, .violations-panel, .menu-dropdown-panel, .dish-row, .sg-zone-paper`). Custom properties inherit, so every descendant self-corrects.
+
+- **New components consume the contextual tokens** — never reach for `--paper-ink` directly. A component then lands correctly in whichever zone contains it, automatically.
+- **A new container that should read as paper** must be added to that selector group.
+- `--wine` / `--basil` / `--on-fill` are **fills** (solid buttons, status). They carry their own contrast, so they don't flip.
+- `@media print` re-points every contextual token to a plain light document — the dark table must never reach paper.
+
+**Fonts.** Two CSS variables: `--font-display` (Cormorant Garamond — h1/h2, hero, step titles) and `--font-ui` (Inter — the ambient default on `html, body` and virtually every concrete UI element). PRL swaps in Oswald / Roboto. The old `--font-body` role is **gone**; a third voice is now a *treatment*, not a font — eyebrows, labels, buttons, badges and weekday names are `--font-ui` 600 uppercase with `letter-spacing: 0.12em`. Fonts load via `<link>` in `index.html` (with `preconnect`), not a CSS `@import`. Both families ship `latin-ext`, required for Polish diacritics.
+
+**Contrast.** `src/lib/utils/contrast.ts` (`contrastRatio`, `meetsAA`) powers a live audit table on `/style-guide`. Re-check it after changing any palette value.
 
 ### i18n
 
@@ -143,6 +156,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `id.ts` — `uid()` UUID generator
 - `meat.ts` — `MEAT_EMOJI` lookup shared by `DayCard`, `DishList`, `DayEditor`
 - `difficultyBar.ts` — `computeDifficultySegments` (segment/overflow/divider layout for `DifficultyBar`)
+- `contrast.ts` — `contrastRatio` / `meetsAA` (WCAG contrast maths behind the `/style-guide` audit table)
 - `locale.ts` — `resolveInitialLocale` (maps a detected browser language tag to `'pl' | 'en'`, defaulting to Polish)
 
 #### i18n (`src/i18n/`)
@@ -157,6 +171,8 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `useDismiss.ts` — shared Escape-key (and optional outside-click) dismiss behavior for menus/modals; used by `PlanDetailPage`'s overflow menu and `DayEditor`
 
 #### Pages (`src/pages/`)
+- `HomePage.tsx` — full-bleed landing page at `/welcome`, rendered **outside** `<NavBar>`. Hero photo with logo + lead overlaid, a three-step "how it works" flow (`I → II → III`, mirroring `/dishes` → `/new-plan` → `/plans/:id`), plain-language feature badges, and the family-name signup. `/` redirects here when `familyName === null`, else to `/plans`. Replaced the old `WelcomeModal`.
+- `StyleGuidePage.tsx` — dev-only route at `/style-guide` (not linked from nav). Palette, type specimen with Polish diacritics, every button/form/badge/card state, both theme and zone toggles, and the live contrast audit. Rendered against the real `theme.css` so the review is truthful.
 - `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
 - `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (ICS calendar export, extend, duplicate, delete) live behind an overflow menu
 - `GeneratorPage.tsx` — new plan form (date range, day modifiers, cumulative limits)
@@ -181,11 +197,9 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `TagManager.tsx` — tag CRUD in settings
 - `TagPicker.tsx` — multi-select tag picker in dish form
 - `DateSelect.tsx` — day/month/year dropdown selects
-- `WelcomeModal.tsx` — first-run family name prompt
-- `Candle.tsx` — decorative candle animation (Trattoria theme)
 
 #### Entry points
-- `src/main.tsx` — React root, FOUC prevention (theme from localStorage before render)
+- `src/main.tsx` — React root, Open Props token imports (before `theme.css`), FOUC prevention (theme from localStorage before render; `index.html` also carries an inline `html{background:#191512}` so the first paint is never white)
 - `src/App.tsx` — routes, WelcomeModal, NavBar
 
 ## Git

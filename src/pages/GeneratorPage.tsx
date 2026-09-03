@@ -298,7 +298,7 @@ export function GeneratorPage() {
           </details>
         )}
 
-        {error && <div className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{error}</div>}
+        {error && <div className="badge">{error}</div>}
 
         <div className="row">
           <div className="spacer" />

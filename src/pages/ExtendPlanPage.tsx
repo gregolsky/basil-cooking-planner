@@ -334,7 +334,7 @@ export function ExtendPlanPage() {
         )}
 
         {error && (
-          <div className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{error}</div>
+          <div className="badge">{error}</div>
         )}
 
         <div className="row">

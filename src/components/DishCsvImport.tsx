@@ -80,7 +80,7 @@ export function DishCsvImport() {
       </div>
 
       <details style={{ marginTop: 8 }}>
-        <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--color-blue-dark)' }}>
+        <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--ink)' }}>
           {t('csv.formatTitle')}
         </summary>
         <div className="stack" style={{ marginTop: 10 }}>
@@ -107,11 +107,11 @@ export function DishCsvImport() {
       </details>
 
       {preview && (
-        <div className="card stack" style={{ background: 'var(--color-blue-soft)' }}>
+        <div className="card stack" style={{ background: 'var(--basil-tint)' }}>
           <div dangerouslySetInnerHTML={{ __html: t('csv.preview', { count: preview.length }) }} />
           {warnings.length > 0 && (
             <details open>
-              <summary style={{ cursor: 'pointer', color: 'var(--color-red-dark)' }}>
+              <summary style={{ cursor: 'pointer', color: 'var(--wine-text)' }}>
                 {t('csv.warnings', { count: warnings.length })}
               </summary>
               <ul style={{ margin: '8px 0 0 0', fontSize: 13 }}>
@@ -137,7 +137,7 @@ export function DishCsvImport() {
       )}
 
       {status && !preview && (
-        <div className="muted" style={{ color: 'var(--color-green)' }}>{status}</div>
+        <div className="muted" style={{ color: 'var(--basil-text)' }}>{status}</div>
       )}
     </div>
   );

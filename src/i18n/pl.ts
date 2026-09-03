@@ -9,11 +9,29 @@ const pl = {
   'nav.greeting.day': 'Cześć, {{name}}!',
   'nav.greeting.evening': 'Dobry wieczór, {{name}}!',
 
-  // Welcome
-  'welcome.question': 'Jak nazywa się Twoja rodzina?',
-  'welcome.placeholder': 'np. Kowalskich, Nowaków…',
-  'welcome.hint': 'Użyjemy tego, żeby Cię witać.\nMożesz zmienić później w Profilu.',
-  'welcome.submit': 'Witaj w Basilu 🌿',
+  // Home (landing page)
+  'home.lead': 'Jadłospis dla rodziny, tydzień po tygodniu.',
+  'home.learnMore': 'Zobacz więcej',
+
+  // Footer
+  'footer.tagline': 'Jadłospis rodzinny, gotowany z rozmysłem.',
+  'footer.copyright': '© {{year}} Grzegorz Lachowski',
+  'footer.madeWith': 'Zrobione z bazylią i odrobiną oliwy.',
+  'home.nameBlank': 'Jesteśmy rodziną',
+  'home.namePlaceholder': 'Kowalskich…',
+  'home.submit': 'Zaczynamy',
+  'home.hint': 'Możesz zmienić to później w Profilu.',
+  'home.stepsTitle': 'Jak to działa',
+  'home.step1.title': 'Zbierz dania',
+  'home.step1.body': 'Zapisz to, co naprawdę gotujecie — nazwa, trudność, mięso, na ile dni starcza.',
+  'home.step2.title': 'Basil gotuje plan',
+  'home.step2.body': 'Żadnego mięsa dwa dni z rzędu, trudne dania na weekend — reszta sama się układa.',
+  'home.step3.title': 'Podawaj',
+  'home.step3.body': 'Drukuj, przypnij na lodówce albo wrzuć do kalendarza. Zmieniaj, kiedy chcesz.',
+  'home.feature1': 'Bez powtórek mięsa',
+  'home.feature2': 'Trudne dania na weekend',
+  'home.feature3': 'Pamięta o resztkach',
+  'home.feature4': 'Twoje zasady i tagi',
 
   // Common
   'common.cancel': 'Anuluj',

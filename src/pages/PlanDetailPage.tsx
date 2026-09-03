@@ -137,7 +137,7 @@ export function PlanDetailPage() {
             <div className="row plan-meta no-print">
               <span>{formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {t('plans.days', { count: days })}</span>
               <PlanSummary plan={plan} dishMap={dishMap} />
-              {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span>}
+              {hard > 0 && <span className="badge">{t('plans.violations', { count: hard })}</span>}
             </div>
           </div>
         )}

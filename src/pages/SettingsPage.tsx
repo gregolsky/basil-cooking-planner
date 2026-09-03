@@ -193,8 +193,8 @@ export function SettingsPage() {
         </div>
       </div>
 
-      {message && <div className="card" style={{ background: '#d4e6cc' }}>{message}</div>}
-      {error && <div className="card" style={{ background: '#faeaea' }}>{error}</div>}
+      {message && <div className="card" style={{ background: 'var(--basil-tint)' }}>{message}</div>}
+      {error && <div className="card" style={{ background: 'var(--wine-tint)' }}>{error}</div>}
     </div>
   );
 }

@@ -2,6 +2,11 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import App from './App.tsx';
+import 'open-props/sizes';
+import 'open-props/borders';
+import 'open-props/shadows';
+import 'open-props/easings';
+import 'open-props/fonts';
 import './styles/theme.css';
 import './i18n/index';
 

@@ -56,7 +56,7 @@ export function Calendar({ plan }: Props) {
     return (
       <div className={['calendar-grid', opts.gridExtraClass].filter(Boolean).join(' ')}>
         {labels.map((l) => (
-          <div key={l} className="calendar-day-label" style={{ textAlign: 'center', fontWeight: 700, fontSize: 12, color: 'var(--color-ink)', opacity: 0.6, padding: '2px 0' }}>{l}</div>
+          <div key={l} className="calendar-day-label">{l}</div>
         ))}
         {Array.from({ length: padding }, (_, i) => (
           <div key={`pad-${i}`} className="calendar-pad" />

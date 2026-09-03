@@ -29,7 +29,7 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
       {dishes.map((d) => (
         <div key={d.id} className="dish-row">
           <div>
-            <div style={{ fontWeight: 600, color: 'var(--color-red-dark)', fontSize: '1.05rem' }}>
+            <div style={{ fontWeight: 600, color: 'var(--wine-text)', fontSize: '1.05rem' }}>
               {d.name}
             </div>
             {d.tags.length > 0 && (

@@ -35,13 +35,13 @@ export function PlansListPage() {
               <div className="card no-print" style={{ cursor: 'pointer' }}>
                 <div className="row">
                   <div className="grow">
-                    <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--color-red-dark)' }}>
+                    <div style={{ fontWeight: 700, fontSize: '1.1rem', color: 'var(--wine-text)' }}>
                       {p.name ?? t('plans.planFallbackName', { date: formatDateLocale(p.startDate, i18n.language) })}
                     </div>
                     <div className="muted">{formatDateLocale(p.startDate, i18n.language)} – {formatDateLocale(p.endDate, i18n.language)} · {t('plans.days', { count: days })}</div>
                   </div>
                   <div className="row" style={{ gap: 6 }} onClick={(e) => e.preventDefault()}>
-                    {hard > 0 && <span className="badge" style={{ background: '#faeaea', color: 'var(--color-red-dark)' }}>{t('plans.violations', { count: hard })}</span>}
+                    {hard > 0 && <span className="badge">{t('plans.violations', { count: hard })}</span>}
                     <Link to={`/extend-plan/${p.id}`}>
                       <button className="small ghost">{t('plans.extend')}</button>
                     </Link>
