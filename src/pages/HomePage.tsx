@@ -32,28 +32,31 @@ export function HomePage() {
       <div className="home-hero">
         <div className="home-hero-overlay">
           <div className="home-hero-content">
-            <div className="home-hero-text">
-              <img className="home-wordmark" src="/basil-cooking-planner/basil-logo-chalk.png" alt="Basil" />
-              <h1 className="home-lead">{t('home.lead')}</h1>
-            </div>
+            <img className="home-wordmark" src="/basil-cooking-planner/basil-logo-chalk.png" alt="Basil" />
 
             <form
-              className={askingName ? 'home-signup is-open' : 'home-signup'}
+              className="home-signup"
               onSubmit={(e) => { e.preventDefault(); confirm(); }}
             >
-              {askingName && (
-                <label className="home-signup-line">
-                  {t('home.nameBlank')}
-                  <input
-                    type="text"
-                    autoFocus
-                    className="home-name-input"
-                    placeholder={t('home.namePlaceholder')}
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </label>
-              )}
+              {/* The tagline sells the app; once you've committed by clicking,
+                  the name field takes its place. The wordmark stays either
+                  way, so the hero keeps its identity across the swap. */}
+              {askingName
+                ? (
+                  <label className="home-signup-line">
+                    {t('home.nameBlank')}
+                    <input
+                      type="text"
+                      autoFocus
+                      className="home-name-input"
+                      placeholder={t('home.namePlaceholder')}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </label>
+                )
+                : <h1 className="home-lead">{t('home.lead')}</h1>}
+
               {/* Same button, same label, both before and after the reveal —
                   it opens the flow, then completes it. */}
               <button
@@ -63,9 +66,7 @@ export function HomePage() {
               >
                 {t('home.submit')}
               </button>
-              {askingName && (
-                <div className="muted" style={{ marginTop: 10 }}>{t('home.hint')}</div>
-              )}
+              {askingName && <div className="muted home-signup-hint">{t('home.hint')}</div>}
             </form>
           </div>
         </div>

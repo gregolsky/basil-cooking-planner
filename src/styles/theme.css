@@ -899,7 +899,8 @@ pre.format-sample {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 24px 20px;
+  /* Horizontal padding lives on .home-hero-content so it can match .page. */
+  padding: 24px 0;
 }
 /* Past ~1800px the 1376px-wide source is upscaled >1.8x and `cover` has to
    discard over half the frame's height, leaving a soft, thin strip that ends
@@ -915,24 +916,30 @@ pre.format-sample {
   }
 }
 
+/* Single column: wordmark, then the title/name-field slot, then the button.
+   The two-column split is gone — the form no longer sits beside the title,
+   it takes its place. */
+/* Same max-width and horizontal padding as .page, so the hero's left edge
+   lines up with the section below instead of starting 190px further out. */
 .home-hero-content {
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 32px;
+  padding: 0 20px;
+  /* One fluid scale drives the wordmark, the title and the name field, so
+     the hero grows into a big screen instead of sitting small in the corner
+     — and the title/field swap can't change size, since both derive from it. */
+  --hero-scale: clamp(1.9rem, 3.2vw, 3.6rem);
 }
-.home-hero-text { flex: 1 1 380px; }
-.home-body { max-width: 760px; padding-top: 48px; }
+/* Inherits .page's 1100px; the steps grid and its photos get the extra room
+   on wide screens rather than staying pinned to a narrow column. */
+.home-body { padding-top: 48px; }
 
 .home-hero-overlay .home-wordmark {
-  height: 72px;
+  height: clamp(52px, 5vw, 108px);
   width: auto;
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: clamp(12px, 1.4vw, 26px);
   /* The logo PNG carries transparent padding, so its glyphs sit inset from
      the box edge; pull left to optically align the leaf with the title. */
   margin-left: -14px;
@@ -940,29 +947,39 @@ pre.format-sample {
 }
 
 .home-lead {
-  font-size: 2.4rem;
+  font-size: var(--hero-scale);
   max-width: 20ch;
-  margin: 0;
+  line-height: 1.15;
+  /* Bottom margin is the gap to the button below; the name field that
+     replaces this element carries the same value so the button doesn't
+     shift when they swap. */
+  margin: 0 0 clamp(18px, 1.8vw, 32px);
   color: var(--ink);
   text-align: left;
   text-shadow: 0 2px 16px rgba(0,0,0,0.55);
 }
 
-/* Top offset matches the wordmark's height + margin so this column's
-   content starts level with the lead title, not the logo above it. */
-.home-signup {
-  flex: 0 1 360px;
-  margin-top: 88px;
-}
-/* The backing panel exists only once the name field is showing — collapsed,
-   the hero should read as a photo with a button on it, not a framed box
-   wrapped around a lone button. */
-.home-signup.is-open {
-  background: rgba(10,7,5,0.28);
-  border: 1px solid rgba(242,238,228,0.14);
-  border-radius: var(--radius);
-  padding: 20px;
-  backdrop-filter: blur(2px);
+/* No backing panel: the form now sits in the left column, over the same
+   darkening gradient that already makes the title legible. */
+.home-signup { max-width: 34rem; }
+
+/* Occupies the slot the title vacates, so the swap doesn't shift the button.
+   A shade smaller than the title — the label plus a fillable blank needs the
+   horizontal room the title doesn't. */
+.home-signup-line {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: calc(var(--hero-scale) * 0.72);
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  margin: 0 0 clamp(18px, 1.8vw, 32px);
+  text-shadow: 0 2px 16px rgba(0,0,0,0.55);
   animation: home-signup-open 200ms ease-out;
 }
 @keyframes home-signup-open {
@@ -970,38 +987,26 @@ pre.format-sample {
   to   { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home-signup.is-open { animation: none; }
+  .home-signup-line { animation: none; }
 }
-.home-signup-line {
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 10px;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--ink);
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 400;
-  margin-bottom: 14px;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.5);
-}
+.home-signup-hint { margin-top: 12px; }
 /* Transparent frames rather than solid fills — the form sits on a photo,
    not the flat table, so a filled input or button would read as a patch. */
 input.home-name-input {
-  flex: 1 1 180px;
+  flex: 1 1 8ch;
+  min-width: 0;
   background: transparent;
-  border: 1px solid rgba(242,238,228,0.5);
-  border-radius: var(--radius);
+  border: none;
+  border-bottom: 1px solid rgba(242,238,228,0.5);
+  border-radius: 0;
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: calc(var(--hero-scale) * 0.72);
   color: var(--ink);
-  padding: 4px 10px;
+  padding: 0 2px 2px;
 }
 input.home-name-input:focus {
   box-shadow: none;
-  border-color: var(--wine-text);
+  border-bottom-color: var(--wine-text);
 }
 input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
 
@@ -1100,7 +1105,7 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
   }
   .home-hero-overlay {
     position: static;
-    padding: 0 16px 28px;
+    padding: 0 0 28px;
     /* Transparent across the photo band so the logo/title sit *on* the
        image, then solid ground beneath it for the signup form. */
     background: linear-gradient(
@@ -1112,38 +1117,17 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
       var(--ground) 100%
     );
   }
-  /* Push the text down so it lands in the lower part of the photo band,
-     over the darkest area, rather than on Nonna's face. */
-  .home-hero-text { padding-top: 30vw; flex: 0 0 auto; }
+  /* Push the content down so it clears the photo band and lands on the
+     solid ground beneath it. 12px sides to match .page's mobile padding. */
+  .home-hero-content { padding: 30vw 12px 0; }
+  /* Sizes come from --hero-scale, whose clamp floor already covers mobile. */
   .home-lead { text-shadow: 0 2px 14px rgba(0,0,0,0.7); }
-  .home-hero-content {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 20px;
-  }
-  .home-hero-text { flex: 0 0 auto; }
-  .home-hero-overlay .home-wordmark { height: 56px; margin-bottom: 12px; margin-left: -11px; }
-  /* Below the photo rather than on it, so the translucent panel treatment
-     that made it legible over the image is no longer needed. */
-  .home-signup {
-    margin-top: 0;
-    flex: 1 1 auto;
-    border-top: 1px solid var(--hairline);
-    padding: 22px 0 0;
-  }
-  /* Must match .is-open's specificity to reset the desktop panel chrome —
-     a bare .home-signup rule here would lose to it. */
-  .home-signup.is-open {
-    background: none;
-    border: none;
-    border-top: 1px solid var(--hairline);
-    border-radius: 0;
-    padding: 22px 0 0;
-    backdrop-filter: none;
-  }
+  .home-hero-overlay .home-wordmark { margin-left: -11px; }
+  .home-signup { max-width: none; }
+  /* Off the photo down here, so the shadows the photo needed are noise. */
   .home-signup-line { text-shadow: none; }
   .home-signup .muted { text-shadow: none; opacity: 1; color: var(--ink-soft); }
-  input.home-name-input { border-color: var(--hairline); }
+  input.home-name-input { border-bottom-color: var(--hairline); }
   .home-scroll-hint { display: none; }
 }
 
