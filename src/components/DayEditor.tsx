@@ -156,7 +156,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
                   onClick={() => pinDish(d)}
                 >
                   <span className="name">{d.name}</span>
-                  <MeatIcon meat={d.meat} />
+                  <MeatIcon meat={d.meat} label={t(`meat.${d.meat}`)} />
                   <DifficultyBar value={d.difficulty} capacity={5} label={t('dishlist.difficulty', { n: d.difficulty })} />
                 </button>
               ))}

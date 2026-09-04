@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Beef, Drumstick, Fish, Leaf, Ham,
   Pin, Pencil, MoreVertical, ChevronRight, Check, X,
   Sparkles, Calendar, CookingPot, Settings,
 } from 'lucide-react';
@@ -9,7 +8,8 @@ import { DayCard } from '../components/DayCard';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { DifficultyBar } from '../components/DifficultyBar';
 import { PlanSummary } from '../components/PlanSummary';
-import type { Dish } from '../types/dish';
+import { MeatIcon } from '../components/MeatIcon';
+import { MEAT_LABELS, type Dish } from '../types/dish';
 import type { PlannedMeal, Plan } from '../types/plan';
 import type { DayContext } from '../lib/days/capacity';
 import type { TagDefinition } from '../types/tag';
@@ -31,22 +31,26 @@ const PALETTE_TABLE: { name: string; hex: string; role: string }[] = [
   { name: '--basil (fill)', hex: '#1B5E3F', role: 'solid confirm / locked' },
 ];
 
-const CONTRAST_PAIRS: { label: string; fg: string; bg: string; large?: boolean }[] = [
-  { label: 'ink on ground (body text)', fg: '#F2EEE4', bg: '#191512' },
-  { label: 'ink-soft on ground (muted text)', fg: '#9B9184', bg: '#191512' },
-  { label: 'wine-text on ground', fg: '#E0637A', bg: '#191512' },
-  { label: 'basil-text on ground', fg: '#6FBF8C', bg: '#191512' },
-  { label: 'paper-ink on paper (body text)', fg: '#191512', bg: '#EDE7DA' },
-  { label: 'paper-ink-soft on paper (muted text)', fg: '#6E6558', bg: '#EDE7DA' },
-  { label: 'wine on paper (link/accent text)', fg: '#A5202E', bg: '#EDE7DA' },
-  { label: 'basil on paper (link/accent text)', fg: '#1B5E3F', bg: '#EDE7DA' },
-  { label: 'on-fill on wine (button text)', fg: '#FBF8F1', bg: '#A5202E' },
-  { label: 'on-fill on basil (button text)', fg: '#FBF8F1', bg: '#1B5E3F' },
+// Token names, not hardcoded hex — resolved live via resolveToken() against
+// whichever theme is actually active, so this audit describes the palette
+// on screen rather than a Trattoria snapshot that silently stops meaning
+// anything once the PRL toggle is flipped.
+const CONTRAST_TOKEN_PAIRS: { label: string; fg: string; bg: string }[] = [
+  { label: 'ink on ground (body text)', fg: '--ink', bg: '--ground' },
+  { label: 'ink-soft on ground (muted text)', fg: '--ink-soft', bg: '--ground' },
+  { label: 'wine-text on ground', fg: '--wine-text', bg: '--ground' },
+  { label: 'basil-text on ground', fg: '--basil-text', bg: '--ground' },
+  { label: 'paper-ink on paper (body text)', fg: '--paper-ink', bg: '--paper' },
+  { label: 'paper-ink-soft on paper (muted text)', fg: '--paper-ink-soft', bg: '--paper' },
+  { label: 'wine on paper (link/accent text)', fg: '--wine', bg: '--paper' },
+  { label: 'basil on paper (link/accent text)', fg: '--basil', bg: '--paper' },
+  { label: 'on-fill on wine (button text)', fg: '--on-fill', bg: '--wine' },
+  { label: 'on-fill on basil (button text)', fg: '--on-fill', bg: '--basil' },
 ];
 
-const MEAT_ICON: Record<Dish['meat'], React.ComponentType<{ size?: number }>> = {
-  beef: Beef, pork: Ham, poultry: Drumstick, fish: Fish, none: Leaf,
-};
+function resolveToken(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
 
 function mockDish(over: Partial<Dish>): Dish {
   return { id: 'x', name: 'Ragù alla bolognese', meat: 'beef', difficulty: 3, preference: 4, tags: [], servesDays: 1, ...over };
@@ -131,18 +135,18 @@ export function StyleGuidePage() {
         <h2>2. Type</h2>
         <div className="sg-row" style={{ alignItems: 'stretch' }}>
           <div className="sg-zone-dark" style={{ flex: 1, minWidth: 280 }}>
-            <span className="eyebrow">Bodoni Moda · table zone · weight 500 / opsz 24</span>
+            <span className="eyebrow">Cormorant Garamond · table zone · weight 400</span>
             <h1 style={{ fontSize: '3rem', marginTop: 8 }}>Jańdłospis źółta łódź</h1>
-            <div className="eyebrow" style={{ marginTop: 16 }}>Archivo · tracked caps</div>
+            <div className="eyebrow" style={{ marginTop: 16 }}>Inter · tracked caps</div>
             <div style={{ fontFamily: 'var(--font-ui)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
               PONIEDZIAŁEK · ŚRODA · SOŁTYS ŻĆ
             </div>
           </div>
           <div className="sg-zone-paper" style={{ flex: 1, minWidth: 280 }}>
-            <span className="eyebrow">Bodoni Moda · paper zone · weight 400</span>
+            <span className="eyebrow">Cormorant Garamond · paper zone · weight 400</span>
             <h2 style={{ fontSize: '2rem', marginTop: 8 }}>Jańdłospis źółta łódź</h2>
             <div className="muted" style={{ marginTop: 16, fontFamily: 'var(--font-ui)' }}>
-              Archivo body — ąęłńóśźż ĄĘŁŃÓŚŹŻ, the quick brown fox jumps over the lazy dog.
+              Inter body — ąęłńóśźż ĄĘŁŃÓŚŹŻ, the quick brown fox jumps over the lazy dog.
             </div>
           </div>
         </div>
@@ -272,10 +276,9 @@ export function StyleGuidePage() {
             </div>
             <div className="eyebrow" style={{ margin: '16px 0 8px' }}>Meat icons</div>
             <div className="sg-row" style={{ color: 'var(--ink)' }}>
-              {(Object.keys(MEAT_ICON) as Dish['meat'][]).map((m) => {
-                const Icon = MEAT_ICON[m];
-                return <span key={m} className="row" style={{ gap: 4 }}><Icon size={18} /> {m}</span>;
-              })}
+              {(Object.keys(MEAT_LABELS) as Dish['meat'][]).map((m) => (
+                <span key={m} className="row" style={{ gap: 4 }}><MeatIcon meat={m} size={18} /> {m}</span>
+              ))}
             </div>
           </div>
           <div className="sg-zone-paper" style={{ flex: 1, minWidth: 280 }}>
@@ -290,11 +293,12 @@ export function StyleGuidePage() {
       {/* 11 — Contrast audit */}
       <section className="sg-section">
         <h2>11. Contrast audit (WCAG AA)</h2>
+        <p className="muted">Reads live computed values, so this reflects theme: {theme} — toggle above and re-check.</p>
         <table className="sg-contrast-table">
           <thead><tr><th>Pair</th><th>Ratio</th><th>AA normal (4.5:1)</th><th>AA large / UI (3:1)</th></tr></thead>
           <tbody>
-            {CONTRAST_PAIRS.map((p) => {
-              const ratio = contrastRatio(p.fg, p.bg);
+            {CONTRAST_TOKEN_PAIRS.map((p) => {
+              const ratio = contrastRatio(resolveToken(p.fg), resolveToken(p.bg));
               const passNormal = meetsAA(ratio, false);
               const passLarge = meetsAA(ratio, true);
               return (

@@ -75,7 +75,7 @@ export function DayCard({ meal, day, dish, tagMap, monthStart, isPast, onClick, 
         {day.skip
           ? <span className="muted">{t('daycard.skip')}</span>
           : dish
-            ? <>{dish.name} <MeatIcon meat={dish.meat} /></>
+            ? <>{dish.name} <MeatIcon meat={dish.meat} label={t(`meat.${dish.meat}`)} /></>
             : <span className="muted">—</span>}
       </div>
       <div className="no-print" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>

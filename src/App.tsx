@@ -17,11 +17,19 @@ export default function App() {
   const location = useLocation();
   const isWelcome = location.pathname === '/welcome';
 
+  // First-run users must complete onboarding before anything else, regardless
+  // of entry point (deep link, share link, browser back/forward, stale
+  // bookmark) — WelcomeModal used to guarantee this by overlaying every
+  // route; /welcome is a full page, so the guarantee has to live here instead.
+  if (familyName === null && !isWelcome) {
+    return <Navigate to="/welcome" replace />;
+  }
+
   return (
     <>
       {!isWelcome && <NavBar />}
       <Routes>
-        <Route path="/" element={<Navigate to={familyName === null ? '/welcome' : '/plans'} replace />} />
+        <Route path="/" element={<Navigate to="/plans" replace />} />
         <Route path="/welcome" element={<HomePage />} />
         <Route path="/dishes" element={<DishesPage />} />
         <Route path="/new-plan" element={<GeneratorPage />} />

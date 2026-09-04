@@ -798,8 +798,9 @@ pre.format-sample {
      against --ground instead of cropping Mamma out of frame. */
   aspect-ratio: 1376 / 768;
   max-height: calc(100vh - 90px);
-  background-size: contain;
-  background: var(--ground-alt) url('/basil-cooking-planner/kitchen-hero.webp') center / cover no-repeat;
+  /* The shorthand's own size term is what actually applies — a standalone
+     background-size declaration above this would be silently overwritten. */
+  background: var(--ground-alt) url('/basil-cooking-planner/kitchen-hero.webp') center / contain no-repeat;
   position: relative;
 }
 .home-scroll-hint {
@@ -1131,6 +1132,7 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
     padding: 0;
     background: transparent;
   }
+  .calendar-surface { margin-bottom: 0; }
 
   .menu-card {
     border: none;
@@ -1259,7 +1261,8 @@ html[data-theme="prl"] {
 html[data-theme="prl"] .card, html[data-theme="prl"] .menu-card,
 html[data-theme="prl"] .modal, html[data-theme="prl"] .day-card,
 html[data-theme="prl"] table.menu-table, html[data-theme="prl"] .violations-panel,
-html[data-theme="prl"] .menu-dropdown-panel, html[data-theme="prl"] .dish-row {
+html[data-theme="prl"] .menu-dropdown-panel, html[data-theme="prl"] .dish-row,
+html[data-theme="prl"] .sg-zone-paper {
   --ink:        var(--paper-ink);
   --ink-soft:   var(--paper-ink-soft);
   --hairline:   var(--paper-hairline);
