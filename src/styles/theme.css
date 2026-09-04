@@ -849,7 +849,7 @@ pre.format-sample {
 /* ── Home / landing page ──────────────────────────────── */
 .home-hero {
   width: 100%;
-  /* aspect-ratio matches kitchen-hero.webp's native 1376x768, so at most
+  /* aspect-ratio matches kitchen-hero.webp's native 2752x1536, so at most
      widths the container tracks the image exactly and `cover` crops nothing.
      max-height caps it on tall/maximized windows (browser chrome means 100vh
      of page is never 100% of the screen, and without the cap the scroll hint
@@ -908,11 +908,12 @@ pre.format-sample {
   /* Horizontal padding lives on .home-hero-content so it can match .page. */
   padding: 24px 0;
 }
-/* Past ~1800px the 1376px-wide source is upscaled >1.8x and `cover` has to
-   discard over half the frame's height, leaving a soft, thin strip that ends
-   in two hard vertical edges. Dissolving those edges into --ground reads as a
-   deliberate panoramic band instead of an over-cropped photo. Stretching to
-   fill would distort faces, so the fade is the better trade. */
+/* Past ~1800px the max-height cap forces `cover` to discard over half the
+   frame's height, leaving a thin strip that ends in two hard vertical edges.
+   Dissolving those edges into --ground reads as a deliberate panoramic band
+   instead of an over-cropped photo. Stretching to fill would distort faces,
+   so the fade is the better trade. (The source is 2752px wide, so this is
+   no longer also compensating for a soft upscale — just for the crop.) */
 @media (min-width: 1800px) {
   .home-hero-overlay {
     background:
