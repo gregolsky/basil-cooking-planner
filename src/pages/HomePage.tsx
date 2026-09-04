@@ -17,6 +17,9 @@ export function HomePage() {
   const navigate = useNavigate();
   const setFamilyName = useAppStore((s) => s.setFamilyName);
   const [name, setName] = useState('');
+  // The hero opens on just the call to action; the name field appears only
+  // once it's clicked, so the photo carries a button rather than a form.
+  const [askingName, setAskingName] = useState(false);
 
   const confirm = () => {
     if (!name.trim()) return;
@@ -35,22 +38,34 @@ export function HomePage() {
             </div>
 
             <form
-              className="home-signup"
+              className={askingName ? 'home-signup is-open' : 'home-signup'}
               onSubmit={(e) => { e.preventDefault(); confirm(); }}
             >
-              <label className="home-signup-line">
-                {t('home.nameBlank')}
-                <input
-                  type="text"
-                  autoFocus
-                  className="home-name-input"
-                  placeholder={t('home.namePlaceholder')}
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </label>
-              <button type="submit" disabled={!name.trim()}>{t('home.submit')}</button>
-              <div className="muted" style={{ marginTop: 10 }}>{t('home.hint')}</div>
+              {askingName && (
+                <label className="home-signup-line">
+                  {t('home.nameBlank')}
+                  <input
+                    type="text"
+                    autoFocus
+                    className="home-name-input"
+                    placeholder={t('home.namePlaceholder')}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </label>
+              )}
+              {/* Same button, same label, both before and after the reveal —
+                  it opens the flow, then completes it. */}
+              <button
+                type={askingName ? 'submit' : 'button'}
+                onClick={askingName ? undefined : () => setAskingName(true)}
+                disabled={askingName && !name.trim()}
+              >
+                {t('home.submit')}
+              </button>
+              {askingName && (
+                <div className="muted" style={{ marginTop: 10 }}>{t('home.hint')}</div>
+              )}
             </form>
           </div>
         </div>

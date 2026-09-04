@@ -939,11 +939,24 @@ pre.format-sample {
 .home-signup {
   flex: 0 1 360px;
   margin-top: 88px;
+}
+/* The backing panel exists only once the name field is showing — collapsed,
+   the hero should read as a photo with a button on it, not a framed box
+   wrapped around a lone button. */
+.home-signup.is-open {
   background: rgba(10,7,5,0.28);
   border: 1px solid rgba(242,238,228,0.14);
   border-radius: var(--radius);
   padding: 20px;
   backdrop-filter: blur(2px);
+  animation: home-signup-open 200ms ease-out;
+}
+@keyframes home-signup-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-signup.is-open { animation: none; }
 }
 .home-signup-line {
   display: flex;
@@ -1101,6 +1114,12 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
   .home-signup {
     margin-top: 0;
     flex: 1 1 auto;
+    border-top: 1px solid var(--hairline);
+    padding: 22px 0 0;
+  }
+  /* Must match .is-open's specificity to reset the desktop panel chrome —
+     a bare .home-signup rule here would lose to it. */
+  .home-signup.is-open {
     background: none;
     border: none;
     border-top: 1px solid var(--hairline);
