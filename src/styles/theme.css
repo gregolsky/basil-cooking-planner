@@ -66,6 +66,9 @@
      the right image per theme automatically instead of needing its own
      html[data-theme=…] override (which .page-hero previously lacked). */
   --hero-image: url('/basil-cooking-planner/kitchen-hero.webp');
+  /* The .page-hero band is far wider than it is tall, so it gets its own
+     purpose-shot image rather than a thin slice of the landing photo. */
+  --page-hero-image: url('/basil-cooking-planner/page-hero.webp');
 
   /* A third type voice, used only by .day-dish. Trattoria has no separate
      accent face, so this resolves to the UI font; PRL overrides it. */
@@ -757,14 +760,17 @@ pre.format-sample {
   border: 1px solid var(--hairline);
 }
 
-/* ── Plan detail: table banner + calendar surface ─────── */
-/* A slim, dim reprise of the landing hero's walnut table — grounds the
-   page instead of opening straight onto flat --ground, and gives the
-   calendar below something to visually continue from. */
+/* ── Page banner + calendar surface ───────────────────── */
+/* A slim, dim band of the walnut table — grounds the page instead of
+   opening straight onto flat --ground, and gives the content below
+   something to visually continue from. */
 .page-hero {
   width: 100%;
   height: 200px;
-  background: var(--ground-alt) var(--hero-image) center 78% / cover no-repeat;
+  /* `center top`: the ingredients sit along the top of the source and the
+     ::after gradient fades the band's own bottom out, so anchoring high
+     keeps the subject in the part that stays visible. */
+  background: var(--ground-alt) var(--page-hero-image) center top / cover no-repeat;
   position: relative;
 }
 .page-hero::after {
@@ -1336,7 +1342,9 @@ html[data-theme="prl"] {
   /* PRL keeps a third, condensed voice for dish names; Trattoria resolves
      this to --font-ui so the base rule needs no per-theme exception. */
   --font-accent:  'Roboto Condensed', 'Arial Narrow', sans-serif;
-  --hero-image:   url('/basil-cooking-planner/prl-hero.png');
+  --hero-image:      url('/basil-cooking-planner/prl-hero.png');
+  /* No PRL-specific ingredients shot, so its band reuses the theme photo. */
+  --page-hero-image: url('/basil-cooking-planner/prl-hero.png');
   --radius: 2px;
 }
 
@@ -1368,9 +1376,9 @@ html[data-theme="prl"] .nav {
     var(--hero-image) center 40% / cover no-repeat;
 }
 
-/* .home-hero and .page-hero both consume --hero-image, so PRL needs no
-   per-surface override — it previously had one for .home-hero only, which
-   left .page-hero showing the Trattoria photo under PRL. */
+/* .home-hero consumes --hero-image and .page-hero consumes
+   --page-hero-image, both re-pointed in PRL's :root above, so neither
+   needs a per-surface override here. */
 
 /* ═══════════════════════════════════════════════════════
    Style guide (dev-only page, not linked from nav)
