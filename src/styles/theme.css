@@ -790,17 +790,18 @@ pre.format-sample {
 /* ── Home / landing page ──────────────────────────────── */
 .home-hero {
   width: 100%;
-  /* Matches kitchen-hero.webp's native 1376x768 ratio, so the whole photo
-     shows uncropped. Capped to the visible viewport (minus room for the
-     scroll hint) because browser chrome means 100vh of page is never 100%
-     of the screen — without this the hint sits below the fold on a real
-     window. `contain` rather than `cover` so hitting the cap letterboxes
-     against --ground instead of cropping Mamma out of frame. */
+  /* aspect-ratio matches kitchen-hero.webp's native 1376x768, so at most
+     widths the container tracks the image exactly and `cover` crops nothing.
+     max-height caps it on tall/maximized windows (browser chrome means 100vh
+     of page is never 100% of the screen, and without the cap the scroll hint
+     sits below the fold). `cover` — not `contain` — so hitting that cap
+     trims a little off the top and bottom rather than pillarboxing the photo
+     against --ground: the hero must stay edge to edge horizontally.
+     Note the size term lives in the shorthand; a separate background-size
+     declaration here would be silently overwritten by it. */
   aspect-ratio: 1376 / 768;
   max-height: calc(100vh - 90px);
-  /* The shorthand's own size term is what actually applies — a standalone
-     background-size declaration above this would be silently overwritten. */
-  background: var(--ground-alt) url('/basil-cooking-planner/kitchen-hero.webp') center / contain no-repeat;
+  background: var(--ground-alt) url('/basil-cooking-planner/kitchen-hero.webp') center / cover no-repeat;
   position: relative;
 }
 .home-scroll-hint {
