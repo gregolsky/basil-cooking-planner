@@ -936,7 +936,11 @@ pre.format-sample {
 .home-body { padding-top: 48px; }
 
 .home-hero-overlay .home-wordmark {
-  height: clamp(52px, 5vw, 108px);
+  /* Derived from --hero-scale so the wordmark keeps a fixed ratio to the
+     title at every width. The multiplier is generous because roughly half
+     of the PNG's height is transparent padding — the visible mark lands at
+     about 1.6x the title's size, not 3x. */
+  height: calc(var(--hero-scale) * 3);
   width: auto;
   display: block;
   margin-bottom: clamp(12px, 1.4vw, 26px);
