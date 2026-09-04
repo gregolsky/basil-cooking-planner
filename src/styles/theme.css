@@ -660,16 +660,23 @@ table.menu-table th {
 /* ── Dish rows ────────────────────────────────────────── */
 .dish-row {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto;
-  gap: 8px;
+  grid-template-columns: 1.3fr 2fr auto;
+  gap: 14px;
   align-items: center;
   padding: 12px 14px;
   border: 1px solid var(--hairline);
-  border-left: 3px solid var(--wine);
   border-radius: var(--radius);
   font-size: 14px;
 }
-@media (max-width: 720px) { .dish-row { grid-template-columns: 1fr 1fr; } }
+.dish-row-meta {
+  color: var(--ink-soft);
+  gap: 8px;
+  row-gap: 4px;
+}
+.dish-row-dot { opacity: 0.5; }
+@media (max-width: 720px) {
+  .dish-row { grid-template-columns: 1fr; }
+}
 
 .dish-form-grid {
   display: grid;
