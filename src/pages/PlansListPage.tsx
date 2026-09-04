@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Calendar } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
+import { PageHero } from '../components/PageHero';
 import { formatDateLocale, daysBetween } from '../lib/utils/date';
 
 export function PlansListPage() {
@@ -13,7 +14,9 @@ export function PlansListPage() {
   const sorted = [...plans].sort((a, b) => (a.startDate < b.startDate ? 1 : -1));
 
   return (
-    <div className="page">
+    <>
+      <PageHero />
+      <div className="page">
       <div className="page-header">
         <h1><Calendar size={24} /> {t('plans.title')}</h1>
         <Link to="/new-plan"><button>{t('plans.newPlan')}</button></Link>
@@ -60,6 +63,7 @@ export function PlansListPage() {
           );
         })}
       </div>
-    </div>
+      </div>
+    </>
   );
 }

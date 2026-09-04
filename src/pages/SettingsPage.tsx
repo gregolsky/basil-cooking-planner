@@ -4,6 +4,7 @@ import { Settings, Leaf } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { useShallow } from 'zustand/react/shallow';
 import { TagManager } from '../components/TagManager';
+import { PageHero } from '../components/PageHero';
 import {
   buildAppData,
   exportJson,
@@ -82,7 +83,9 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="page stack" style={{ gap: 20 }}>
+    <>
+      <PageHero />
+      <div className="page stack" style={{ gap: 20 }}>
       <div className="page-header"><h1><Settings size={24} /> {t('settings.title')}</h1></div>
 
       <div className="card stack">
@@ -196,6 +199,7 @@ export function SettingsPage() {
 
       {message && <div className="card" style={{ background: 'var(--basil-tint)' }}>{message}</div>}
       {error && <div className="card" style={{ background: 'var(--wine-tint)' }}>{error}</div>}
-    </div>
+      </div>
+    </>
   );
 }

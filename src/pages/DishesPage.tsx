@@ -5,6 +5,7 @@ import { useAppStore } from '../store/useAppStore';
 import { DishForm } from '../components/DishForm';
 import { DishList } from '../components/DishList';
 import { DishCsvImport } from '../components/DishCsvImport';
+import { PageHero } from '../components/PageHero';
 import type { Dish } from '../types/dish';
 
 export function DishesPage() {
@@ -40,7 +41,9 @@ export function DishesPage() {
   };
 
   return (
-    <div className="page stack" style={{ gap: 18 }}>
+    <>
+      <PageHero />
+      <div className="page stack" style={{ gap: 18 }}>
       <div className="page-header">
         <h1><CookingPot size={24} /> {t('dishes.title')}</h1>
         {!showForm && <button onClick={startAdd}>{t('dishes.add')}</button>}
@@ -62,6 +65,7 @@ export function DishesPage() {
       <DishList dishes={dishes} onEdit={startEdit} onDelete={handleDelete} />
 
       <DishCsvImport />
-    </div>
+      </div>
+    </>
   );
 }

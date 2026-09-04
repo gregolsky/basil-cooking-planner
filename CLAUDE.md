@@ -82,7 +82,7 @@ There is exactly **one** paper-zone selector list. PRL deliberately has no copy 
 
 **Fonts.** Three CSS variables: `--font-display` (Cormorant Garamond — h1/h2, hero, step titles), `--font-ui` (Inter — the ambient default on `html, body` and virtually every concrete UI element), and `--font-accent`, a third voice used only by `.day-dish`. Trattoria resolves `--font-accent` to `--font-ui` (it has no separate accent face); PRL overrides the three to Oswald / Roboto / Roboto Condensed. Set the family on the token, never per-component — the tracked-caps treatment (`--font-ui` 600 uppercase, `letter-spacing: 0.12em`) on eyebrows, labels, buttons and badges is a *treatment*, not a fourth font. Fonts load via deferred `<link>`s in `index.html` (with `preconnect`), not a CSS `@import`. All families ship `latin-ext`, required for Polish diacritics.
 
-**Theme photography.** `--hero-image` holds the theme's photo; `.home-hero`, `.plan-hero` and PRL's `.nav` all consume it, so a new hero surface is themed automatically rather than needing its own `html[data-theme="prl"]` override.
+**Theme photography.** `--hero-image` holds the theme's photo; `.home-hero`, `.page-hero` and PRL's `.nav` all consume it, so a new hero surface is themed automatically rather than needing its own `html[data-theme="prl"]` override.
 
 **Contrast.** `src/lib/utils/contrast.ts` (`contrastRatio`, `meetsAA`) powers a live audit table on `/style-guide`. Re-check it after changing any palette value.
 
@@ -180,7 +180,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `HomePage.tsx` — full-bleed landing page at `/welcome`, rendered **outside** `<NavBar>`. Hero photo with logo + lead overlaid, a three-step "how it works" flow (`I → II → III`, mirroring `/dishes` → `/new-plan` → `/plans/:id`), plain-language feature badges, and the family-name signup. `/` redirects here when `familyName === null`, else to `/plans`. Replaced the old `WelcomeModal`.
 - `StyleGuidePage.tsx` — dev-only route at `/style-guide` (not linked from nav). Palette, type specimen with Polish diacritics, every button/form/badge/card state, both theme and zone toggles, and the live contrast audit. Rendered against the real `theme.css` so the review is truthful.
 - `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
-- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (ICS calendar export, extend, duplicate, delete) live behind an overflow menu. `.plan-hero` (a dim, cropped reprise of the landing hero's `kitchen-hero.webp`, `.no-print`) opens the page instead of flat `--ground`; the calendar renders inside `.calendar-surface` (a `--ground-alt` panel) so the day cards read as resting on a surface rather than floating — both are stripped to nothing in `@media print`
+- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (ICS calendar export, extend, duplicate, delete) live behind an overflow menu. The calendar renders inside `.calendar-surface` (a `--ground-alt` panel) so the day cards read as resting on a surface rather than floating; stripped to nothing in `@media print`
 - `GeneratorPage.tsx` — new plan form (date range, day modifiers, cumulative limits)
 - `ExtendPlanPage.tsx` — continue plan form (source range picker, end date)
 - `DishesPage.tsx` — dish library with add/edit/delete
@@ -194,6 +194,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip; dish search/filters are sticky at the top of the picker so they stay reachable above an on-screen keyboard, day settings (skip, required tags) are collapsed in a `<details>`
 - `DifficultyBar.tsx` — renders a 1..5 value as filled/unfilled horizontal segments (dish difficulty, day difficulty cap)
 - `MeatIcon.tsx` — `MeatType` → Lucide icon (`Beef`/`Ham`/`Drumstick`/`Fish`/`Leaf`), `aria-hidden`, sized via prop; renders in `currentColor` so it inherits from its container rather than taking an explicit color prop
+- `PageHero.tsx` — the `.page-hero` photo band (themed via `--hero-image`, `.no-print`) that opens `/plans`, `/plans/:id`, `/dishes` and `/settings`. Rendered as a sibling *before* each page's `.page` wrapper, since it's full-bleed. Deliberately not on `/new-plan`, `/extend-plan/:id` or `/import` — those are task flows where the band would just push the form down
 - `Footer.tsx` — site-wide footer (logo, tagline, copyright); rendered once in `App.tsx` below `<Routes>`, `.no-print`
 - `PlanSummary.tsx` — unique dishes count, meat types count, and a `computePlanQuality` tier badge (raw fitness score shown as a tooltip) as bare badges (no wrapper), meant to sit inline in the plan header next to the date range
 - `ViolationsPanel.tsx` — grouped display of hard/soft/info violations

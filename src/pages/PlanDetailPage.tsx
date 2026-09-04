@@ -10,6 +10,7 @@ import { Calendar } from '../components/Calendar';
 import { ViolationsPanel } from '../components/ViolationsPanel';
 import { PlanSummary } from '../components/PlanSummary';
 import { GenerateDialog } from '../components/GenerateDialog';
+import { PageHero } from '../components/PageHero';
 import { buildDayContexts } from '../lib/days/capacity';
 import { listDates } from '../lib/utils/date';
 import { runGAInWorker } from '../lib/ga/runner';
@@ -104,7 +105,7 @@ export function PlanDetailPage() {
 
   return (
     <>
-      <div className="plan-hero no-print" />
+      <PageHero />
       <div className="page">
       <div className="page-header" style={{ alignItems: 'flex-start' }}>
         {editingName ? (
