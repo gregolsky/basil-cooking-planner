@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Settings, Leaf } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { useShallow } from 'zustand/react/shallow';
 import { TagManager } from '../components/TagManager';
@@ -82,10 +83,10 @@ export function SettingsPage() {
 
   return (
     <div className="page stack" style={{ gap: 20 }}>
-      <div className="page-header"><h1>{t('settings.title')}</h1></div>
+      <div className="page-header"><h1><Settings size={24} /> {t('settings.title')}</h1></div>
 
       <div className="card stack">
-        <h2>{t('settings.familySection')}</h2>
+        <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Leaf size={20} /> {t('settings.familySection')}</h2>
         <label>
           {t('settings.familyName')}
           <div className="row">

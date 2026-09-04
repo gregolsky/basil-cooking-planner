@@ -82,6 +82,8 @@ Two visual themes: **Trattoria della Famiglia** (default) and **PRL** (Polish Pe
 
 **Contrast.** `src/lib/utils/contrast.ts` (`contrastRatio`, `meetsAA`) powers a live audit table on `/style-guide`. Re-check it after changing any palette value.
 
+**Icons.** `lucide-react`, not emoji — the UI previously used raw emoji characters baked into i18n strings and JSX, which is why some `home.*`/nav/button copy looks terse without a leading glyph now; the icon is a sibling element in the JSX instead (`<Icon size={..} /> {t('key')}`), never embedded in translated text. `MeatIcon.tsx` wraps the meat-type mapping. The one exception is `MEAT_EMOJI` in `lib/utils/meat.ts`, kept solely for the ICS exporter's plain-text SUMMARY line.
+
 ### i18n
 
 `react-i18next` with two locales: `pl` (default) and `en`. Translation files are `src/i18n/pl.ts` and `src/i18n/en.ts`. Always add new keys to **both** files. Violation messages produced inside the GA Web Worker are Polish-only (i18n is not available in the worker context).
@@ -154,7 +156,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### Utils (`src/lib/utils/`)
 - `date.ts` — ISO date helpers (`toISODate`, `fromISODate`, `addDays`, `daysBetween`, `listDates`), locale formatting (`formatDateLocale`, `formatMonthLocale`, `weekdayShortLocale`, `calendarDayLabels`), Polish-only legacy functions for GA worker context
 - `id.ts` — `uid()` UUID generator
-- `meat.ts` — `MEAT_EMOJI` lookup shared by `DayCard`, `DishList`, `DayEditor`
+- `meat.ts` — `MEAT_EMOJI` lookup. On-screen UI uses `MeatIcon` (Lucide) instead; this is kept only for the ICS exporter, where the event SUMMARY is plain text and can't carry a rendered icon
 - `difficultyBar.ts` — `computeDifficultySegments` (segment/overflow/divider layout for `DifficultyBar`)
 - `contrast.ts` — `contrastRatio` / `meetsAA` (WCAG contrast maths behind the `/style-guide` audit table)
 - `locale.ts` — `resolveInitialLocale` (maps a detected browser language tag to `'pl' | 'en'`, defaulting to Polish)
@@ -174,7 +176,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `HomePage.tsx` — full-bleed landing page at `/welcome`, rendered **outside** `<NavBar>`. Hero photo with logo + lead overlaid, a three-step "how it works" flow (`I → II → III`, mirroring `/dishes` → `/new-plan` → `/plans/:id`), plain-language feature badges, and the family-name signup. `/` redirects here when `familyName === null`, else to `/plans`. Replaced the old `WelcomeModal`.
 - `StyleGuidePage.tsx` — dev-only route at `/style-guide` (not linked from nav). Palette, type specimen with Polish diacritics, every button/form/badge/card state, both theme and zone toggles, and the live contrast audit. Rendered against the real `theme.css` so the review is truthful.
 - `PlansListPage.tsx` — list of all plans with delete/duplicate/extend links
-- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (ICS calendar export, extend, duplicate, delete) live behind an overflow menu
+- `PlanDetailPage.tsx` — plan view with calendar, rename, regenerate; secondary actions (ICS calendar export, extend, duplicate, delete) live behind an overflow menu. `.plan-hero` (a dim, cropped reprise of the landing hero's `kitchen-hero.webp`, `.no-print`) opens the page instead of flat `--ground`; the calendar renders inside `.calendar-surface` (a `--ground-alt` panel) so the day cards read as resting on a surface rather than floating — both are stripped to nothing in `@media print`
 - `GeneratorPage.tsx` — new plan form (date range, day modifiers, cumulative limits)
 - `ExtendPlanPage.tsx` — continue plan form (source range picker, end date)
 - `DishesPage.tsx` — dish library with add/edit/delete
@@ -184,9 +186,11 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 #### Components (`src/components/`)
 - `NavBar.tsx` — top navigation with greeting
 - `Calendar.tsx` — 7-column grid with month banners, padding, day labels; splits meals into a collapsed past-days grid (hidden by default, excluded from print) and an always-visible upcoming grid via `splitByPast`
-- `DayCard.tsx` — single day in the calendar (dish, meat emoji, locked/leftover badges); the whole card is a `role="button"` div (`onClick` + Enter/Space) so it opens the day editor from anywhere, except the nested pin button, which calls `stopPropagation()` to act independently; a dedicated pin button toggles `meal.locked` directly with no re-evaluation; `DifficultyBar` segment count is the day's cap, red-filled count is the dish's difficulty (0 for leftovers, which the GA never checks against the cap) — a dish over budget renders as distinct overflow segments past a divider, no separate badge needed
+- `DayCard.tsx` — single day in the calendar (dish, `MeatIcon`, locked/leftover badges); the whole card is a `role="button"` div (`onClick` + Enter/Space) so it opens the day editor from anywhere, except the nested pin button, which calls `stopPropagation()` to act independently; a dedicated pin button toggles `meal.locked` directly with no re-evaluation; `DifficultyBar` segment count is the day's cap, red-filled count is the dish's difficulty (0 for leftovers, which the GA never checks against the cap) — a dish over budget renders as distinct overflow segments past a divider, no separate badge needed
 - `DayEditor.tsx` — modal for pinning a dish to a day or marking as skip; dish search/filters are sticky at the top of the picker so they stay reachable above an on-screen keyboard, day settings (skip, required tags) are collapsed in a `<details>`
 - `DifficultyBar.tsx` — renders a 1..5 value as filled/unfilled horizontal segments (dish difficulty, day difficulty cap)
+- `MeatIcon.tsx` — `MeatType` → Lucide icon (`Beef`/`Ham`/`Drumstick`/`Fish`/`Leaf`), `aria-hidden`, sized via prop; renders in `currentColor` so it inherits from its container rather than taking an explicit color prop
+- `Footer.tsx` — site-wide footer (logo, tagline, copyright); rendered once in `App.tsx` below `<Routes>`, `.no-print`
 - `PlanSummary.tsx` — unique dishes count, meat types count, and a `computePlanQuality` tier badge (raw fitness score shown as a tooltip) as bare badges (no wrapper), meant to sit inline in the plan header next to the date range
 - `ViolationsPanel.tsx` — grouped display of hard/soft/info violations
 - `GenerateDialog.tsx` — progress modal during GA run

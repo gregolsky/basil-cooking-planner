@@ -1,14 +1,15 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { X, Pin } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import type { Dish, MeatType } from '../types/dish';
 import type { DayModifier } from '../types/day';
 import { formatDateLocale, weekdayLocale } from '../lib/utils/date';
 import { evaluatePlan } from '../lib/plan/evaluate';
-import { MEAT_EMOJI } from '../lib/utils/meat';
 import { useDismiss } from '../hooks/useDismiss';
 import { TagPicker } from './TagPicker';
 import { DifficultyBar } from './DifficultyBar';
+import { MeatIcon } from './MeatIcon';
 
 interface Props {
   planId: string;
@@ -103,7 +104,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
         <div className="row" style={{ alignItems: 'center' }}>
           <h2 style={{ margin: 0 }}>{formatDateLocale(date, i18n.language)} — {weekdayLocale(date, i18n.language)}</h2>
           <div className="spacer" />
-          <button className="icon-btn" aria-label={t('dayeditor.closeLabel')} onClick={onClose}>×</button>
+          <button className="icon-btn" aria-label={t('dayeditor.closeLabel')} onClick={onClose}><X size={18} /></button>
         </div>
 
         <div className="stack">
@@ -113,7 +114,11 @@ export function DayEditor({ planId, date, onClose }: Props) {
               {meal.isLeftover
                 ? <>{t('dayeditor.leftoverFrom', { date: meal.sourceDate, dish: currentDish?.name ?? '…' })}</>
                 : currentDish
-                  ? <>{currentDish.name} {meal.locked && <span className="badge">{t('dayeditor.pinned')}</span>}</>
+                  ? <>{currentDish.name} {meal.locked && (
+                      <span className="badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                        <Pin size={11} /> {t('dayeditor.pinned')}
+                      </span>
+                    )}</>
                   : <em className="muted">{t('dayeditor.noDish')}</em>}
             </div>
             {meal.locked && <button className="ghost small" onClick={unpin}>{t('dayeditor.unpin')}</button>}
@@ -151,7 +156,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
                   onClick={() => pinDish(d)}
                 >
                   <span className="name">{d.name}</span>
-                  <span>{MEAT_EMOJI[d.meat]}</span>
+                  <MeatIcon meat={d.meat} />
                   <DifficultyBar value={d.difficulty} capacity={5} label={t('dishlist.difficulty', { n: d.difficulty })} />
                 </button>
               ))}

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Pencil, MoreVertical, Calendar as CalendarIcon } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { formatDateLocale, daysBetween, toISODate } from '../lib/utils/date';
 import { getLockedMealsForRegen, isPlanFullyInPast } from '../lib/plan/regen';
@@ -45,7 +46,7 @@ export function PlanDetailPage() {
   if (!plan) {
     return (
       <div className="page">
-        <div className="page-header"><h1>{t('plans.title')}</h1></div>
+        <div className="page-header"><h1><CalendarIcon size={24} /> {t('plans.title')}</h1></div>
         <div className="card empty-state">
           {t('extend.notFound')} <Link to="/plans">{t('extend.backToPlans')}</Link>.
         </div>
@@ -102,7 +103,9 @@ export function PlanDetailPage() {
   };
 
   return (
-    <div className="page">
+    <>
+      <div className="plan-hero no-print" />
+      <div className="page">
       <div className="page-header" style={{ alignItems: 'flex-start' }}>
         {editingName ? (
           <form
@@ -132,7 +135,7 @@ export function PlanDetailPage() {
                 className="icon-btn no-print"
                 onClick={() => { setNameValue(plan.name ?? ''); setEditingName(true); }}
                 aria-label={t('plans.renamePlan')}
-              >✏️</button>
+              ><Pencil size={16} /></button>
             </h1>
             <div className="row plan-meta no-print">
               <span>{formatDateLocale(plan.startDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)} · {t('plans.days', { count: days })}</span>
@@ -160,7 +163,7 @@ export function PlanDetailPage() {
             aria-expanded={menuOpen}
             aria-label={t('plans.moreActions')}
             onClick={() => setMenuOpen((v) => !v)}
-          >⋮</button>
+          ><MoreVertical size={16} /></button>
           {menuOpen && (
             <div className="menu-dropdown-panel">
               <button
@@ -202,10 +205,13 @@ export function PlanDetailPage() {
         <div className="print-title">{plan.name ?? t('plans.planFallbackName', { date: formatDateLocale(plan.startDate, i18n.language) })}</div>
         <div className="print-dates">{formatDateLocale(printStartDate, i18n.language)} – {formatDateLocale(plan.endDate, i18n.language)}</div>
       </div>
-      <Calendar plan={plan} />
+      <div className="calendar-surface">
+        <Calendar plan={plan} />
+      </div>
       <ViolationsPanel plan={plan} />
 
       {regenId && <GenerateDialog progress={progress} onAbort={handleAbort} />}
-    </div>
+      </div>
+    </>
   );
 }

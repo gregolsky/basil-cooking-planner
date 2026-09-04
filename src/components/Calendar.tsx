@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ChevronRight } from 'lucide-react';
 import type { Plan, PlannedMeal } from '../types/plan';
 import { useAppStore } from '../store/useAppStore';
 import { buildDayContexts, type DayContext } from '../lib/days/capacity';
@@ -101,7 +102,7 @@ export function Calendar({ plan }: Props) {
         <div className="row no-print" style={{ marginBottom: 10 }}>
           <button type="button" className="link-btn" onClick={() => setShowPast((v) => !v)}>
             {showPast ? t('calendar.hidePast') : t('calendar.showPast', { count: past.length })}
-            <span className={showPast ? 'chevron open' : 'chevron'}>»</span>
+            <span className={showPast ? 'chevron open' : 'chevron'}><ChevronRight size={14} /></span>
           </button>
         </div>
       )}

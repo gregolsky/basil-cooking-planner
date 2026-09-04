@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Dish } from '../types/dish';
 import { useAppStore } from '../store/useAppStore';
-import { MEAT_EMOJI } from '../lib/utils/meat';
 import { DifficultyBar } from './DifficultyBar';
+import { MeatIcon } from './MeatIcon';
 
 interface Props {
   dishes: Dish[];
@@ -40,7 +40,9 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
               </div>
             )}
           </div>
-          <span className="badge soft">{MEAT_EMOJI[d.meat]} {t(`meat.${d.meat}`)}</span>
+          <span className="badge soft" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+            <MeatIcon meat={d.meat} size={12} /> {t(`meat.${d.meat}`)}
+          </span>
           <span className="badge">
             <DifficultyBar value={d.difficulty} capacity={5} label={t('dishlist.difficulty', { n: d.difficulty })} />
           </span>

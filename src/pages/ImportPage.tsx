@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Download } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { decodeLink } from '../lib/storage/exportImport';
 
@@ -55,7 +56,7 @@ export function ImportPage() {
 
   return (
     <div className="page">
-      <div className="page-header"><h1>{t('import.title')}</h1></div>
+      <div className="page-header"><h1><Download size={24} /> {t('import.title')}</h1></div>
       {state === 'error' && (
         <div className="card" style={{ background: 'var(--wine-tint)' }}>{error}</div>
       )}

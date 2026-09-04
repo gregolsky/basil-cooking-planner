@@ -1,12 +1,13 @@
 import { useTranslation } from 'react-i18next';
+import { Pin } from 'lucide-react';
 import type { PlannedMeal } from '../types/plan';
 import type { Dish } from '../types/dish';
 import type { DayContext } from '../lib/days/capacity';
 import type { TagDefinition } from '../types/tag';
 import { formatShortDateLocale, weekdayShortLocale, isWeekend } from '../lib/utils/date';
-import { MEAT_EMOJI } from '../lib/utils/meat';
 import { isPinDisabled, cookedDifficulty as computeCookedDifficulty } from '../lib/plan/dayCard';
 import { DifficultyBar } from './DifficultyBar';
+import { MeatIcon } from './MeatIcon';
 
 interface Props {
   meal: PlannedMeal;
@@ -64,7 +65,7 @@ export function DayCard({ meal, day, dish, tagMap, monthStart, isPast, onClick, 
             aria-label={t(meal.locked ? 'daycard.unpin' : 'daycard.pin')}
             disabled={pinDisabled}
             onClick={(e) => { e.stopPropagation(); onTogglePin(); }}
-          >📌</button>
+          ><Pin size={15} /></button>
           {day.requiresTags.map((t) => (
             <span key={t} className="badge gold">{tagMap.get(t)?.name ?? t}</span>
           ))}
@@ -74,7 +75,7 @@ export function DayCard({ meal, day, dish, tagMap, monthStart, isPast, onClick, 
         {day.skip
           ? <span className="muted">{t('daycard.skip')}</span>
           : dish
-            ? <>{dish.name} {MEAT_EMOJI[dish.meat]}</>
+            ? <>{dish.name} <MeatIcon meat={dish.meat} /></>
             : <span className="muted">—</span>}
       </div>
       <div className="no-print" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 2 }}>

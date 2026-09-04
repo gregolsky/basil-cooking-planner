@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FolderOpen, FileText, AlertTriangle } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { parseDishCsv, exportDishesToCsv, DISH_CSV_SAMPLE } from '../lib/csv/dishImport';
 import { download } from '../lib/share/webShare';
@@ -57,7 +58,7 @@ export function DishCsvImport() {
 
   return (
     <div className="card stack">
-      <h2>{t('csv.title')}</h2>
+      <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}><FolderOpen size={20} /> {t('csv.title')}</h2>
       <div className="muted">{t('csv.subtitle')}</div>
 
       <div className="row">
@@ -80,8 +81,8 @@ export function DishCsvImport() {
       </div>
 
       <details style={{ marginTop: 8 }}>
-        <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--ink)' }}>
-          {t('csv.formatTitle')}
+        <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--ink)', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <FileText size={15} /> {t('csv.formatTitle')}
         </summary>
         <div className="stack" style={{ marginTop: 10 }}>
           <div className="muted">
@@ -111,8 +112,8 @@ export function DishCsvImport() {
           <div dangerouslySetInnerHTML={{ __html: t('csv.preview', { count: preview.length }) }} />
           {warnings.length > 0 && (
             <details open>
-              <summary style={{ cursor: 'pointer', color: 'var(--wine-text)' }}>
-                {t('csv.warnings', { count: warnings.length })}
+              <summary style={{ cursor: 'pointer', color: 'var(--wine-text)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <AlertTriangle size={15} /> {t('csv.warnings', { count: warnings.length })}
               </summary>
               <ul style={{ margin: '8px 0 0 0', fontSize: 13 }}>
                 {warnings.map((w, i) => <li key={i}>{w}</li>)}

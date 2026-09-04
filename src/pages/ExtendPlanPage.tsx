@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { CalendarPlus } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import {
   toISODate,
@@ -103,7 +104,7 @@ export function ExtendPlanPage() {
   if (!sourcePlan) {
     return (
       <div className="page">
-        <div className="page-header"><h1>{t('extend.title')}</h1></div>
+        <div className="page-header"><h1><CalendarPlus size={24} /> {t('extend.title')}</h1></div>
         <div className="card empty-state">
           {t('extend.notFound')} <Link to="/plans">{t('extend.backToPlans')}</Link>.
         </div>
@@ -181,7 +182,7 @@ export function ExtendPlanPage() {
 
   return (
     <div className="page">
-      <div className="page-header"><h1>{t('extend.title')}</h1></div>
+      <div className="page-header"><h1><CalendarPlus size={24} /> {t('extend.title')}</h1></div>
       <div className="card stack">
         <div className="muted">
           {t('extend.source')}: <strong>{sourcePlan.name ?? t('plans.planFallbackName', { date: formatDateLocale(sourcePlan.startDate, i18n.language) })}</strong>

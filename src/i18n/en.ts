@@ -1,9 +1,9 @@
 const en = {
   // Nav
-  'nav.newPlan': '✨ New plan',
-  'nav.plans': '📅 Your Plans',
-  'nav.dishes': '🥘 Your Dishes',
-  'nav.settings': '⚙️ Profile',
+  'nav.newPlan': 'New plan',
+  'nav.plans': 'Your Plans',
+  'nav.dishes': 'Your Dishes',
+  'nav.settings': 'Profile',
   'nav.greeting.night': 'Good night, {{name}}!',
   'nav.greeting.morning': 'Good morning, {{name}}!',
   'nav.greeting.day': 'Hello, {{name}}!',
@@ -53,24 +53,22 @@ const en = {
   'meat.all': 'all',
 
   // Plans list
-  'plans.title': '📅 Your Plans',
+  'plans.title': 'Your Plans',
   'plans.newPlan': '+ New plan',
   'plans.empty': 'No plans yet.',
   'plans.emptyHint': 'Start by adding dishes to the library, then generate a plan.',
   'plans.emptyAction': 'Generate your first plan',
   'plans.days': '{{count}} days',
   'plans.violations': '{{count}} violations',
-  'plans.showCalendar': '📅 Calendar',
-  'plans.hideCalendar': '▲ Hide',
-  'plans.regenerate': '↺ Regenerate',
-  'plans.extend': '➕ Continue',
-  'plans.duplicate': '⧉ Duplicate',
+  'plans.regenerate': 'Regenerate',
+  'plans.extend': 'Continue',
+  'plans.duplicate': 'Duplicate',
   'plans.copySuffix': '(copy)',
-  'plans.delete': '🗑 Delete',
+  'plans.delete': 'Delete',
   'plans.confirmDelete': 'Delete this plan?',
   'plans.renamePlan': 'Rename plan',
-  'plans.print': '🖨️ Print',
-  'plans.exportIcs': '📆 Calendar (.ics)',
+  'plans.print': 'Print',
+  'plans.exportIcs': 'Calendar (.ics)',
   'plans.moreActions': 'More options',
   'plans.planFallbackName': 'Plan {{date}}',
 
@@ -89,7 +87,7 @@ const en = {
   'ics.tags': 'Tags',
 
   // Generator
-  'generator.title': '✨ New plan',
+  'generator.title': 'New plan',
   'generator.planName': 'Plan name (optional)',
   'generator.planNamePlaceholder': 'e.g. Week of April 17',
   'generator.startDate': 'Start date',
@@ -98,7 +96,7 @@ const en = {
   'generator.rangeInvalid': 'Range: invalid.',
   'generator.rangeNote': 'Plans can overlap in date ranges — that\'s not an error.',
   'generator.difficultyLimits': 'Day difficulty limits',
-  'generator.difficultyLimitsHint': 'Set a maximum dish difficulty for a specific day. "Auto" lets the algorithm choose freely (3 on weekdays, 5 on weekends).',
+  'generator.difficultyLimitsHint': 'Set a maximum dish difficulty for a specific day. "Auto" lets Basil choose freely (3 on weekdays, 5 on weekends).',
   'generator.cumulativeLimitsHint': 'Limit the total difficulty sum across a date range. Useful to keep a whole week lighter overall.',
   'generator.colDay': 'Day',
   'generator.colCap': 'Difficulty cap',
@@ -116,7 +114,7 @@ const en = {
   'generator.errorInvalidRange': 'End date must be equal to or later than start date.',
 
   // Extend plan
-  'extend.title': '➕ Continue plan',
+  'extend.title': 'Continue plan',
   'extend.notFound': 'Plan not found.',
   'extend.backToPlans': 'Back to plans',
   'extend.source': 'Source',
@@ -145,7 +143,7 @@ const en = {
   'dayeditor.closeLabel': 'Close',
   'dayeditor.currently': 'Currently:',
   'dayeditor.leftoverFrom': 'leftovers from {{date}} — {{dish}}',
-  'dayeditor.pinned': '📌 pinned',
+  'dayeditor.pinned': 'pinned',
   'dayeditor.noDish': 'none / not cooking',
   'dayeditor.unpin': 'Unpin',
   'dayeditor.skipLabel': 'Not cooking',
@@ -181,18 +179,18 @@ const en = {
   'violations.info': 'Info',
 
   // Dishes page
-  'dishes.title': '🥘 Your Dishes',
+  'dishes.title': 'Your Dishes',
   'dishes.add': '+ Add dish',
-  'dishes.editTitle': '✏️ Edit dish',
-  'dishes.newTitle': '✨ New dish',
+  'dishes.editTitle': 'Edit dish',
+  'dishes.newTitle': 'New dish',
   'dishes.confirmDelete': 'Delete dish from library?',
 
   // Dish form
   'dishform.name': 'Dish name',
   'dishform.meatType': 'Meat type',
-  'dishform.meatTypeHint': 'The algorithm avoids repeating the same meat type on consecutive days.',
+  'dishform.meatTypeHint': 'Basil avoids repeating the same meat type on consecutive days.',
   'dishform.difficulty': 'Difficulty (1-5)',
-  'dishform.difficultyHint': '1 = quick meal, 5 = all-day cooking. The algorithm avoids hard dishes on weekdays.',
+  'dishform.difficultyHint': '1 = quick meal, 5 = all-day cooking. Basil avoids hard dishes on weekdays.',
   'dishform.preference': 'Preference (1-5)',
   'dishform.preferenceHint': 'Higher preference means the dish appears more often in plans.',
   'dishform.servesDays': 'Serves',
@@ -205,32 +203,32 @@ const en = {
 
   // Dish list
   'dishlist.empty': 'No dishes in the library.',
-  'dishlist.emptyHint': 'Add your favorite dishes, then generate a plan — the algorithm will pick meals for each day.',
+  'dishlist.emptyHint': 'Add your favorite dishes, then generate a plan — Basil will pick meals for each day.',
   'dishlist.difficulty': 'difficulty {{n}}',
   'dishlist.preference': 'preference {{n}}/5',
   'dishlist.serves_one': '{{count}} day',
   'dishlist.serves_other': '{{count}} days',
 
   // CSV import
-  'csv.title': '📂 Import dishes from CSV',
+  'csv.title': 'Import dishes from CSV',
   'csv.subtitle': 'Load a CSV file with dish library. Existing dishes are kept — new ones are added.',
   'csv.selectFile': 'Select CSV file…',
   'csv.exportLib': 'Export library as CSV',
   'csv.downloadSample': 'Download sample CSV',
-  'csv.formatTitle': '📝 File format (click to expand)',
+  'csv.formatTitle': 'File format (click to expand)',
   'csv.formatDesc': 'First line is the header. Separator: <code>;</code>, <code>,</code> or tab (auto-detected). Accepted column names (Polish or English):',
   'csv.colColumn': 'Column',
   'csv.colAlias': 'Alias',
   'csv.colValues': 'Values',
   'csv.preview': 'Preview: found <strong>{{count}}</strong> dishes.',
-  'csv.warnings': '⚠️ {{count}} warnings',
+  'csv.warnings': '{{count}} warnings',
   'csv.previewMore': '…and {{count}} more',
   'csv.confirmImport': 'Add to library',
   'csv.imported': 'Imported {{count}} dishes.',
 
   // Settings
-  'settings.title': '⚙️ Profile',
-  'settings.familySection': '🌿 Family',
+  'settings.title': 'Profile',
+  'settings.familySection': 'Family',
   'settings.familyName': 'Family name',
   'settings.familyNamePlaceholder': 'e.g. Smiths',
   'settings.familyNameHint': 'Displayed in the greeting on the main page.',
@@ -245,7 +243,7 @@ const en = {
   'settings.themeTrattoria': 'Trattoria della Famiglia',
   'settings.themePrl': 'PRL (bar mleczny)',
   'settings.sameMeatRule': 'Same-meat rule strength',
-  'settings.sameMeatHint': 'Controls how strictly the algorithm avoids repeating the same meat type on consecutive days.',
+  'settings.sameMeatHint': 'Controls how strictly Basil avoids repeating the same meat type on consecutive days.',
   'settings.sameMeatStrict': 'Strict (never repeat)',
   'settings.sameMeatModerate': 'Moderate (avoid if possible)',
   'settings.sameMeatRelaxed': 'Relaxed (slight preference)',
@@ -268,7 +266,7 @@ const en = {
 
   // Tag manager
   'tags.title': 'Tags',
-  'tags.maxPerWeekHint': 'Maximum number of times dishes with this tag can appear in a single week. The algorithm treats this as a hard constraint.',
+  'tags.maxPerWeekHint': 'Maximum number of times dishes with this tag can appear in a single week. Basil treats this as a hard rule.',
   'tags.minGapHint': 'Minimum number of days between two dishes sharing this tag.',
   'tags.desc': 'Tags describe dishes (e.g. "babysitter ok", "takeout", "vegan"). Limits: max times per week (e.g. babysitter 2×) or minimum gap in days (e.g. "takeout" at least every 14 days).',
   'tags.namePlaceholder': 'Name (e.g. takeout)',
@@ -281,7 +279,7 @@ const en = {
   'tags.confirmDelete': 'Delete tag "{{name}}"? It will be removed from all dishes.',
 
   // Import page
-  'import.title': '📥 Import data from link',
+  'import.title': 'Import data from link',
   'import.noData': 'No data found in link.',
   'import.found': 'Found in link: <strong>{{dishes}}</strong> dishes, <strong>{{plans}}</strong> plans, <strong>{{tags}}</strong> tags.',
   'import.overwriteWarning': 'Import will overwrite all local data.',

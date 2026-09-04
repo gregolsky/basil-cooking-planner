@@ -1,16 +1,17 @@
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Sparkles, Calendar, CookingPot, Settings, type LucideIcon } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 export function NavBar() {
   const { t } = useTranslation();
   const familyName = useAppStore((s) => s.familyName);
 
-  const links = [
-    { to: '/new-plan', label: t('nav.newPlan') },
-    { to: '/plans', label: t('nav.plans'), end: true },
-    { to: '/dishes', label: t('nav.dishes') },
-    { to: '/settings', label: t('nav.settings') },
+  const links: { to: string; label: string; icon: LucideIcon; end?: boolean }[] = [
+    { to: '/new-plan', label: t('nav.newPlan'), icon: Sparkles },
+    { to: '/plans', label: t('nav.plans'), icon: Calendar, end: true },
+    { to: '/dishes', label: t('nav.dishes'), icon: CookingPot },
+    { to: '/settings', label: t('nav.settings'), icon: Settings },
   ];
 
   function greeting(name: string): string {
@@ -38,7 +39,7 @@ export function NavBar() {
               end={l.end}
               className={({ isActive }) => (isActive ? 'active' : '')}
             >
-              {l.label}
+              <l.icon size={15} aria-hidden="true" /> {l.label}
             </NavLink>
           ))}
         </div>

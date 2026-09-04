@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Calendar } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { formatDateLocale, daysBetween } from '../lib/utils/date';
 
@@ -14,7 +15,7 @@ export function PlansListPage() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>{t('plans.title')}</h1>
+        <h1><Calendar size={24} /> {t('plans.title')}</h1>
         <Link to="/new-plan"><button>{t('plans.newPlan')}</button></Link>
       </div>
 

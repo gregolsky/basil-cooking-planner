@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Check, X } from 'lucide-react';
 import type { TagDefinition } from '../types/tag';
 
 interface Props {
@@ -28,7 +29,9 @@ export function TagPicker({ tagDefs, selected, onChange, emptyHint }: Props) {
             className={active ? 'tag-active' : 'tag-inactive'}
             onClick={() => toggle(t.id)}
           >
-            {active ? `✓ ${t.name} ×` : t.name}
+            {active
+              ? <span className="row" style={{ gap: 4, alignItems: 'center', flexWrap: 'nowrap' }}><Check size={12} />{t.name}<X size={12} /></span>
+              : t.name}
           </button>
         );
       })}

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Sparkles } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { toISODate, addDays, daysBetween, listDates, formatShortDateLocale, weekdayShortLocale } from '../lib/utils/date';
 import { buildDayContexts } from '../lib/days/capacity';
@@ -139,7 +140,7 @@ export function GeneratorPage() {
 
   return (
     <div className="page">
-      <div className="page-header"><h1>{t('generator.title')}</h1></div>
+      <div className="page-header"><h1><Sparkles size={24} /> {t('generator.title')}</h1></div>
       <div className="card stack">
         <label>
           {t('generator.planName')}

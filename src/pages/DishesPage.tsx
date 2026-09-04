@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CookingPot, Pencil, Sparkles } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 import { DishForm } from '../components/DishForm';
 import { DishList } from '../components/DishList';
@@ -41,13 +42,15 @@ export function DishesPage() {
   return (
     <div className="page stack" style={{ gap: 18 }}>
       <div className="page-header">
-        <h1>{t('dishes.title')}</h1>
+        <h1><CookingPot size={24} /> {t('dishes.title')}</h1>
         {!showForm && <button onClick={startAdd}>{t('dishes.add')}</button>}
       </div>
 
       {showForm && (
         <div className="card">
-          <h2>{editing ? t('dishes.editTitle') : t('dishes.newTitle')}</h2>
+          <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {editing ? <Pencil size={20} /> : <Sparkles size={20} />} {editing ? t('dishes.editTitle') : t('dishes.newTitle')}
+          </h2>
           <DishForm
             initial={editing ?? undefined}
             onSubmit={handleSubmit}

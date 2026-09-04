@@ -1,9 +1,9 @@
 const pl = {
   // Nav
-  'nav.newPlan': '✨ Nowy plan',
-  'nav.plans': '📅 Twoje Plany',
-  'nav.dishes': '🥘 Twoje Dania',
-  'nav.settings': '⚙️ Profil',
+  'nav.newPlan': 'Nowy plan',
+  'nav.plans': 'Twoje Plany',
+  'nav.dishes': 'Twoje Dania',
+  'nav.settings': 'Profil',
   'nav.greeting.night': 'Dobranoc, {{name}}!',
   'nav.greeting.morning': 'Dzień dobry, {{name}}!',
   'nav.greeting.day': 'Cześć, {{name}}!',
@@ -55,24 +55,22 @@ const pl = {
   'meat.all': 'wszystkie',
 
   // Plans list
-  'plans.title': '📅 Twoje Plany',
+  'plans.title': 'Twoje Plany',
   'plans.newPlan': '+ Nowy plan',
   'plans.empty': 'Brak planów.',
   'plans.emptyHint': 'Najpierw dodaj dania w bibliotece, potem wygeneruj plan.',
   'plans.emptyAction': 'Wygeneruj pierwszy plan',
   'plans.days': '{{count}} dni',
   'plans.violations': '{{count}} naruszeń',
-  'plans.showCalendar': '📅 Kalendarz',
-  'plans.hideCalendar': '▲ Schowaj',
-  'plans.regenerate': '↺ Regeneruj',
-  'plans.extend': '➕ Kontynuuj',
-  'plans.duplicate': '⧉ Duplikuj',
+  'plans.regenerate': 'Regeneruj',
+  'plans.extend': 'Kontynuuj',
+  'plans.duplicate': 'Duplikuj',
   'plans.copySuffix': '(kopia)',
-  'plans.delete': '🗑 Usuń',
+  'plans.delete': 'Usuń',
   'plans.confirmDelete': 'Usunąć plan?',
   'plans.renamePlan': 'Zmień nazwę planu',
-  'plans.print': '🖨️ Drukuj',
-  'plans.exportIcs': '📆 Kalendarz (.ics)',
+  'plans.print': 'Drukuj',
+  'plans.exportIcs': 'Kalendarz (.ics)',
   'plans.moreActions': 'Więcej opcji',
   'plans.planFallbackName': 'Plan {{date}}',
 
@@ -91,7 +89,7 @@ const pl = {
   'ics.tags': 'Etykiety',
 
   // Generator
-  'generator.title': '✨ Nowy plan',
+  'generator.title': 'Nowy plan',
   'generator.planName': 'Nazwa planu (opcjonalnie)',
   'generator.planNamePlaceholder': 'np. Tydzień 17 kwietnia',
   'generator.startDate': 'Data początkowa',
@@ -100,7 +98,7 @@ const pl = {
   'generator.rangeInvalid': 'Zakres: nieprawidłowy.',
   'generator.rangeNote': 'Plany mogą się nakładać zakresami — to nie jest błąd.',
   'generator.difficultyLimits': 'Limity trudności dni',
-  'generator.difficultyLimitsHint': 'Ustaw maksymalną trudność dania na wybrany dzień. „Auto" pozwala algorytmowi wybrać dowolnie (3 w dni robocze, 5 w weekend).',
+  'generator.difficultyLimitsHint': 'Ustaw maksymalną trudność dania na wybrany dzień. „Auto" pozwala Basilowi wybrać dowolnie (3 w dni robocze, 5 w weekend).',
   'generator.cumulativeLimitsHint': 'Ogranicz sumę trudności wszystkich dań w podanym przedziale dat. Przydatne, żeby cały tydzień był lżejszy.',
   'generator.colDay': 'Dzień',
   'generator.colCap': 'Limit trudności',
@@ -118,7 +116,7 @@ const pl = {
   'generator.errorInvalidRange': 'Data końcowa musi być równa lub późniejsza niż początkowa.',
 
   // Extend plan
-  'extend.title': '➕ Kontynuuj plan',
+  'extend.title': 'Kontynuuj plan',
   'extend.notFound': 'Nie znaleziono planu.',
   'extend.backToPlans': 'Wróć do listy planów',
   'extend.source': 'Źródło',
@@ -149,7 +147,7 @@ const pl = {
   'dayeditor.closeLabel': 'Zamknij',
   'dayeditor.currently': 'Aktualnie:',
   'dayeditor.leftoverFrom': 'resztki z {{date}} — {{dish}}',
-  'dayeditor.pinned': '📌 przypięte',
+  'dayeditor.pinned': 'przypięte',
   'dayeditor.noDish': 'brak / nie gotujemy',
   'dayeditor.unpin': 'Odepnij',
   'dayeditor.skipLabel': 'Nie gotujemy',
@@ -185,10 +183,10 @@ const pl = {
   'violations.info': 'Informacje',
 
   // Dishes page
-  'dishes.title': '🥘 Twoje Dania',
+  'dishes.title': 'Twoje Dania',
   'dishes.add': '+ Dodaj danie',
-  'dishes.editTitle': '✏️ Edytuj danie',
-  'dishes.newTitle': '✨ Nowe danie',
+  'dishes.editTitle': 'Edytuj danie',
+  'dishes.newTitle': 'Nowe danie',
   'dishes.confirmDelete': 'Usunąć danie z biblioteki?',
 
   // Dish form
@@ -209,32 +207,32 @@ const pl = {
 
   // Dish list
   'dishlist.empty': 'Brak dań w bibliotece.',
-  'dishlist.emptyHint': 'Dodaj swoje ulubione dania, a potem wygeneruj plan — algorytm dobierze obiady na każdy dzień.',
+  'dishlist.emptyHint': 'Dodaj swoje ulubione dania, a potem wygeneruj plan — Basil dobierze obiady na każdy dzień.',
   'dishlist.difficulty': 'trudność {{n}}',
   'dishlist.preference': 'preferencja {{n}}/5',
   'dishlist.serves_one': '{{count}} dzień',
   'dishlist.serves_other': '{{count}} dni',
 
   // CSV import
-  'csv.title': '📂 Import dań z CSV',
+  'csv.title': 'Import dań z CSV',
   'csv.subtitle': 'Wczytaj plik CSV z biblioteką dań. Istniejące dania pozostają — nowe są dopisywane.',
   'csv.selectFile': 'Wybierz plik CSV…',
   'csv.exportLib': 'Eksportuj bibliotekę CSV',
   'csv.downloadSample': 'Pobierz przykład CSV',
-  'csv.formatTitle': '📝 Format pliku (kliknij, aby rozwinąć)',
+  'csv.formatTitle': 'Format pliku (kliknij, aby rozwinąć)',
   'csv.formatDesc': 'Pierwsza linia to nagłówek. Separator: <code>;</code>, <code>,</code> lub tabulator (wykrywany automatycznie). Akceptowane nazwy kolumn (polskie lub angielskie):',
   'csv.colColumn': 'Kolumna',
   'csv.colAlias': 'Alias',
   'csv.colValues': 'Wartości',
   'csv.preview': 'Podgląd: znaleziono <strong>{{count}}</strong> dań.',
-  'csv.warnings': '⚠️ {{count}} ostrzeżeń',
+  'csv.warnings': '{{count}} ostrzeżeń',
   'csv.previewMore': '…i {{count}} więcej',
   'csv.confirmImport': 'Dopisz do biblioteki',
   'csv.imported': 'Zaimportowano {{count}} dań.',
 
   // Settings
-  'settings.title': '⚙️ Profil',
-  'settings.familySection': '🌿 Rodzina',
+  'settings.title': 'Profil',
+  'settings.familySection': 'Rodzina',
   'settings.familyName': 'Nazwa rodziny',
   'settings.familyNamePlaceholder': 'np. Kowalskich',
   'settings.familyNameHint': 'Wyświetlana w powitaniu na stronie głównej.',
@@ -249,7 +247,7 @@ const pl = {
   'settings.themeTrattoria': 'Trattoria della Famiglia',
   'settings.themePrl': 'PRL (bar mleczny)',
   'settings.sameMeatRule': 'Siła reguły tego samego mięsa',
-  'settings.sameMeatHint': 'Określa, jak rygorystycznie algorytm unika powtarzania tego samego rodzaju mięsa w kolejnych dniach.',
+  'settings.sameMeatHint': 'Określa, jak rygorystycznie Basil unika powtarzania tego samego rodzaju mięsa w kolejnych dniach.',
   'settings.sameMeatStrict': 'Rygorystyczna (nigdy nie powtarzaj)',
   'settings.sameMeatModerate': 'Umiarkowana (unikaj, gdy możliwe)',
   'settings.sameMeatRelaxed': 'Luźna (lekka preferencja)',
@@ -285,7 +283,7 @@ const pl = {
   'tags.confirmDelete': 'Usunąć etykietę „{{name}}"? Zostanie odłączona od wszystkich dań.',
 
   // Import page
-  'import.title': '📥 Import danych z linku',
+  'import.title': 'Import danych z linku',
   'import.noData': 'Brak danych do zaimportowania w linku.',
   'import.found': 'W linku znaleziono: <strong>{{dishes}}</strong> dań, <strong>{{plans}}</strong> planów, <strong>{{tags}}</strong> etykiet.',
   'import.overwriteWarning': 'Import nadpisze wszystkie dane lokalne.',
