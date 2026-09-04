@@ -9,12 +9,18 @@
    Cards, day cards, modals, tables and panels are PAPER (light ivory).
 
    --ink / --ink-soft / --hairline / --wine-text / --basil-text /
-   --wine-tint / --basil-tint / --surface are CONTEXTUAL tokens.
+   --wine-tint / --basil-tint / --surface / --bg are CONTEXTUAL tokens.
    They resolve to the table's dark values at :root, and are
    redefined to the paper's light values inside the ".paper-zone"
    selector group below. A new component should consume these
    tokens directly — never reach for --paper-ink etc. by hand —
    so it lands in whichever zone contains it automatically.
+   (--bg is the zone's own ground, for opaque sticky headers and
+   knockout rings; --surface is the sunken fill within a zone.)
+
+   There is exactly ONE paper-zone selector list. PRL needs no copy of
+   it: every declaration inside resolves a --paper-* token, and PRL
+   re-points those at :root.
 
    --wine / --basil / --on-fill are FILLS: solid buttons and
    status dots. They carry their own contrast (white-on-fill) so
@@ -35,6 +41,7 @@
   --wine-tint:       #35201F;
   --basil-tint:      #1D2C21;
   --surface:         var(--ground-alt);
+  --bg:              var(--ground);
 
   /* — the paper (content zone): cards, modals, tables — absolute values,
        consumed only by the zone-flip rule below and print overrides — */
@@ -43,6 +50,8 @@
   --paper-ink:       #191512;
   --paper-ink-soft:  #6E6558;
   --paper-hairline:  #CFC5B2;
+  --paper-wine-tint:  #F2DEDF;
+  --paper-basil-tint: #DFE9E1;
 
   /* — fills: white-ish text sits on these in either zone — */
   --wine:            #A5202E;
@@ -53,7 +62,25 @@
   --font-display: 'Cormorant Garamond', Garamond, Georgia, serif;
   --font-ui:      'Inter', system-ui, -apple-system, sans-serif;
 
-  --radius: var(--radius-1, 2px);
+  /* One source for the theme's photography, so a new hero surface picks up
+     the right image per theme automatically instead of needing its own
+     html[data-theme=…] override (which .plan-hero previously lacked). */
+  --hero-image: url('/basil-cooking-planner/kitchen-hero.webp');
+
+  /* A third type voice, used only by .day-dish. Trattoria has no separate
+     accent face, so this resolves to the UI font; PRL overrides it. */
+  --font-accent: var(--font-ui);
+
+  --radius: 2px;
+  /* The only elevation left in the system: floating layers (modal, dropdown)
+     that need to read against the backdrop. Everything else separates by the
+     paper/table value step instead. */
+  --shadow-float:
+    0 -2px 5px 0 rgba(10, 8, 6, 0.04),
+    0 2px 2px -2px rgba(10, 8, 6, 0.05),
+    0 5px 5px -2px rgba(10, 8, 6, 0.06),
+    0 9px 9px -2px rgba(10, 8, 6, 0.07),
+    0 16px 16px -2px rgba(10, 8, 6, 0.08);
 }
 
 * { box-sizing: border-box; }
@@ -104,7 +131,7 @@ button {
   font-family: var(--font-ui);
   font-size: 0.85rem;
   text-transform: uppercase;
-  letter-spacing: var(--font-letterspacing-3, 0.075em);
+  letter-spacing: 0.075em;
   line-height: 1.2;
   transition: filter 120ms, border-color 120ms, background 120ms;
 }
@@ -210,10 +237,11 @@ table.menu-table, .violations-panel, .menu-dropdown-panel, .dish-row,
   --hairline:   var(--paper-hairline);
   --wine-text:  var(--wine);
   --basil-text: var(--basil);
-  --wine-tint:  #F2DEDF;
-  --basil-tint: #DFE9E1;
+  --wine-tint:  var(--paper-wine-tint);
+  --basil-tint: var(--paper-basil-tint);
   --surface:    var(--paper-alt);
-  background: var(--paper);
+  --bg:         var(--paper);
+  background: var(--bg);
   color: var(--ink);
 }
 
@@ -245,8 +273,12 @@ h2 { font-size: 1.5rem; }
 /* Page-level h1 sits on the dark table; a touch heavier than h2's default
    keeps it grounded against --ground. h2 stays default weight — it only
    ever appears inside paper cards. */
-.page-header h1, .hero-title {
-  font-weight: 500;
+.page-header h1 { font-weight: 500; }
+
+/* Headings pair a lucide icon with a label, so they need to be flex
+   containers. Declared once here rather than as a per-heading inline style
+   — the gaps had already drifted across the copies (10/8/6px). */
+.page-header h1, .card > h2, .modal h2 {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -292,7 +324,7 @@ label {
   top: calc(100% + 6px);
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-4);
+  box-shadow: var(--shadow-float);
   padding: 6px;
   display: flex;
   flex-direction: column;
@@ -336,13 +368,17 @@ label {
 .difficulty-bar .seg.filled { background: var(--wine-text); }
 .difficulty-bar .seg.overflow {
   background: var(--wine);
-  box-shadow: 0 0 0 1px var(--paper), 0 0 3px color-mix(in srgb, var(--wine) 70%, transparent);
+  box-shadow: 0 0 0 1px var(--bg), 0 0 3px color-mix(in srgb, var(--wine) 70%, transparent);
 }
 .difficulty-bar .cap-mark { width: 2px; height: 8px; background: var(--ink-soft); opacity: 0.6; border-radius: 1px; }
 
 /* ── Badges ───────────────────────────────────────────── */
 .badge {
-  display: inline-block;
+  /* inline-flex, not inline-block: badges increasingly carry a leading icon,
+     and this is a no-op for the text-only ones. */
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 3px 10px;
   border-radius: 2px;
   background: var(--wine-tint);
@@ -422,6 +458,11 @@ label {
   display: block;
 }
 
+/* Pushes the links to the right of the brand/greeting. Lives here rather
+   than as an inline style so the mobile breakpoint can override it without
+   !important. */
+.nav-links { margin-left: auto; }
+
 .nav-greeting {
   font-family: var(--font-ui);
   font-size: 0.78rem;
@@ -500,14 +541,14 @@ label {
   outline: 2px solid var(--basil);
   outline-offset: 2px;
 }
-.day-card.weekend    { background: var(--paper-alt); }
+.day-card.weekend    { background: var(--surface); }
 .day-card.skip       { opacity: 0.55; }
 .day-card.locked     { border-color: var(--basil); border-width: 2px; }
 .day-card.month-start { border-top: 2px solid var(--wine); }
 /* Explicit desaturated paper value rather than opacity — fading toward
    transparent on a dark table would reveal the ground and read as
    *darker*, not quieter. */
-.day-card.past        { background: var(--paper-alt); filter: grayscale(0.7); }
+.day-card.past        { background: var(--surface); filter: grayscale(0.7); }
 .day-card.past:hover   { border-color: var(--hairline); }
 
 .day-pin {
@@ -532,7 +573,7 @@ label {
 
 .day-date    { font-family: var(--font-ui); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); font-size: 1.05rem; line-height: 1; }
 .day-weekday { font-family: var(--font-ui); font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
-.day-dish    { font-family: var(--font-ui); font-size: 0.95rem; color: var(--ink); margin-top: auto; font-weight: 600; }
+.day-dish    { font-family: var(--font-accent); font-size: 0.95rem; color: var(--ink); margin-top: auto; font-weight: 600; }
 .day-meta    { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 
 /* ── Modal ────────────────────────────────────────────── */
@@ -546,7 +587,7 @@ label {
 .modal {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  box-shadow: var(--shadow-4);
+  box-shadow: var(--shadow-float);
   padding: 22px 24px;
   width: 100%;
   max-width: 560px;
@@ -559,7 +600,9 @@ label {
   position: sticky;
   top: -22px;
   z-index: 2;
-  background: var(--paper);
+  /* Opaque, so list rows scroll under it — must be whichever zone's ground
+     the picker currently sits on, not paper specifically. */
+  background: var(--bg);
   padding: 8px 0;
   margin: 0 -2px;
   display: flex;
@@ -604,6 +647,16 @@ label {
   color: var(--ink-soft);
 }
 .day-settings summary::marker { color: var(--basil-text); }
+
+/* A <summary> whose label is preceded by a lucide icon. */
+.summary-with-icon {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
 /* ── Violations ───────────────────────────────────────── */
 .violations-panel {
@@ -711,7 +764,7 @@ pre.format-sample {
 .plan-hero {
   width: 100%;
   height: 200px;
-  background: var(--ground-alt) url('/basil-cooking-planner/kitchen-hero.webp') center 78% / cover no-repeat;
+  background: var(--ground-alt) var(--hero-image) center 78% / cover no-repeat;
   position: relative;
 }
 .plan-hero::after {
@@ -801,7 +854,7 @@ pre.format-sample {
      declaration here would be silently overwritten by it. */
   aspect-ratio: 1376 / 768;
   max-height: calc(100vh - 90px);
-  background: var(--ground-alt) url('/basil-cooking-planner/kitchen-hero.webp') center / cover no-repeat;
+  background: var(--ground-alt) var(--hero-image) center / cover no-repeat;
   position: relative;
 }
 .home-scroll-hint {
@@ -826,11 +879,9 @@ pre.format-sample {
   opacity: 0.6;
   text-shadow: 0 1px 6px rgba(0,0,0,0.6);
 }
-.home-scroll-hint span[aria-hidden] {
+.home-scroll-hint svg {
   color: var(--ink);
   opacity: 0.55;
-  font-size: 20px;
-  line-height: 1;
 }
 @keyframes home-scroll-bounce {
   0%, 100% { transform: translateX(-50%) translateY(0); }
@@ -952,15 +1003,17 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
   margin: 0 12px;
   position: relative;
 }
+/* Arrowhead drawn from borders rather than a '▸' glyph, so it keeps the
+   hairline's weight and colour instead of depending on a font's metrics. */
 .home-flow-line::after {
-  content: '▸';
+  content: '';
   position: absolute;
-  right: -3px;
+  right: -1px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--ink-soft);
-  font-size: 10px;
-  line-height: 1;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-left: 5px solid var(--hairline);
 }
 
 .home-steps-grid {
@@ -1072,7 +1125,7 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
     width: 100%;
-    margin-left: 0 !important;
+    margin-left: 0;
   }
   .nav-links a { text-align: center; padding: 8px 6px; }
 
@@ -1109,10 +1162,11 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
   :root {
     /* Force every contextual token back to a plain light document —
        the dark table must never reach the printed page. */
-    --ground: #fff; --ground-alt: #fff; --hairline: #bbb;
+    --ground: #fff; --ground-alt: #fff; --hairline: #bbb; --bg: #fff;
     --ink: #111; --ink-soft: #555;
     --wine-text: #7A2020; --basil-text: #2A5A3A;
     --paper: #fff; --paper-alt: #fff; --paper-ink: #111; --paper-ink-soft: #555; --paper-hairline: #bbb;
+    --paper-wine-tint: #fff; --paper-basil-tint: #fff;
   }
 
   .nav,
@@ -1249,6 +1303,8 @@ html[data-theme="prl"] {
   --paper-ink:      #181810;
   --paper-ink-soft: #484038;
   --paper-hairline: #A8A494;
+  --paper-wine-tint:  #C0A098;
+  --paper-basil-tint: #9AAA88;
 
   --wine:   #7A3020;
   --basil:  #485638;
@@ -1256,23 +1312,16 @@ html[data-theme="prl"] {
 
   --font-display: 'Oswald', 'Arial Narrow', sans-serif;
   --font-ui:      'Roboto', Arial, sans-serif;
+  /* PRL keeps a third, condensed voice for dish names; Trattoria resolves
+     this to --font-ui so the base rule needs no per-theme exception. */
+  --font-accent:  'Roboto Condensed', 'Arial Narrow', sans-serif;
+  --hero-image:   url('/basil-cooking-planner/prl-hero.png');
   --radius: 2px;
 }
 
-html[data-theme="prl"] .card, html[data-theme="prl"] .menu-card,
-html[data-theme="prl"] .modal, html[data-theme="prl"] .day-card,
-html[data-theme="prl"] table.menu-table, html[data-theme="prl"] .violations-panel,
-html[data-theme="prl"] .menu-dropdown-panel, html[data-theme="prl"] .dish-row,
-html[data-theme="prl"] .sg-zone-paper {
-  --ink:        var(--paper-ink);
-  --ink-soft:   var(--paper-ink-soft);
-  --hairline:   var(--paper-hairline);
-  --wine-text:  var(--wine);
-  --basil-text: var(--basil);
-  --wine-tint:  #C0A098;
-  --basil-tint: #9AAA88;
-  --surface:    var(--paper-alt);
-}
+/* No PRL copy of the paper-zone flip rule is needed: every declaration in it
+   resolves a --paper-* token, and those are re-pointed above. Duplicating the
+   selector list here is what previously let .sg-zone-paper drift out of sync. */
 
 html[data-theme="prl"] h1,
 html[data-theme="prl"] h2 {
@@ -1286,24 +1335,21 @@ html[data-theme="prl"] .page-header h1 {
   font-variation-settings: normal;
 }
 
-html[data-theme="prl"] .day-date     { font-family: 'Oswald', sans-serif; }
-html[data-theme="prl"] .day-dish     { font-family: 'Roboto Condensed', sans-serif; }
-html[data-theme="prl"] .calendar-month-banner { font-family: 'Oswald', sans-serif; }
+/* PRL's display face applies to these two via --font-display; .day-dish gets
+   the condensed voice from --font-accent. No per-component families here. */
+html[data-theme="prl"] .day-date              { font-family: var(--font-display); }
+html[data-theme="prl"] .calendar-month-banner { font-family: var(--font-display); }
 
 /* ── Nav: swap to prl-hero as a faint watermark, not a photo backdrop ── */
 html[data-theme="prl"] .nav {
   background:
     linear-gradient(rgba(74,70,60,0.92), rgba(74,70,60,0.92)),
-    url('/basil-cooking-planner/prl-hero.png') center 40% / cover no-repeat;
+    var(--hero-image) center 40% / cover no-repeat;
 }
 
-html[data-theme="prl"] .home-hero {
-  background-image:
-    linear-gradient(rgba(74,70,60,0.5), rgba(74,70,60,0.5)),
-    url('/basil-cooking-planner/prl-hero.png');
-  background-size: cover;
-  background-position: center 40%;
-}
+/* .home-hero and .plan-hero both consume --hero-image, so PRL needs no
+   per-surface override — it previously had one for .home-hero only, which
+   left .plan-hero showing the Trattoria photo under PRL. */
 
 /* ═══════════════════════════════════════════════════════
    Style guide (dev-only page, not linked from nav)
@@ -1315,10 +1361,12 @@ html[data-theme="prl"] .home-hero {
 .sg-swatch-color { height: 64px; }
 .sg-swatch-label { padding: 8px 10px; font-size: 12px; }
 .sg-swatch-label code { font-size: 11px; color: var(--ink-soft); }
-.sg-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.sg-contrast-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.sg-contrast-table th, .sg-contrast-table td { padding: 6px 10px; text-align: left; border-bottom: 1px solid var(--hairline); }
+/* No .sg-row / .sg-contrast-table here: the style guide uses the app's own
+   .row and .menu-table, so it demonstrates the real primitives rather than
+   look-alikes that can drift from them. */
 .sg-pass { color: var(--basil-text); font-weight: 700; }
 .sg-fail { color: var(--wine-text); font-weight: 700; }
 .sg-zone-dark { background: var(--ground); padding: 24px; border-radius: var(--radius); border: 1px solid var(--hairline); }
-.sg-zone-paper { background: var(--paper); color: var(--paper-ink); padding: 24px; border-radius: var(--radius); border: 1px solid var(--paper-hairline); }
+/* background/color come from the paper-zone flip rule, which this is part of. */
+.sg-zone-paper { padding: 24px; border-radius: var(--radius); border: 1px solid var(--hairline); }
+.sg-zone-half { flex: 1; min-width: 280px; }

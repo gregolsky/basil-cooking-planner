@@ -58,7 +58,7 @@ export function DishCsvImport() {
 
   return (
     <div className="card stack">
-      <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}><FolderOpen size={20} /> {t('csv.title')}</h2>
+      <h2><FolderOpen size={20} /> {t('csv.title')}</h2>
       <div className="muted">{t('csv.subtitle')}</div>
 
       <div className="row">
@@ -81,7 +81,7 @@ export function DishCsvImport() {
       </div>
 
       <details style={{ marginTop: 8 }}>
-        <summary style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--ink)', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <summary className="summary-with-icon">
           <FileText size={15} /> {t('csv.formatTitle')}
         </summary>
         <div className="stack" style={{ marginTop: 10 }}>
@@ -112,7 +112,7 @@ export function DishCsvImport() {
           <div dangerouslySetInnerHTML={{ __html: t('csv.preview', { count: preview.length }) }} />
           {warnings.length > 0 && (
             <details open>
-              <summary style={{ cursor: 'pointer', color: 'var(--wine-text)', display: 'flex', alignItems: 'center', gap: 6 }}>
+              <summary className="summary-with-icon" style={{ color: 'var(--wine-text)' }}>
                 <AlertTriangle size={15} /> {t('csv.warnings', { count: warnings.length })}
               </summary>
               <ul style={{ margin: '8px 0 0 0', fontSize: 13 }}>

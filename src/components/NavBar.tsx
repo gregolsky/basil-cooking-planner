@@ -31,7 +31,7 @@ export function NavBar() {
         {familyName && (
           <span className="nav-greeting">{greeting(familyName)}</span>
         )}
-        <div className="row nav-links" style={{ marginLeft: 'auto' }}>
+        <div className="row nav-links">
           {links.map((l) => (
             <NavLink
               key={l.to}

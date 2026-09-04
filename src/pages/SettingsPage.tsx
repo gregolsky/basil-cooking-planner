@@ -86,7 +86,7 @@ export function SettingsPage() {
       <div className="page-header"><h1><Settings size={24} /> {t('settings.title')}</h1></div>
 
       <div className="card stack">
-        <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}><Leaf size={20} /> {t('settings.familySection')}</h2>
+        <h2><Leaf size={20} /> {t('settings.familySection')}</h2>
         <label>
           {t('settings.familyName')}
           <div className="row">

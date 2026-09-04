@@ -71,14 +71,18 @@ Two visual themes: **Trattoria della Famiglia** (default) and **PRL** (Polish Pe
 
 **The app is a dark table with paper content laid on it.** The page ground, nav, hero and page headers are the TABLE (dark). Cards, day cards, modals, tables and panels are PAPER (light ivory). Both themes share this structure; only the palette differs.
 
-`--ink` / `--ink-soft` / `--hairline` / `--wine-text` / `--basil-text` / `--wine-tint` / `--basil-tint` / `--surface` are **contextual**. They hold the table's dark values at `:root`, and are redefined to paper values on the paper-scope selector group (`.card, .menu-card, .modal, .day-card, table.menu-table, .violations-panel, .menu-dropdown-panel, .dish-row, .sg-zone-paper`). Custom properties inherit, so every descendant self-corrects.
+`--ink` / `--ink-soft` / `--hairline` / `--wine-text` / `--basil-text` / `--wine-tint` / `--basil-tint` / `--surface` / `--bg` are **contextual**. They hold the table's dark values at `:root`, and are redefined to paper values on the paper-scope selector group (`.card, .menu-card, .modal, .day-card, table.menu-table, .violations-panel, .menu-dropdown-panel, .dish-row, .sg-zone-paper`). Custom properties inherit, so every descendant self-corrects. `--bg` is the current zone's own ground (opaque sticky headers, knockout rings); `--surface` is the sunken fill *within* a zone.
+
+There is exactly **one** paper-zone selector list. PRL deliberately has no copy of it — every declaration inside resolves a `--paper-*` token, and PRL re-points those at its own `:root`. Keeping a second, PRL-prefixed copy is what previously let `.sg-zone-paper` drift out of sync.
 
 - **New components consume the contextual tokens** — never reach for `--paper-ink` directly. A component then lands correctly in whichever zone contains it, automatically.
 - **A new container that should read as paper** must be added to that selector group.
 - `--wine` / `--basil` / `--on-fill` are **fills** (solid buttons, status). They carry their own contrast, so they don't flip.
 - `@media print` re-points every contextual token to a plain light document — the dark table must never reach paper.
 
-**Fonts.** Two CSS variables: `--font-display` (Cormorant Garamond — h1/h2, hero, step titles) and `--font-ui` (Inter — the ambient default on `html, body` and virtually every concrete UI element). PRL swaps in Oswald / Roboto. The old `--font-body` role is **gone**; a third voice is now a *treatment*, not a font — eyebrows, labels, buttons, badges and weekday names are `--font-ui` 600 uppercase with `letter-spacing: 0.12em`. Fonts load via `<link>` in `index.html` (with `preconnect`), not a CSS `@import`. Both families ship `latin-ext`, required for Polish diacritics.
+**Fonts.** Three CSS variables: `--font-display` (Cormorant Garamond — h1/h2, hero, step titles), `--font-ui` (Inter — the ambient default on `html, body` and virtually every concrete UI element), and `--font-accent`, a third voice used only by `.day-dish`. Trattoria resolves `--font-accent` to `--font-ui` (it has no separate accent face); PRL overrides the three to Oswald / Roboto / Roboto Condensed. Set the family on the token, never per-component — the tracked-caps treatment (`--font-ui` 600 uppercase, `letter-spacing: 0.12em`) on eyebrows, labels, buttons and badges is a *treatment*, not a fourth font. Fonts load via deferred `<link>`s in `index.html` (with `preconnect`), not a CSS `@import`. All families ship `latin-ext`, required for Polish diacritics.
+
+**Theme photography.** `--hero-image` holds the theme's photo; `.home-hero`, `.plan-hero` and PRL's `.nav` all consume it, so a new hero surface is themed automatically rather than needing its own `html[data-theme="prl"]` override.
 
 **Contrast.** `src/lib/utils/contrast.ts` (`contrastRatio`, `meetsAA`) powers a live audit table on `/style-guide`. Re-check it after changing any palette value.
 
@@ -203,7 +207,7 @@ New pure functions should go in `src/lib/` so they can be tested without React o
 - `DateSelect.tsx` — day/month/year dropdown selects
 
 #### Entry points
-- `src/main.tsx` — React root, Open Props token imports (before `theme.css`), FOUC prevention (theme from localStorage before render; `index.html` also carries an inline `html{background:#191512}` so the first paint is never white)
+- `src/main.tsx` — React root, FOUC prevention (theme from localStorage before render; `index.html` also carries an inline `html{background:#191512}` so the first paint is never white)
 - `src/App.tsx` — routes, WelcomeModal, NavBar
 
 ## Git

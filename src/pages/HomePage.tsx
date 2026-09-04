@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { ChevronDown } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
 
 const STEPS = [
@@ -55,7 +56,7 @@ export function HomePage() {
         </div>
         <div className="home-scroll-hint">
           <span className="home-scroll-hint-label">{t('home.learnMore')}</span>
-          <span aria-hidden="true">⌄</span>
+          <ChevronDown size={18} aria-hidden="true" />
         </div>
       </div>
 

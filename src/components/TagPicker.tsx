@@ -30,7 +30,7 @@ export function TagPicker({ tagDefs, selected, onChange, emptyHint }: Props) {
             onClick={() => toggle(t.id)}
           >
             {active
-              ? <span className="row" style={{ gap: 4, alignItems: 'center', flexWrap: 'nowrap' }}><Check size={12} />{t.name}<X size={12} /></span>
+              ? <span className="row" style={{ gap: 4, flexWrap: 'nowrap' }}><Check size={12} />{t.name}<X size={12} /></span>
               : t.name}
           </button>
         );

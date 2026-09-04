@@ -48,7 +48,7 @@ export function DishesPage() {
 
       {showForm && (
         <div className="card">
-          <h2 style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <h2>
             {editing ? <Pencil size={20} /> : <Sparkles size={20} />} {editing ? t('dishes.editTitle') : t('dishes.newTitle')}
           </h2>
           <DishForm

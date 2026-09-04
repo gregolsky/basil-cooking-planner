@@ -41,7 +41,7 @@ export function DishList({ dishes, onEdit, onDelete }: Props) {
             )}
           </div>
           <div className="row dish-row-meta">
-            <span className="row" style={{ gap: 4, alignItems: 'center' }}>
+            <span className="row" style={{ gap: 4 }}>
               <MeatIcon meat={d.meat} size={14} /> {t(`meat.${d.meat}`)}
             </span>
             <span className="dish-row-dot" aria-hidden="true">·</span>

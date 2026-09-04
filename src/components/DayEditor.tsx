@@ -115,7 +115,7 @@ export function DayEditor({ planId, date, onClose }: Props) {
                 ? <>{t('dayeditor.leftoverFrom', { date: meal.sourceDate, dish: currentDish?.name ?? '…' })}</>
                 : currentDish
                   ? <>{currentDish.name} {meal.locked && (
-                      <span className="badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+                      <span className="badge">
                         <Pin size={11} /> {t('dayeditor.pinned')}
                       </span>
                     )}</>

@@ -101,7 +101,7 @@ export function StyleGuidePage() {
       <div className="page-header">
         <h1>Style guide</h1>
         <div className="row">
-          <label style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <label className="row" style={{ gap: 8 }}>
             <input type="checkbox" checked={allDarkZone} onChange={(e) => setAllDarkZone(e.target.checked)} />
             All-dark paper zone
           </label>
@@ -133,8 +133,8 @@ export function StyleGuidePage() {
       {/* 2 — Type */}
       <section className="sg-section">
         <h2>2. Type</h2>
-        <div className="sg-row" style={{ alignItems: 'stretch' }}>
-          <div className="sg-zone-dark" style={{ flex: 1, minWidth: 280 }}>
+        <div className="row" style={{ alignItems: 'stretch' }}>
+          <div className="sg-zone-dark sg-zone-half">
             <span className="eyebrow">Cormorant Garamond · table zone · weight 400</span>
             <h1 style={{ fontSize: '3rem', marginTop: 8 }}>Jańdłospis źółta łódź</h1>
             <div className="eyebrow" style={{ marginTop: 16 }}>Inter · tracked caps</div>
@@ -142,7 +142,7 @@ export function StyleGuidePage() {
               PONIEDZIAŁEK · ŚRODA · SOŁTYS ŻĆ
             </div>
           </div>
-          <div className="sg-zone-paper" style={{ flex: 1, minWidth: 280 }}>
+          <div className="sg-zone-paper sg-zone-half">
             <span className="eyebrow">Cormorant Garamond · paper zone · weight 400</span>
             <h2 style={{ fontSize: '2rem', marginTop: 8 }}>Jańdłospis źółta łódź</h2>
             <div className="muted" style={{ marginTop: 16, fontFamily: 'var(--font-ui)' }}>
@@ -156,24 +156,24 @@ export function StyleGuidePage() {
       <section className="sg-section">
         <h2>3. Buttons</h2>
         <div className="card stack">
-          <div className="sg-row">
+          <div className="row">
             <button>Primary</button>
             <button className="ghost">Ghost</button>
             <button className="danger">Danger</button>
             <button disabled>Disabled</button>
           </div>
-          <div className="sg-row">
+          <div className="row">
             <button className="small">Small primary</button>
             <button className="small ghost">Small ghost</button>
             <button className="small danger">Small danger</button>
           </div>
-          <div className="sg-row">
+          <div className="row">
             <button className="icon-btn"><Pin size={16} /></button>
             <button className="icon-btn"><Pencil size={16} /></button>
             <button className="icon-btn"><MoreVertical size={16} /></button>
             <button className="link-btn">Pokaż więcej <ChevronRight size={14} className="chevron" /></button>
           </div>
-          <div className="sg-row">
+          <div className="row">
             <button className="tag-active">Wołowina</button>
             <button className="tag-inactive">Wieprzowina</button>
           </div>
@@ -206,15 +206,15 @@ export function StyleGuidePage() {
       <section className="sg-section">
         <h2>5. Badges &amp; indicators</h2>
         <div className="card stack">
-          <div className="sg-row">
+          <div className="row">
             <span className="badge">hard / wine</span>
             <span className="badge soft">soft / basil</span>
             <span className="badge gold">best tier / basil (no gold)</span>
           </div>
-          <div className="sg-row">
+          <div className="row">
             <PlanSummary plan={mockPlan} dishMap={mockDishMap} />
           </div>
-          <div className="sg-row">
+          <div className="row">
             <DifficultyBar value={2} capacity={3} label="2 / 3" />
             <DifficultyBar value={3} capacity={3} label="3 / 3" />
             <DifficultyBar value={5} capacity={3} label="5 / 3 przekroczone" />
@@ -268,22 +268,22 @@ export function StyleGuidePage() {
       {/* 9 — Icons */}
       <section className="sg-section">
         <h2>9. Icons (Lucide)</h2>
-        <div className="sg-row">
-          <div className="sg-zone-dark" style={{ flex: 1, minWidth: 280 }}>
+        <div className="row">
+          <div className="sg-zone-dark sg-zone-half">
             <div className="eyebrow" style={{ marginBottom: 10 }}>On the table (--ink)</div>
-            <div className="sg-row" style={{ color: 'var(--ink)' }}>
+            <div className="row" style={{ color: 'var(--ink)' }}>
               <Sparkles /> <Calendar /> <CookingPot /> <Settings /> <Pin /> <Pencil /> <MoreVertical /> <ChevronRight /> <Check /> <X />
             </div>
             <div className="eyebrow" style={{ margin: '16px 0 8px' }}>Meat icons</div>
-            <div className="sg-row" style={{ color: 'var(--ink)' }}>
+            <div className="row" style={{ color: 'var(--ink)' }}>
               {(Object.keys(MEAT_LABELS) as Dish['meat'][]).map((m) => (
                 <span key={m} className="row" style={{ gap: 4 }}><MeatIcon meat={m} size={18} /> {m}</span>
               ))}
             </div>
           </div>
-          <div className="sg-zone-paper" style={{ flex: 1, minWidth: 280 }}>
+          <div className="sg-zone-paper sg-zone-half">
             <div className="eyebrow" style={{ marginBottom: 10 }}>On paper (--paper-ink)</div>
-            <div className="sg-row" style={{ color: 'var(--paper-ink)' }}>
+            <div className="row" style={{ color: 'var(--paper-ink)' }}>
               <Sparkles /> <Calendar /> <CookingPot /> <Settings /> <Pin /> <Pencil /> <MoreVertical /> <ChevronRight /> <Check /> <X />
             </div>
           </div>
@@ -294,7 +294,7 @@ export function StyleGuidePage() {
       <section className="sg-section">
         <h2>11. Contrast audit (WCAG AA)</h2>
         <p className="muted">Reads live computed values, so this reflects theme: {theme} — toggle above and re-check.</p>
-        <table className="sg-contrast-table">
+        <table className="menu-table">
           <thead><tr><th>Pair</th><th>Ratio</th><th>AA normal (4.5:1)</th><th>AA large / UI (3:1)</th></tr></thead>
           <tbody>
             {CONTRAST_TOKEN_PAIRS.map((p) => {
