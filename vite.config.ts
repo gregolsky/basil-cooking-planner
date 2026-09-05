@@ -27,10 +27,6 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webp,ttf,woff2}'],
-        // prl-hero.png (1.9MB) was previously precached unintentionally — hero.png had
-        // an ignore entry but its PRL counterpart didn't. The new landing images are
-        // small enough (<150KB each) that they don't need excluding.
-        globIgnores: ['**/prl-hero.png'],
       },
     }),
   ],

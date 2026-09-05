@@ -1392,9 +1392,8 @@ html[data-theme="prl"] {
   /* PRL keeps a third, condensed voice for dish names; Trattoria resolves
      this to --font-ui so the base rule needs no per-theme exception. */
   --font-accent:  'Roboto Condensed', 'Arial Narrow', sans-serif;
-  --hero-image:      url('/basil-cooking-planner/prl-hero.png');
-  /* No PRL-specific ingredients shot, so its band reuses the theme photo. */
-  --page-hero-image: url('/basil-cooking-planner/prl-hero.png');
+  --hero-image:      url('/basil-cooking-planner/prl-hero.webp');
+  --page-hero-image: url('/basil-cooking-planner/prl-page-hero.webp');
   --radius: 2px;
 }
 

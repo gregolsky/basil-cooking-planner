@@ -16,6 +16,7 @@ export function HomePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const setFamilyName = useAppStore((s) => s.setFamilyName);
+  const theme = useAppStore((s) => s.theme);
   const [name, setName] = useState('');
   // The hero opens on just the call to action; the name field appears only
   // once it's clicked, so the photo carries a button rather than a form.
@@ -92,7 +93,7 @@ export function HomePage() {
               <div key={s.numeral} className="home-step">
                 <img
                   className="home-step-image"
-                  src={`/basil-cooking-planner/${s.image}`}
+                  src={`/basil-cooking-planner/${theme === 'prl' ? 'prl-' : ''}${s.image}`}
                   alt=""
                 />
                 <h3 className="home-step-title">
