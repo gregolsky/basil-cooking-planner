@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Sparkles, Calendar, CookingPot, Settings, type LucideIcon } from 'lucide-react';
 import { useAppStore } from '../store/useAppStore';
+import { NavTools } from './NavTools';
 
 export function NavBar() {
   const { t } = useTranslation();
@@ -43,6 +44,7 @@ export function NavBar() {
             </NavLink>
           ))}
         </div>
+        <NavTools />
       </div>
     </nav>
   );

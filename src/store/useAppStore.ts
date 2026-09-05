@@ -67,7 +67,13 @@ export const useAppStore = create<AppState>()(
       tagDefinitions: [],
 
       setFamilyName: (name) => set({ familyName: name.trim() || null }),
-      setLocale: (locale) => { i18n.changeLanguage(locale); set({ locale }); },
+      setLocale: (locale) => {
+        i18n.changeLanguage(locale);
+        // index.html ships lang="pl"; without this it stays Polish after a
+        // switch, so screen readers read English copy with Polish phonetics.
+        document.documentElement.lang = locale;
+        set({ locale });
+      },
       setTheme: (theme) => {
         if (theme === 'prl') document.documentElement.dataset.theme = 'prl';
         else delete document.documentElement.dataset.theme;
@@ -195,7 +201,10 @@ export const useAppStore = create<AppState>()(
         if (!state) return;
         const normalized = normalizeDishTags(state.dishes, state.tagDefinitions);
         if (normalized !== state.dishes) state.dishes = normalized;
-        if (state.locale) i18n.changeLanguage(state.locale);
+        if (state.locale) {
+          i18n.changeLanguage(state.locale);
+          document.documentElement.lang = state.locale;
+        }
         if (state.theme === 'prl') document.documentElement.dataset.theme = 'prl';
         else delete document.documentElement.dataset.theme;
       },

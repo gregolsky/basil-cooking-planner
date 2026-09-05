@@ -466,6 +466,46 @@ label {
    !important. */
 .nav-links { margin-left: auto; }
 
+/* ── Nav language + theme switchers ───────────────────── */
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 14px;
+  padding-left: 14px;
+  border-left: 1px solid var(--hairline);
+}
+.nav-flags { display: flex; gap: 4px; }
+button.nav-flag {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  padding: 3px;
+  line-height: 0;
+  /* Inactive locales read as available but not current; the active one comes
+     to full strength and gains a hairline. */
+  opacity: 0.45;
+  filter: saturate(0.6);
+  transition: opacity 150ms, filter 150ms, border-color 150ms;
+}
+button.nav-flag:hover:not(:disabled) {
+  opacity: 0.8;
+  filter: none;
+  background: none;
+}
+button.nav-flag[aria-pressed='true'] {
+  opacity: 1;
+  filter: none;
+  border-color: var(--hairline);
+}
+.nav-flag-svg {
+  display: block;
+  border-radius: 1px;
+  /* The Polish flag's upper band is white on a near-white-free nav; without
+     this its top edge dissolves into the bar. */
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
 .nav-greeting {
   font-family: var(--font-ui);
   font-size: 0.78rem;
@@ -1156,6 +1196,15 @@ input.home-name-input::placeholder { color: var(--ink); opacity: 0.45; }
     margin-left: 0;
   }
   .nav-links a { text-align: center; padding: 8px 6px; }
+  /* The links become a full-width grid here, forcing a wrap. Ordering the
+     links last (rather than the tools first) puts the tools beside the brand
+     on row one without displacing the brand itself. */
+  .nav-links { order: 1; }
+  .nav-tools {
+    margin-left: auto;
+    padding-left: 0;
+    border-left: none;
+  }
 
   h1 { font-size: 1.6rem; }
   h2 { font-size: 1.2rem; }

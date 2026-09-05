@@ -4,6 +4,8 @@ const pl = {
   'nav.plans': 'Twoje Plany',
   'nav.dishes': 'Twoje Dania',
   'nav.settings': 'Profil',
+  'nav.language': 'Język',
+  'nav.switchThemeTo': 'Zmień motyw na: {{theme}}',
   'nav.greeting.night': 'Dobranoc, {{name}}!',
   'nav.greeting.morning': 'Dzień dobry, {{name}}!',
   'nav.greeting.day': 'Cześć, {{name}}!',

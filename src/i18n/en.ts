@@ -4,6 +4,8 @@ const en = {
   'nav.plans': 'Your Plans',
   'nav.dishes': 'Your Dishes',
   'nav.settings': 'Profile',
+  'nav.language': 'Language',
+  'nav.switchThemeTo': 'Switch theme to: {{theme}}',
   'nav.greeting.night': 'Good night, {{name}}!',
   'nav.greeting.morning': 'Good morning, {{name}}!',
   'nav.greeting.day': 'Hello, {{name}}!',
