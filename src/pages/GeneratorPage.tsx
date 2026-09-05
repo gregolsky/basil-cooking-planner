@@ -7,6 +7,7 @@ import { toISODate, addDays, daysBetween, listDates, formatShortDateLocale, week
 import { buildDayContexts } from '../lib/days/capacity';
 import { uid } from '../lib/utils/id';
 import { GenerateDialog } from '../components/GenerateDialog';
+import { PageHero } from '../components/PageHero';
 import { DateSelect } from '../components/DateSelect';
 import type { Plan, PlannedMeal } from '../types/plan';
 import type { CumulativeLimit, DayModifier } from '../types/day';
@@ -139,7 +140,9 @@ export function GeneratorPage() {
   };
 
   return (
-    <div className="page">
+    <>
+      <PageHero />
+      <div className="page">
       <div className="page-header"><h1><Sparkles size={24} /> {t('generator.title')}</h1></div>
       <div className="card stack">
         <label>
@@ -312,6 +315,7 @@ export function GeneratorPage() {
       {dialogOpen && (
         <GenerateDialog progress={progress} onAbort={handleAbort} />
       )}
-    </div>
+      </div>
+    </>
   );
 }
